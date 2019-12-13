@@ -11,7 +11,8 @@ public class Controller : MonoBehaviour
 
     void Start()
     {
-		this.mainCam = Camera.main;   
+		this.mainCam = Camera.main;
+		Physics.gravity = Vector3.zero;
     }
 
     void Update()
@@ -33,8 +34,18 @@ public class Controller : MonoBehaviour
 
 				var pos = box.transform.position + offset;
 
-				Instantiate(this.goBlock, pos, Quaternion.identity);
+				var go = Instantiate(this.goBlock, pos, Quaternion.identity);
+				var joint = go.GetComponent<FixedJoint>();
+
+				Debug.Assert(joint != null);
+
+				joint.connectedBody = hit.transform.GetComponent<Rigidbody>();
 			}
+		}
+
+		if (Input.GetMouseButtonDown(1))
+		{
+			Physics.gravity = new Vector3(0, -9.81f, 0);
 		}
     }
 }
