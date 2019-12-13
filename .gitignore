@@ -2,3 +2,13 @@
 Library/
 
 Logs/
+
+*.csproj
+
+besiege_clone_unity.sln
+
+Temp/
+
+obj/
+
+.vs/
