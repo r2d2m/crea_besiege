@@ -9,20 +9,11 @@ public class Controller : MonoBehaviour
 
 	public float mouseEpsilon = 0.01f;
 	public float mouseSensitivity = 10f;
-	public float jointTolerance = 1.1f;
+
+
 	string blockMask = "Block";
-	string linkMask = "Link";
 	Camera mainCam;
 	Vector3 prevMousePos;
-
-	Vector3 dNewPos;
-	Vector3 dDemiSize;
-
-	private void OnDrawGizmos()
-	{
-		Gizmos.color = Color.red;
-		Gizmos.DrawCube(this.dNewPos, this.dDemiSize * 2f);
-	}
 
 	void Link(GameObject a, GameObject b)
 	{
