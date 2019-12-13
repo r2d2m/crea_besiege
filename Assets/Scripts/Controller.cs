@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
+	[SerializeField] Transform camTarget;
 	[SerializeField] GameObject goBlock;
 
+	public float mouseEpsilon = 0.01f;
+	public float mouseSensitivity = 10f;
 	string blockMask = "Block";
 	Camera mainCam;
+	Vector3 prevMousePos;
 
     void Start()
     {
@@ -43,9 +47,21 @@ public class Controller : MonoBehaviour
 			}
 		}
 
-		if (Input.GetMouseButtonDown(1))
+		if (Input.GetMouseButton(1))
+		{
+			var mouseDelta = Input.mousePosition - this.prevMousePos;
+			if (Mathf.Abs(mouseDelta.x) > this.mouseEpsilon)
+			{
+				float moveSens = mouseDelta.x > 0 ? 1f : -1f;
+				this.mainCam.transform.RotateAround(this.camTarget.position, Vector3.up, Time.deltaTime * this.mouseSensitivity * moveSens);
+			}
+		}
+
+		if (Input.GetKeyDown(KeyCode.K))
 		{
 			Physics.gravity = new Vector3(0, -9.81f, 0);
 		}
+
+		this.prevMousePos = Input.mousePosition;
     }
 }
