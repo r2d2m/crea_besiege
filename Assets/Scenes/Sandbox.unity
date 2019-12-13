@@ -288,7 +288,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.2588186, y: -0, z: -0, w: 0.965926}
-  m_LocalPosition: {x: 0, y: 2.5, z: -2}
+  m_LocalPosition: {x: 0, y: 3, z: -2.87}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -342,6 +342,7 @@ MonoBehaviour:
   goBlock: {fileID: 8573744282260929843, guid: df50a3b0b0af74f4bb349df997c2fe13, type: 3}
   mouseEpsilon: 0.01
   mouseSensitivity: 200
+  jointTolerance: 1.1
 --- !u!1 &1514994254
 GameObject:
   m_ObjectHideFlags: 0
@@ -610,6 +611,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3835969571620880504, guid: c2a06712fb57dd44ba06ff8d2fa14e4e,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3416915458112575176, guid: c2a06712fb57dd44ba06ff8d2fa14e4e,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c2a06712fb57dd44ba06ff8d2fa14e4e, type: 3}

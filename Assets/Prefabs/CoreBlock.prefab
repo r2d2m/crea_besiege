@@ -79,22 +79,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1301442689347955456, guid: df50a3b0b0af74f4bb349df997c2fe13,
-        type: 3}
-      propertyPath: m_BreakForce
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1301442689347955456, guid: df50a3b0b0af74f4bb349df997c2fe13,
-        type: 3}
-      propertyPath: m_BreakTorque
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8573744282260929841, guid: df50a3b0b0af74f4bb349df997c2fe13,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d93ae72aaac1d974e919ddfe0fab78aa, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1301442689347955456, guid: df50a3b0b0af74f4bb349df997c2fe13, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: df50a3b0b0af74f4bb349df997c2fe13, type: 3}
 --- !u!1 &3070018979205519632 stripped
 GameObject:

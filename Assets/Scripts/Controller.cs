@@ -9,9 +9,59 @@ public class Controller : MonoBehaviour
 
 	public float mouseEpsilon = 0.01f;
 	public float mouseSensitivity = 10f;
+	public float jointTolerance = 1.1f;
 	string blockMask = "Block";
+	string linkMask = "Link";
 	Camera mainCam;
 	Vector3 prevMousePos;
+
+	Vector3 dNewPos;
+	Vector3 dDemiSize;
+
+	private void OnDrawGizmos()
+	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawCube(this.dNewPos, this.dDemiSize * 2f);
+	}
+
+	void Link(GameObject a, GameObject b)
+	{
+		var aJoint = a.AddComponent<FixedJoint>();
+		var bJoint = b.AddComponent<FixedJoint>();
+
+		aJoint.connectedBody = b.GetComponent<Rigidbody>();
+		bJoint.connectedBody = a.GetComponent<Rigidbody>();
+	}
+
+	void JoinBlock(SolidBlock block, RaycastHit hit)
+	{
+		var blockBox = block.GetComponent<BoxCollider>();
+
+		var size = blockBox.bounds.size;
+
+		var offset = hit.normal;
+		offset.x *= size.x;
+		offset.y *= size.y;
+		offset.z *= size.z;
+
+		var newPos = blockBox.bounds.center + offset;
+
+		var newGo = Instantiate(this.goBlock, newPos, Quaternion.identity);
+		var newBlock = newGo.GetComponent<SolidBlock>();
+
+		foreach (BoxCollider box in newBlock.links)
+		{
+			var colliders = Physics.OverlapBox(box.bounds.center, box.bounds.extents, Quaternion.identity, LayerMask.GetMask(this.blockMask));
+
+			foreach (Collider c in colliders)
+			{
+				if (c.gameObject != newGo)
+				{
+					Link(c.gameObject, newGo);
+				}
+			}
+		}
+	}
 
     void Start()
     {
@@ -28,22 +78,12 @@ public class Controller : MonoBehaviour
 			RaycastHit hit;
 			if (Physics.Raycast(ray, out hit, 1000, LayerMask.GetMask(this.blockMask)))
 			{
-				var box = hit.transform.GetComponent<BoxCollider>();
-				Debug.Assert(box != null);
+				var block = hit.transform.GetComponent<SolidBlock>();
 
-				var offset = hit.normal;
-				offset.x *= box.size.x / 2f;
-				offset.y *= box.size.y / 2f;
-				offset.z *= box.size.z / 2f;
-
-				var pos = box.transform.position + offset;
-
-				var go = Instantiate(this.goBlock, pos, Quaternion.identity);
-				var joint = go.GetComponent<FixedJoint>();
-
-				Debug.Assert(joint != null);
-
-				joint.connectedBody = hit.transform.GetComponent<Rigidbody>();
+				if (block != null)
+				{
+					JoinBlock(block, hit);
+				}
 			}
 		}
 
