@@ -20,7 +20,11 @@ public class Test : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.UpArrow))
 		{
-			this.rb.angularVelocity = Vector3.right * 100f;
+			this.rb.angularVelocity = Vector3.right * 1f;
 		}
-    }
+		else if (Input.GetKey(KeyCode.DownArrow))
+		{
+			this.rb.angularVelocity = -Vector3.right * 1f;
+		}
+	}
 }
