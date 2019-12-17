@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SolidBlock : MonoBehaviour
 {
+	[SerializeField] BoxCollider boxBound;
 	public BoxCollider[] links;
 
     void Start()
@@ -15,4 +16,9 @@ public class SolidBlock : MonoBehaviour
     {
         
     }
+
+	public Bounds bounds
+	{
+		get => this.boxBound.bounds;
+	}
 }

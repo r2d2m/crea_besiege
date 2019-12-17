@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
-	[SerializeField] Transform camTarget;
-	[SerializeField] GameObject goBlock;
+	[SerializeField] Transform origin;
+	[SerializeField] GameObject block;
 
 	public float mouseEpsilon = 0.01f;
-	public float mouseSensitivity = 10f;
-
+	public float mouseSensitivity = 200f;
 
 	string blockMask = "Block";
 	Camera mainCam;
@@ -26,18 +25,16 @@ public class Controller : MonoBehaviour
 
 	void JoinBlock(SolidBlock block, RaycastHit hit)
 	{
-		var blockBox = block.GetComponent<BoxCollider>();
-
-		var size = blockBox.bounds.size;
+		var size = block.bounds.size;
 
 		var offset = hit.normal;
-		offset.x *= size.x;
-		offset.y *= size.y;
-		offset.z *= size.z;
+		offset.x = offset.x * size.x;
+		offset.y = offset.y * size.y;
+		offset.z = offset.z * size.z;
 
-		var newPos = blockBox.bounds.center + offset;
+		var newPos = block.bounds.center + offset;
 
-		var newGo = Instantiate(this.goBlock, newPos, Quaternion.identity);
+		var newGo = Instantiate(this.block, newPos, Quaternion.identity);
 		var newBlock = newGo.GetComponent<SolidBlock>();
 
 		foreach (BoxCollider box in newBlock.links)
@@ -84,7 +81,7 @@ public class Controller : MonoBehaviour
 			if (Mathf.Abs(mouseDelta.x) > this.mouseEpsilon)
 			{
 				float moveSens = mouseDelta.x > 0 ? 1f : -1f;
-				this.mainCam.transform.RotateAround(this.camTarget.position, Vector3.up, Time.deltaTime * this.mouseSensitivity * moveSens);
+				this.mainCam.transform.RotateAround(this.origin.position, Vector3.up, Time.deltaTime * this.mouseSensitivity * moveSens);
 			}
 		}
 
