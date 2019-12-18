@@ -25,14 +25,14 @@ public class Controller : MonoBehaviour
 
 	void JoinBlock(SolidBlock block, RaycastHit hit)
 	{
-		var size = block.bounds.size;
+		var size = block.Bounds.size;
 
 		var offset = hit.normal;
 		offset.x = offset.x * size.x;
 		offset.y = offset.y * size.y;
 		offset.z = offset.z * size.z;
 
-		var newPos = block.bounds.center + offset;
+		var newPos = block.Bounds.center + offset;
 
 		var newGo = Instantiate(this.block, newPos, Quaternion.identity);
 		var newBlock = newGo.GetComponent<SolidBlock>();
