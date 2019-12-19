@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class Wheel : MonoBehaviour
 {
 	Rigidbody rb;
 
@@ -18,13 +18,15 @@ public class Test : MonoBehaviour
 
     void Update()
     {
+		var axis = this.transform.right;
+
         if (Input.GetKey(KeyCode.UpArrow))
 		{
-			this.rb.angularVelocity = Vector3.right * 1f;
+			this.rb.angularVelocity = axis * 2f;
 		}
 		else if (Input.GetKey(KeyCode.DownArrow))
 		{
-			this.rb.angularVelocity = -Vector3.right * 1f;
+			this.rb.angularVelocity = -axis * 2f;
 		}
 	}
 }

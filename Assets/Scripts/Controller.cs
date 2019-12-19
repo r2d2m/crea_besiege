@@ -6,6 +6,7 @@ public class Controller : MonoBehaviour
 {
 	[SerializeField] Transform origin;
 	[SerializeField] GameObject block;
+	[SerializeField] GameObject wheel;
 
 	public float mouseEpsilon = 0.01f;
 	public float mouseSensitivity = 200f;
@@ -51,6 +52,24 @@ public class Controller : MonoBehaviour
 		}
 	}
 
+	void JoinWheel(SolidBlock block, RaycastHit hit)
+	{
+		var size = block.Bounds.size;
+
+		var offset = hit.normal;
+		offset.x = offset.x * size.x;
+		offset.y = offset.y * size.y;
+		offset.z = offset.z * size.z;
+
+		var newPos = block.Bounds.center + offset;
+
+		var newGo = Instantiate(this.wheel);
+		newGo.transform.position = newPos;
+		newGo.transform.rotation = Quaternion.identity;
+
+		newGo.GetComponent<HingeJoint>().connectedBody = block.GetComponent<Rigidbody>();
+	}
+
     void Start()
     {
 		this.mainCam = Camera.main;
@@ -71,6 +90,22 @@ public class Controller : MonoBehaviour
 				if (block != null)
 				{
 					JoinBlock(block, hit);
+				}
+			}
+		}
+
+		if (Input.GetMouseButtonDown(2))
+		{
+			var ray = this.mainCam.ScreenPointToRay(Input.mousePosition);
+
+			RaycastHit hit;
+			if (Physics.Raycast(ray, out hit, 1000, LayerMask.GetMask(this.blockMask)))
+			{
+				var block = hit.transform.GetComponent<SolidBlock>();
+
+				if (block != null)
+				{
+					JoinWheel(block, hit);
 				}
 			}
 		}

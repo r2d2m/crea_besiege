@@ -198,7 +198,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 503774304}
   m_LocalRotation: {x: 0.2588186, y: -0, z: -0, w: 0.965926}
-  m_LocalPosition: {x: 0, y: 4, z: -3.73}
+  m_LocalPosition: {x: 0, y: 8.25, z: -8.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -235,6 +235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   origin: {fileID: 1311448089}
   block: {fileID: 4920734172298637079, guid: f890b57ea18bc0c469b0c4910e06c452, type: 3}
+  wheel: {fileID: 2710756596880426899, guid: c0f19f088ea7c4343b9dd183ad49dd4c, type: 3}
   mouseEpsilon: 0.01
   mouseSensitivity: 200
 --- !u!4 &791397045
@@ -480,12 +481,12 @@ PrefabInstance:
     - target: {fileID: 2072527246312861080, guid: f19b0c4ecd2617e45b0bf1242b0a88a8,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2072527246312861080, guid: f19b0c4ecd2617e45b0bf1242b0a88a8,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2072527246312861080, guid: f19b0c4ecd2617e45b0bf1242b0a88a8,
         type: 3}
