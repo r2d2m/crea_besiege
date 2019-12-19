@@ -70,6 +70,13 @@ public class Controller : MonoBehaviour
 		newGo.GetComponent<HingeJoint>().connectedBody = block.GetComponent<Rigidbody>();
 	}
 
+	bool RaycastSolidBlock(out RaycastHit hit)
+	{
+		var ray = this.mainCam.ScreenPointToRay(Input.mousePosition);
+
+		return Physics.Raycast(ray, out hit, 1000, LayerMask.GetMask(this.blockMask));
+	}
+
     void Start()
     {
 		this.mainCam = Camera.main;
@@ -80,10 +87,8 @@ public class Controller : MonoBehaviour
     {
 		if (Input.GetMouseButtonDown(0))
 		{
-			var ray = this.mainCam.ScreenPointToRay(Input.mousePosition);
-
 			RaycastHit hit;
-			if (Physics.Raycast(ray, out hit, 1000, LayerMask.GetMask(this.blockMask)))
+			if (RaycastSolidBlock(out hit))
 			{
 				var block = hit.transform.GetComponent<SolidBlock>();
 
@@ -96,10 +101,8 @@ public class Controller : MonoBehaviour
 
 		if (Input.GetMouseButtonDown(2))
 		{
-			var ray = this.mainCam.ScreenPointToRay(Input.mousePosition);
-
 			RaycastHit hit;
-			if (Physics.Raycast(ray, out hit, 1000, LayerMask.GetMask(this.blockMask)))
+			if (RaycastSolidBlock(out hit))
 			{
 				var block = hit.transform.GetComponent<SolidBlock>();
 
