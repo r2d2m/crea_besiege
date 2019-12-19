@@ -18,15 +18,16 @@ public class Wheel : MonoBehaviour
 
     void Update()
     {
-		var axis = this.transform.right;
+		var axisV = this.transform.right;
+		var axisH = this.transform.up;
 
-        if (Input.GetKey(KeyCode.UpArrow))
+		if (Input.GetKey(KeyCode.UpArrow))
 		{
-			this.rb.angularVelocity = axis * 2f;
+			this.rb.angularVelocity = axisV * 2f;
 		}
 		else if (Input.GetKey(KeyCode.DownArrow))
 		{
-			this.rb.angularVelocity = -axis * 2f;
+			this.rb.angularVelocity = -axisV * 2f;
 		}
 	}
 }
