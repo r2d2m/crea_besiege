@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoreBlock : MonoBehaviour
+public class EditionUI : MonoBehaviour
 {
-	private void Awake()
-	{
-	}
-
-	void Start()
+    void Start()
     {
         
     }

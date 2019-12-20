@@ -1,6 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+
+public enum Hand
+{
+	Null,
+	Block,
+	Wheel,
+	Empty
+}
 
 public class Controller : MonoBehaviour
 {
@@ -14,6 +24,12 @@ public class Controller : MonoBehaviour
 	string blockMask = "Block";
 	Camera mainCam;
 	Vector3 prevMousePos;
+	Hand hand = Hand.Empty;
+
+	private void Awake()
+	{
+		Refs.controller = this;
+	}
 
 	void Link(SolidBlock a, SolidBlock b)
 	{
@@ -84,10 +100,20 @@ public class Controller : MonoBehaviour
 	{
 		var ray = this.mainCam.ScreenPointToRay(Input.mousePosition);
 
-		return Physics.Raycast(ray, out hit, 1000, LayerMask.GetMask(this.blockMask));
+		return Physics.Raycast(ray, out hit, 1000);
 	}
 
-    void Start()
+	public void PickBlock()
+	{
+		this.hand = Hand.Block;
+	}
+
+	public void PickWheel()
+	{
+		this.hand = Hand.Wheel;
+	}
+
+	void Start()
     {
 		this.mainCam = Camera.main;
 		Physics.gravity = Vector3.zero;
@@ -97,28 +123,24 @@ public class Controller : MonoBehaviour
     {
 		if (Input.GetMouseButtonDown(0))
 		{
-			RaycastHit hit;
-			if (RaycastSolidBlock(out hit))
+			if (!EventSystem.current.IsPointerOverGameObject())
 			{
-				var block = hit.transform.GetComponent<SolidBlock>();
-
-				if (block != null)
+				RaycastHit hit;
+				if (RaycastSolidBlock(out hit))
 				{
-					JoinBlock(block, hit);
-				}
-			}
-		}
+					var block = hit.transform.GetComponent<SolidBlock>();
 
-		if (Input.GetMouseButtonDown(2))
-		{
-			RaycastHit hit;
-			if (RaycastSolidBlock(out hit))
-			{
-				var block = hit.transform.GetComponent<SolidBlock>();
-
-				if (block != null)
-				{
-					JoinWheel(block, hit);
+					if (block != null)
+					{
+						if (this.hand == Hand.Block)
+						{
+							JoinBlock(block, hit);
+						}
+						else if (this.hand == Hand.Wheel)
+						{
+							JoinWheel(block, hit);
+						}
+					}
 				}
 			}
 		}

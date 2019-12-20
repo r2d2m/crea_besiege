@@ -4,5 +4,5 @@ using UnityEngine;
 
 public static class Refs
 {
-	public static CoreBlock coreBlock = null;
+	public static Controller controller;
 }
