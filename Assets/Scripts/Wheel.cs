@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wheel : MonoBehaviour
+public class Wheel : MonoBehaviour, IAttachable
 {
 	[SerializeField] float breakForce = 1000f;
 	[SerializeField] float force = 2f;
-	Rigidbody rb;
+	Rigidbody body;
 
 	private void Awake()
 	{
-		this.rb = GetComponent<Rigidbody>();
+		this.body = GetComponent<Rigidbody>();
 	}
 
 	void Start()
@@ -22,29 +22,62 @@ public class Wheel : MonoBehaviour
     {
 		if (Input.GetKey(KeyCode.UpArrow))
 		{
-			this.rb.angularVelocity = this.rotationAxis * this.force;
+			this.body.angularVelocity = this.RotationAxis * this.force;
 		}
 		else if (Input.GetKey(KeyCode.DownArrow))
 		{
-			this.rb.angularVelocity = -this.rotationAxis * this.force;
+			this.body.angularVelocity = -this.RotationAxis * this.force;
 		}
 	}
 
-	public void JoinToBody(Rigidbody rigidbody)
+	Vector3 GetOrientation(Block block, Vector3 direction)
 	{
-		var hingeJoint = this.gameObject.AddComponent<HingeJoint>();
-		hingeJoint.breakForce = this.breakForce;
-		hingeJoint.connectedBody = rigidbody;
-		hingeJoint.axis = this.localRotationAxis;
+		var orientation = direction;
+
+		if (Vector3.Angle(-direction, block.transform.forward) < 0.05f
+			|| Vector3.Angle(-direction, block.transform.up) < 0.05f
+			|| Vector3.Angle(-direction, block.transform.right) < 0.05f)
+		{
+			orientation = -orientation;
+		}
+
+		return orientation;
 	}
 
-	public Vector3 rotationAxis
+	public void Connect(Block block)
+	{
+		var joint = this.gameObject.AddComponent<HingeJoint>();
+		joint.breakForce = this.breakForce;
+		joint.connectedBody = block.RigidBody;
+		joint.axis = this.LocalRotationAxis;
+	}
+
+	public void Attach(Block block, Vector3 direction)
+	{
+		var orientation = GetOrientation(block, direction);
+		var translation = direction.Multiplied(block.Bounds.size);
+
+		var newPosition = block.Bounds.center + translation;
+		var newRotation = Quaternion.FromToRotation(this.RotationAxis, orientation);
+
+		this.transform.position = newPosition;
+		this.transform.rotation = newRotation;
+
+		Connect(block);
+	}
+
+	public GameObject GameObject
+	{
+		get => this.gameObject;
+	}
+
+	public Vector3 RotationAxis
 	{
 		get => this.transform.up;
 	}
 	
-	public Vector3 localRotationAxis
+	public Vector3 LocalRotationAxis
 	{
-		get => this.transform.worldToLocalMatrix * this.rotationAxis;
+		get => this.transform.worldToLocalMatrix * this.RotationAxis;
 	}
 }
