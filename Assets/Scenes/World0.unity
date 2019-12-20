@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 503774307}
   - component: {fileID: 503774306}
   - component: {fileID: 503774305}
+  - component: {fileID: 503774308}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -204,18 +205,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 30.000002, y: 0, z: 0}
---- !u!114 &1161053764 stripped
+--- !u!114 &503774308
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3514557499282034721, guid: 149f5212982286546a3fc20079014afa,
-    type: 3}
-  m_PrefabInstance: {fileID: 3514557498760614549}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 503774304}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 883fd8cd39b9cf342877dfa203863f55, type: 3}
+  m_Script: {fileID: 11500000, guid: ae10a9c236f93e840a344b4128a406d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 1311448089}
 --- !u!1 &1311448088
 GameObject:
   m_ObjectHideFlags: 0
@@ -442,6 +444,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoreBlock
       objectReference: {fileID: 0}
+    - target: {fileID: 2072527246312861081, guid: f19b0c4ecd2617e45b0bf1242b0a88a8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2072527246312861080, guid: f19b0c4ecd2617e45b0bf1242b0a88a8,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -499,6 +506,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f19b0c4ecd2617e45b0bf1242b0a88a8, type: 3}
+--- !u!114 &2045316387 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3514557499282034721, guid: 149f5212982286546a3fc20079014afa,
+    type: 3}
+  m_PrefabInstance: {fileID: 3514557498760614549}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 883fd8cd39b9cf342877dfa203863f55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3514557498760614549
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -511,11 +530,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Controller
       objectReference: {fileID: 0}
-    - target: {fileID: 3514557499282034721, guid: 149f5212982286546a3fc20079014afa,
-        type: 3}
-      propertyPath: origin
-      value: 
-      objectReference: {fileID: 1311448089}
     - target: {fileID: 3514557499282034720, guid: 149f5212982286546a3fc20079014afa,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -644,11 +658,15 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1161053764}
+      objectReference: {fileID: 2045316387}
     - target: {fileID: 8253511904370195769, guid: e83bde5ae79c50a428739e1641068053,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1161053764}
+      objectReference: {fileID: 2045316387}
+    - target: {fileID: 1010009617, guid: e83bde5ae79c50a428739e1641068053, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2045316387}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e83bde5ae79c50a428739e1641068053, type: 3}

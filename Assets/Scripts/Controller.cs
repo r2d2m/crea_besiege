@@ -6,18 +6,63 @@ using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
-	[SerializeField] Transform origin;
-
 	public float mouseEpsilon = 0.01f;
-	public float mouseSensitivity = 200f;
+	public string mouseXAxis = "Mouse X";
+	public string mouseYAxis = "Mouse Y";
 
 	Camera mainCam;
+	OrbitalTransform orbitalTransform;
 	Vector3 prevMousePos;
 	IAttachable hand;
 
 	private void Awake()
 	{
 
+	}
+
+	void Start()
+	{
+		this.mainCam = Camera.main;
+		this.orbitalTransform = this.mainCam.GetComponent<OrbitalTransform>();
+		Physics.gravity = Vector3.zero;
+	}
+
+	private void FixedUpdate()
+	{
+		if (Input.GetMouseButton(1))
+		{
+			float horizontal = Input.GetAxis(this.mouseXAxis);
+			float vertical = -Input.GetAxis(this.mouseYAxis);
+
+			this.orbitalTransform.Rotate(horizontal, vertical);
+		}
+	}
+
+	void Update()
+	{
+		if (this.hand != null && Input.GetMouseButtonDown(0))
+		{
+			if (EventSystem.current != null && !EventSystem.current.IsPointerOverGameObject())
+			{
+				RaycastHit hit;
+				if (RaycastBlocks(out hit))
+				{
+					var block = hit.transform.GetComponent<Block>();
+
+					if (block != null)
+					{
+						CreateAttached(this.hand, block, hit.normal);
+					}
+				}
+			}
+		}
+
+		if (Input.GetKeyDown(KeyCode.K))
+		{
+			Physics.gravity = new Vector3(0, -9.81f, 0);
+		}
+
+		this.prevMousePos = Input.mousePosition;
 	}
 
 	void CreateAttached(IAttachable attachablePrefab, Block block, Vector3 direction)
@@ -37,47 +82,4 @@ public class Controller : MonoBehaviour
 	{
 		this.hand = hand.GetComponent<IAttachable>();
 	}
-
-	void Start()
-    {
-		this.mainCam = Camera.main;
-		Physics.gravity = Vector3.zero;
-    }
-
-    void Update()
-    {
-		if (this.hand != null && Input.GetMouseButtonDown(0))
-		{
-			if (EventSystem.current != null && !EventSystem.current.IsPointerOverGameObject())
-			{
-				RaycastHit hit;
-				if (RaycastBlocks(out hit))
-				{
-					var block = hit.transform.GetComponent<Block>();
-
-					if (block != null)
-					{
-						CreateAttached(this.hand, block, hit.normal);
-					}
-				}
-			}
-		}
-
-		if (Input.GetMouseButton(1))
-		{
-			var mouseDelta = Input.mousePosition - this.prevMousePos;
-			if (Mathf.Abs(mouseDelta.x) > this.mouseEpsilon)
-			{
-				float moveSens = mouseDelta.x > 0 ? 1f : -1f;
-				this.mainCam.transform.RotateAround(this.origin.position, Vector3.up, Time.deltaTime * this.mouseSensitivity * moveSens);
-			}
-		}
-
-		if (Input.GetKeyDown(KeyCode.K))
-		{
-			Physics.gravity = new Vector3(0, -9.81f, 0);
-		}
-
-		this.prevMousePos = Input.mousePosition;
-    }
 }

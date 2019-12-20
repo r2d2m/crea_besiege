@@ -43,10 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 883fd8cd39b9cf342877dfa203863f55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {fileID: 0}
-  solidBlockPrefab: {fileID: 4920734172298637079, guid: f890b57ea18bc0c469b0c4910e06c452,
-    type: 3}
-  wheelPrefab: {fileID: 2710756596880426899, guid: c0f19f088ea7c4343b9dd183ad49dd4c,
-    type: 3}
-  mouseEpsilon: 0.01
-  mouseSensitivity: 200
+  mouseEpsilon: 1
+  mouseSensitivity: 100
