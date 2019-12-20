@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
-	[SerializeField] float blockBreakForce = 500f;
 	[SerializeField] Transform origin;
 	[SerializeField] GameObject block;
 	[SerializeField] GameObject wheel;
@@ -16,15 +15,10 @@ public class Controller : MonoBehaviour
 	Camera mainCam;
 	Vector3 prevMousePos;
 
-	void Link(GameObject a, GameObject b)
+	void Link(SolidBlock a, SolidBlock b)
 	{
-		var aJoint = a.AddComponent<FixedJoint>();
-		aJoint.breakForce = this.blockBreakForce;
-		var bJoint = b.AddComponent<FixedJoint>();
-		bJoint.breakForce = this.blockBreakForce;
-
-		aJoint.connectedBody = b.GetComponent<Rigidbody>();
-		bJoint.connectedBody = a.GetComponent<Rigidbody>();
+		a.JoinToBody(b.GetComponent<Rigidbody>());
+		b.JoinToBody(a.GetComponent<Rigidbody>());
 	}
 
 	Vector3 ComputePlacementPosition(SolidBlock block, RaycastHit hit)
@@ -67,7 +61,7 @@ public class Controller : MonoBehaviour
 			{
 				if (c.gameObject != newGo)
 				{
-					Link(c.gameObject, newGo);
+					Link(c.gameObject.GetComponent<SolidBlock>(), newBlock);
 				}
 			}
 		}

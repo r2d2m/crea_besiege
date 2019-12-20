@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class SolidBlock : MonoBehaviour
 {
-	BoxCollider boxBound;
+	[SerializeField] float breakForce = 500f;
 	public BoxCollider[] links;
+	BoxCollider boxBound;
 
 	private void Awake()
 	{
@@ -30,5 +31,12 @@ public class SolidBlock : MonoBehaviour
 	public Bounds Bounds
 	{
 		get => this.boxBound.bounds;
+	}
+
+	public void JoinToBody(Rigidbody body)
+	{
+		var thisJoint = this.gameObject.AddComponent<FixedJoint>();
+		thisJoint.breakForce = this.breakForce;
+		thisJoint.connectedBody = body;
 	}
 }
