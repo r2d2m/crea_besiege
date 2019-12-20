@@ -100,7 +100,7 @@ public class Controller : MonoBehaviour
 	{
 		var ray = this.mainCam.ScreenPointToRay(Input.mousePosition);
 
-		return Physics.Raycast(ray, out hit, 1000);
+		return Physics.Raycast(ray, out hit, 1000, LayerMask.GetMask(this.blockMask));
 	}
 
 	public void PickBlock()
@@ -123,7 +123,7 @@ public class Controller : MonoBehaviour
     {
 		if (Input.GetMouseButtonDown(0))
 		{
-			if (!EventSystem.current.IsPointerOverGameObject())
+			if (EventSystem.current != null && !EventSystem.current.IsPointerOverGameObject())
 			{
 				RaycastHit hit;
 				if (RaycastSolidBlock(out hit))
