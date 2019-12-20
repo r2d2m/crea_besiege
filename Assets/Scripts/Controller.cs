@@ -5,7 +5,6 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
 	[SerializeField] float blockBreakForce = 500f;
-	[SerializeField] float wheelBreakForce = 1000f;
 	[SerializeField] Transform origin;
 	[SerializeField] GameObject block;
 	[SerializeField] GameObject wheel;
@@ -28,7 +27,7 @@ public class Controller : MonoBehaviour
 		bJoint.connectedBody = a.GetComponent<Rigidbody>();
 	}
 
-	void JoinBlock(SolidBlock block, RaycastHit hit)
+	Vector3 ComputePlacementPosition(SolidBlock block, RaycastHit hit)
 	{
 		var size = block.Bounds.size;
 
@@ -37,8 +36,26 @@ public class Controller : MonoBehaviour
 		offset.y = offset.y * size.y;
 		offset.z = offset.z * size.z;
 
-		var newPos = block.Bounds.center + offset;
+		return block.Bounds.center + offset;
+	}
 
+	Vector3 GetWheelOrientation(SolidBlock block, Vector3 normal)
+	{
+		var orientation = normal;
+
+		if (Vector3.Angle(-normal, block.transform.forward) < 0.05f
+			|| Vector3.Angle(-normal, block.transform.up) < 0.05f
+			|| Vector3.Angle(-normal, block.transform.right) < 0.05f)
+		{
+			orientation = -orientation;
+		}
+
+		return orientation;
+	}
+
+	void JoinBlock(SolidBlock block, RaycastHit hit)
+	{
+		var newPos = ComputePlacementPosition(block, hit);
 		var newGo = Instantiate(this.block, newPos, Quaternion.identity);
 		var newBlock = newGo.GetComponent<SolidBlock>();
 
@@ -58,23 +75,15 @@ public class Controller : MonoBehaviour
 
 	void JoinWheel(SolidBlock block, RaycastHit hit)
 	{
-		var size = block.Bounds.size;
-
-		var offset = hit.normal;
-		offset.x = offset.x * size.x;
-		offset.y = offset.y * size.y;
-		offset.z = offset.z * size.z;
-
-		var newPos = block.Bounds.center + offset;
+		var newPos = ComputePlacementPosition(block, hit);
+		var orientation = GetWheelOrientation(block, hit.normal);
 
 		var newGo = Instantiate(this.wheel);
 		newGo.transform.position = newPos;
-		newGo.transform.rotation = Quaternion.identity;
+		newGo.transform.rotation = Quaternion.FromToRotation(newGo.transform.up, orientation);
 
-		var hingeJoint = newGo.GetComponent<HingeJoint>();
-		hingeJoint.breakForce = this.wheelBreakForce;
-
-		hingeJoint.connectedBody = block.GetComponent<Rigidbody>();
+		var wheel = newGo.GetComponent<Wheel>();
+		wheel.JoinToBody(block.GetComponent<Rigidbody>());
 	}
 
 	bool RaycastSolidBlock(out RaycastHit hit)
