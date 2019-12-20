@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
+	[SerializeField] float blockBreakForce = 500f;
+	[SerializeField] float wheelBreakForce = 1000f;
 	[SerializeField] Transform origin;
 	[SerializeField] GameObject block;
 	[SerializeField] GameObject wheel;
@@ -18,7 +20,9 @@ public class Controller : MonoBehaviour
 	void Link(GameObject a, GameObject b)
 	{
 		var aJoint = a.AddComponent<FixedJoint>();
+		aJoint.breakForce = this.blockBreakForce;
 		var bJoint = b.AddComponent<FixedJoint>();
+		bJoint.breakForce = this.blockBreakForce;
 
 		aJoint.connectedBody = b.GetComponent<Rigidbody>();
 		bJoint.connectedBody = a.GetComponent<Rigidbody>();
@@ -67,7 +71,10 @@ public class Controller : MonoBehaviour
 		newGo.transform.position = newPos;
 		newGo.transform.rotation = Quaternion.identity;
 
-		newGo.GetComponent<HingeJoint>().connectedBody = block.GetComponent<Rigidbody>();
+		var hingeJoint = newGo.GetComponent<HingeJoint>();
+		hingeJoint.breakForce = this.wheelBreakForce;
+
+		hingeJoint.connectedBody = block.GetComponent<Rigidbody>();
 	}
 
 	bool RaycastSolidBlock(out RaycastHit hit)

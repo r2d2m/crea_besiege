@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Wheel : MonoBehaviour
 {
+	[SerializeField] float force = 100f;
 	Rigidbody rb;
 
 	private void Awake()
@@ -23,11 +24,11 @@ public class Wheel : MonoBehaviour
 
 		if (Input.GetKey(KeyCode.UpArrow))
 		{
-			this.rb.angularVelocity = axisV * 2f;
+			this.rb.AddTorque(axisV * this.force);
 		}
 		else if (Input.GetKey(KeyCode.DownArrow))
 		{
-			this.rb.angularVelocity = -axisV * 2f;
+			this.rb.AddTorque(-axisV * this.force);
 		}
 	}
 }
