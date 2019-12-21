@@ -1,0 +1,37 @@
+ManifestFileVersion: 0
+CRC: 4056558631
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 45d0a5ca71f129d890aa13538a115611
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8a89960bec8f887c3b956cbbc12001a2
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 84c9f006150d3b14c8b735bee09eef1c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Materials/MatDLC.mat
+- Assets/Prefabs/SolidBlockDLC.prefab
+Dependencies: []
