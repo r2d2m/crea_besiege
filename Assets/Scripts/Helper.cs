@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class Helper
 {
+	public const string PersistentSceneName = "Persistent";
 	public static readonly int DefaultLayerMask = (~0) ^ LayerMask.GetMask("Ignored");
 	public static readonly int BlockLayerMask = LayerMask.GetMask("Block");
 
