@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
-	public float mouseEpsilon = 0.01f;
 	public string mouseXAxis = "Mouse X";
 	public string mouseYAxis = "Mouse Y";
 
@@ -29,7 +28,7 @@ public class Controller : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (Input.GetMouseButton(1))
+		if (this.orbitalTransform != null && Input.GetMouseButton(1))
 		{
 			float horizontal = Input.GetAxis(this.mouseXAxis);
 			float vertical = -Input.GetAxis(this.mouseYAxis);
@@ -78,8 +77,15 @@ public class Controller : MonoBehaviour
 		return Physics.Raycast(ray, out hit, 1000, Helper.DefaultLayerMask);
 	}
 
-	public void SetHand(GameObject hand)
+	public void SetHand(GameObject gameObject)
 	{
-		this.hand = hand.GetComponent<IAttachable>();
+		var attachable = gameObject.GetComponent<IAttachable>();
+		if (attachable == null)
+		{
+			Debug.LogError(gameObject + " does not contains IAttachable component");
+			return;
+		}
+
+		this.hand = attachable;
 	}
 }
