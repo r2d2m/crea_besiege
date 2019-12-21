@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class VictoryZone : MonoBehaviour
 {
-	public string nextLevel;
+	public string nextLevel = null;
 
     void Start()
     {
-
-    }
+	}
 
     void Update()
     {
@@ -18,6 +17,8 @@ public class VictoryZone : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
+		Debug.Assert(!string.IsNullOrEmpty(this.nextLevel), "NextLevel were not assigned in VictoryZone");
+
 		var block = other.gameObject.GetComponent<Block>();
 
 		if (block != null)
