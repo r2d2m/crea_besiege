@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SolidBlock : Block, IAttachable
 {
-	[SerializeField] float breakForce = 500f;
-
 	protected override void Awake()
 	{
 		base.Awake();
@@ -23,15 +21,10 @@ public class SolidBlock : Block, IAttachable
 		
     }
 
-	public void Connect(Block block)
+	public void Setup(Block block, Vector3 direction)
 	{
-		var joint = this.gameObject.AddComponent<FixedJoint>();
-		joint.breakForce = this.breakForce;
-		joint.connectedBody = block.RigidBody;
-	}
+		base.Setup(block.Vehicle);
 
-	public void Attach(Block block, Vector3 direction)
-	{
 		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
 
 		this.transform.position = block.Bounds.center + translation;
@@ -45,22 +38,17 @@ public class SolidBlock : Block, IAttachable
 			{
 				if (collider.gameObject != this.gameObject)
 				{
-					var solidBlock = collider.gameObject.GetComponent<SolidBlock>();
-					if (solidBlock != null)
+					var hitBlock = collider.gameObject.GetComponent<Block>();
+					if (hitBlock != null)
 					{
-						InterConnect(solidBlock, this);
+						InterConnect(hitBlock, this);
 					}
 				}
 			}
 		}
 	}
-
-	public GameObject GameObject
-	{
-		get => this.gameObject;
-	}
 	
-	public static void InterConnect(SolidBlock a, SolidBlock b)
+	public static void InterConnect(Block a, Block b)
 	{
 		a.Connect(b);
 		b.Connect(a);

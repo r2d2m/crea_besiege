@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
-public class Block : MonoBehaviour
+public class Block : VehicleComponent
 {
+	[SerializeField] float breakForce = 500f;
 	[SerializeField] BoxCollider[] linkageBoxes;
 
 	BoxCollider box;
@@ -25,6 +26,18 @@ public class Block : MonoBehaviour
     {
         
     }
+
+	public void Connect(Block block)
+	{
+		var joint = this.gameObject.AddComponent<FixedJoint>();
+		joint.breakForce = this.breakForce;
+		joint.connectedBody = block.RigidBody;
+	}
+
+	public GameObject GameObject
+	{
+		get => this.gameObject;
+	}
 
 	public BoxCollider Box
 	{

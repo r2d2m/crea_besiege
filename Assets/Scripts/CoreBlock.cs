@@ -2,19 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CoreBlock : MonoBehaviour
+public class CoreBlock : Block
 {
-	private void Awake()
+	public override void Setup(Vehicle vehicle)
 	{
+		base.Setup(vehicle);
+
+
 	}
-
-	void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
 }

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public sealed class AttachmentPrefabs : PersistentBehavior<AttachmentPrefabs>
 {
-	[SerializeField] private GameObject solidBlockPrefab;
-	[SerializeField] private GameObject wheelPrefab;
-	[SerializeField] private GameObject boosterPrefab;
+	[SerializeField] private CoreBlock coreBlockPrefab;
+	[SerializeField] private SolidBlock solidBlockPrefab;
+	[SerializeField] private Wheel wheelPrefab;
+	[SerializeField] private Booster boosterPrefab;
 
     private AttachmentPrefabs() :
         base(CtorArg)
@@ -17,17 +18,22 @@ public sealed class AttachmentPrefabs : PersistentBehavior<AttachmentPrefabs>
 		base.Awake();
     }
 
-	public static GameObject SolidBlock
+	public static CoreBlock CoreBlock
+	{
+		get => Instance.coreBlockPrefab;
+	}
+
+	public static SolidBlock SolidBlock
 	{
 		get => Instance.solidBlockPrefab;
 	}
 
-	public static GameObject Wheel
+	public static Wheel Wheel
 	{
 		get => Instance.wheelPrefab;
 	}
 
-	public static GameObject Booster
+	public static Booster Booster
 	{
 		get => Instance.boosterPrefab;
 	}

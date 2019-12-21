@@ -272,13 +272,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c545f63e80e79d4ab23677a2ed5e6b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  solidBlockPrefab: {fileID: 4920734172298637079, guid: f890b57ea18bc0c469b0c4910e06c452,
+  coreBlockPrefab: {fileID: 2643108905187252094, guid: f19b0c4ecd2617e45b0bf1242b0a88a8,
     type: 3}
-  solidBlockDLCPrefab: {fileID: 4920734172298637079, guid: 806548dbe056aae4c89555b36d96482c,
+  solidBlockPrefab: {fileID: 3099732804159885994, guid: f890b57ea18bc0c469b0c4910e06c452,
     type: 3}
-  wheelPrefab: {fileID: 2710756596880426899, guid: c0f19f088ea7c4343b9dd183ad49dd4c,
+  wheelPrefab: {fileID: 2710756596880426893, guid: c0f19f088ea7c4343b9dd183ad49dd4c,
     type: 3}
-  boosterPrefab: {fileID: 3072448225470172717, guid: 6a87ec8302fa7274abe48566a1648722,
+  boosterPrefab: {fileID: 8247835679393551163, guid: 6a87ec8302fa7274abe48566a1648722,
     type: 3}
 --- !u!1 &1853339997
 GameObject:

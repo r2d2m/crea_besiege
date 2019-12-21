@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Booster : MonoBehaviour, IAttachable
+public class Booster : VehicleComponent, IAttachable
 {
 	[SerializeField] BoxCollider box;
 
@@ -34,8 +34,10 @@ public class Booster : MonoBehaviour, IAttachable
 		this.body.AddForce(this.Projection);
 	}
 
-	public void Attach(Block block, Vector3 direction)
+	public void Setup(Block block, Vector3 direction)
 	{
+		base.Setup(block.Vehicle);
+
 		this.transform.rotation = Quaternion.FromToRotation(-this.ProjectionDirection, direction);
 		Physics.SyncTransforms();
 

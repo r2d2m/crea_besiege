@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class PatchDayOneDLC
 {
-	private GameObject solidBlock = null;
+	private SolidBlock solidBlock = null;
 	private bool isLoaded = false;
 
 	private void FetchDatas(AssetBundle bundle)
 	{
-		this.solidBlock = bundle.LoadAsset<GameObject>("SolidBlockDLC");
+		this.solidBlock = bundle.LoadAsset<SolidBlock>("SolidBlockDLC");
 	}
 
 	public void Load()
@@ -34,7 +34,7 @@ public class PatchDayOneDLC
 		get => this.isLoaded;
 	}
 
-	public GameObject SolidBlock
+	public SolidBlock SolidBlock
 	{
 		get => this.solidBlock;
 	}

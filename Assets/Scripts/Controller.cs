@@ -70,15 +70,8 @@ public class Controller : MonoBehaviour
 		return Physics.Raycast(ray, out hit, 1000, Helper.DefaultLayerMask);
 	}
 
-	public void SetHand(GameObject gameObject)
+	public void SetHand(IAttachable attachable)
 	{
-		var attachable = gameObject.GetComponent<IAttachable>();
-		if (attachable == null)
-		{
-			Debug.LogError(gameObject + " does not contains IAttachable component");
-			return;
-		}
-
 		this.hand = attachable;
 	}
 }

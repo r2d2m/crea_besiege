@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Vehicle : MonoBehaviour
 {
+	[SerializeField] private bool createCoreBlock;
+
+	private IDGenerator idGenerator;
+
 	private void Awake()
 	{
 		Refs.vehicle = this;
@@ -11,7 +15,10 @@ public class Vehicle : MonoBehaviour
 
 	void Start()
     {
-        
+        if (this.createCoreBlock)
+		{
+			CreateCoreBlock();
+		}
     }
 
     void Update()
@@ -19,10 +26,28 @@ public class Vehicle : MonoBehaviour
         
     }
 
-	public void CreateAttachment(IAttachable attachablePrefab, Block block, Vector3 direction)
+	GameObject InstantiateChild(GameObject go)
 	{
-		var newAttachable = Instantiate(attachablePrefab.GameObject, this.transform).GetComponent<IAttachable>();
+		return Instantiate(go, this.transform);
+	}
 
-		newAttachable.Attach(block, direction);
+	CoreBlock CreateCoreBlock()
+	{
+		CoreBlock core = InstantiateChild(AttachmentPrefabs.CoreBlock.gameObject).GetComponent<CoreBlock>();
+		core.Setup(this);
+
+		return core;
+	}
+
+	public void CreateAttachment(IAttachable attachable, Block block, Vector3 direction)
+	{
+		var newAttachable = InstantiateChild(attachable.GameObject).GetComponent<IAttachable>();
+
+		newAttachable.Setup(block, direction);
+	}
+
+	public uint GenerateID()
+	{
+		return this.idGenerator.Generate();
 	}
 }

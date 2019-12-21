@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Wheel : MonoBehaviour, IAttachable
+public class Wheel : VehicleComponent, IAttachable
 {
 	[SerializeField] float breakForce = 1000f;
 	[SerializeField] float rotationForce = 2f;
@@ -53,8 +53,10 @@ public class Wheel : MonoBehaviour, IAttachable
 		joint.axis = this.LocalRotationAxis;
 	}
 
-	public void Attach(Block block, Vector3 direction)
+	public void Setup(Block block, Vector3 direction)
 	{
+		base.Setup(block.Vehicle);
+
 		var orientation = GetOrientation(block, direction);
 		var translation = direction.Multiplied(block.Bounds.size);
 
