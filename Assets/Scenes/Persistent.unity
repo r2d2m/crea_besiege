@@ -274,7 +274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coreBlockPrefab: {fileID: 2643108905187252094, guid: f19b0c4ecd2617e45b0bf1242b0a88a8,
     type: 3}
-  solidBlockPrefab: {fileID: 3099732804159885994, guid: f890b57ea18bc0c469b0c4910e06c452,
+  attachableBlockPrefab: {fileID: 3191087656063116185, guid: ec8011a2459baf94a865e4f144dbec3b,
     type: 3}
   wheelPrefab: {fileID: 2710756596880426893, guid: c0f19f088ea7c4343b9dd183ad49dd4c,
     type: 3}

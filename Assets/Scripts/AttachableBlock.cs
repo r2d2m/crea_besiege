@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SolidBlock : Block, IAttachable
+public class AttachableBlock : Block, IAttachable
 {
 	protected override void Awake()
 	{

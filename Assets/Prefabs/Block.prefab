@@ -178,9 +178,9 @@ GameObject:
   - component: {fileID: 2332828207335619289}
   - component: {fileID: 2047598579496431056}
   - component: {fileID: 3895141666937045991}
-  - component: {fileID: 3099732804159885994}
+  - component: {fileID: 7849194639099088594}
   m_Layer: 8
-  m_Name: SolidBlock
+  m_Name: Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -276,7 +276,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3099732804159885994
+--- !u!114 &7849194639099088594
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -285,11 +285,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4920734172298637079}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84c9f006150d3b14c8b735bee09eef1c, type: 3}
+  m_Script: {fileID: 11500000, guid: ce845cfe0ea53134eb99ab982ec01980, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  breakForce: 500
   linkageBoxes:
   - {fileID: 702015038}
   - {fileID: 1663489100}
   - {fileID: 1624090140}
-  breakForce: 500

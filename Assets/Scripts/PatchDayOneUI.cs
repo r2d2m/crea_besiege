@@ -19,7 +19,7 @@ public class PatchDayOneUI : MonoBehaviour
 		{
 			this.button.onClick.AddListener(() =>
 			{
-				Refs.controller.SetHand(dlc.SolidBlock);
+				Refs.controller.SetHand(dlc.Block);
 			});
 		}
 		else

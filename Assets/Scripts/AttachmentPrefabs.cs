@@ -5,7 +5,7 @@ using UnityEngine;
 public sealed class AttachmentPrefabs : PersistentBehavior<AttachmentPrefabs>
 {
 	[SerializeField] private CoreBlock coreBlockPrefab;
-	[SerializeField] private SolidBlock solidBlockPrefab;
+	[SerializeField] private AttachableBlock attachableBlockPrefab;
 	[SerializeField] private Wheel wheelPrefab;
 	[SerializeField] private Booster boosterPrefab;
 
@@ -23,9 +23,9 @@ public sealed class AttachmentPrefabs : PersistentBehavior<AttachmentPrefabs>
 		get => Instance.coreBlockPrefab;
 	}
 
-	public static SolidBlock SolidBlock
+	public static AttachableBlock AttachableBlock
 	{
-		get => Instance.solidBlockPrefab;
+		get => Instance.attachableBlockPrefab;
 	}
 
 	public static Wheel Wheel
