@@ -17,7 +17,7 @@ public class Controller : MonoBehaviour
 
 	private void Awake()
 	{
-
+		Refs.controller = this;
 	}
 
 	void Start()

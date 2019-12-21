@@ -17,9 +17,11 @@ public class PatchDayOneDLC
 	{
 		if (!this.isLoaded)
 		{
-			AssetBundle bundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "patch_day_one"));
-			if (bundle != null)
+			string path = Path.Combine(Application.streamingAssetsPath, "patch_day_one");
+
+			if (File.Exists(path))
 			{
+				AssetBundle bundle = AssetBundle.LoadFromFile(path);
 				FetchDatas(bundle);
 
 				this.isLoaded = true;
