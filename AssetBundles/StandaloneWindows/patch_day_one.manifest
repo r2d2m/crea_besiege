@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 4056558631
+CRC: 2740577058
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 45d0a5ca71f129d890aa13538a115611
+    Hash: 9a9fb579c8e656bb9160676608df9b9c
   TypeTreeHash:
     serializedVersion: 2
     Hash: 8a89960bec8f887c3b956cbbc12001a2
@@ -32,6 +32,6 @@ ClassTypes:
 - Class: 115
   Script: {instanceID: 0}
 Assets:
-- Assets/Materials/MatDLC.mat
+- Assets/Materials/SolidBlockDLC.mat
 - Assets/Prefabs/SolidBlockDLC.prefab
 Dependencies: []
