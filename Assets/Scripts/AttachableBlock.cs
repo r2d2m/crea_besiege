@@ -47,6 +47,11 @@ public class AttachableBlock : Block, IAttachable
 			}
 		}
 	}
+
+	public VehicleComponent VehicleComponent
+	{
+		get => this;
+	}
 	
 	public static void InterConnect(Block a, Block b)
 	{

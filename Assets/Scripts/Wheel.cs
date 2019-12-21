@@ -69,9 +69,9 @@ public class Wheel : VehicleComponent, IAttachable
 		Connect(block);
 	}
 
-	public GameObject GameObject
+	public VehicleComponent VehicleComponent
 	{
-		get => this.gameObject;
+		get => this;
 	}
 
 	public Vector3 RotationAxis

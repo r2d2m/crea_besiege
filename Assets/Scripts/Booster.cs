@@ -49,6 +49,11 @@ public class Booster : VehicleComponent, IAttachable
 		joint.connectedBody = block.RigidBody;
 	}
 
+	public VehicleComponent VehicleComponent
+	{
+		get => this;
+	}
+
 	public Vector3 ProjectionDirection
 	{
 		get => -this.transform.up;
@@ -57,11 +62,6 @@ public class Booster : VehicleComponent, IAttachable
 	public Vector3 Projection
 	{
 		get => this.ProjectionDirection * this.projectionForce;
-	}
-
-	public GameObject GameObject
-	{
-		get => this.gameObject;
 	}
 
 	public Bounds Bounds

@@ -7,6 +7,7 @@ public class Vehicle : MonoBehaviour
 	[SerializeField] private bool createCoreBlock;
 
 	private IDGenerator idGenerator;
+	private List<VehicleComponent> components = new List<VehicleComponent>();
 
 	private void Awake()
 	{
@@ -26,14 +27,17 @@ public class Vehicle : MonoBehaviour
         
     }
 
-	GameObject InstantiateChild(GameObject go)
+	VehicleComponent InstantiateComponent(VehicleComponent component)
 	{
-		return Instantiate(go, this.transform);
+		var newComponent = Instantiate(component.gameObject, this.transform).GetComponent<VehicleComponent>();
+		this.components.Add(newComponent);
+
+		return newComponent;
 	}
 
 	CoreBlock CreateCoreBlock()
 	{
-		CoreBlock core = InstantiateChild(AttachmentPrefabs.CoreBlock.gameObject).GetComponent<CoreBlock>();
+		CoreBlock core = InstantiateComponent(AttachmentPrefabs.CoreBlock).GetComponent<CoreBlock>();
 		core.Setup(this);
 
 		return core;
@@ -41,7 +45,7 @@ public class Vehicle : MonoBehaviour
 
 	public void CreateAttachment(IAttachable attachable, Block block, Vector3 direction)
 	{
-		var newAttachable = InstantiateChild(attachable.GameObject).GetComponent<IAttachable>();
+		var newAttachable = InstantiateComponent(attachable.VehicleComponent).GetComponent<IAttachable>();
 
 		newAttachable.Setup(block, direction);
 	}

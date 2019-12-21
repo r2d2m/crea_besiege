@@ -6,5 +6,5 @@ public interface IAttachable
 {
 	void Setup(Block block, Vector3 direction);
 
-	GameObject GameObject { get; }
+	VehicleComponent VehicleComponent { get; }
 }
