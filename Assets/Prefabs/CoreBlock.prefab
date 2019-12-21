@@ -10,17 +10,17 @@ PrefabInstance:
     - target: {fileID: 4920734172298637079, guid: f890b57ea18bc0c469b0c4910e06c452,
         type: 3}
       propertyPath: m_Name
-      value: CoreBlock Variant
+      value: CoreBlock
       objectReference: {fileID: 0}
     - target: {fileID: 4920734172298637078, guid: f890b57ea18bc0c469b0c4910e06c452,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4920734172298637078, guid: f890b57ea18bc0c469b0c4910e06c452,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4920734172298637078, guid: f890b57ea18bc0c469b0c4910e06c452,
         type: 3}
@@ -67,12 +67,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4920734172898149738, guid: f890b57ea18bc0c469b0c4910e06c452,
+    - target: {fileID: 2047598579496431056, guid: f890b57ea18bc0c469b0c4910e06c452,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d93ae72aaac1d974e919ddfe0fab78aa, type: 2}
-    - target: {fileID: 2047598579496431056, guid: f890b57ea18bc0c469b0c4910e06c452,
+    - target: {fileID: 4920734172898149738, guid: f890b57ea18bc0c469b0c4910e06c452,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
