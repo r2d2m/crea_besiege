@@ -22,7 +22,6 @@ using UnityEngine;
 //      protected override void Awake()
 //      {
 //			base.Awake();
-/* Your code here */
 //      }
 //  }
 

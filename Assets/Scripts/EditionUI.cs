@@ -9,25 +9,21 @@ public class EditionUI : MonoBehaviour
 	[SerializeField] private Button wheelButton;
 	[SerializeField] private Button boosterButton;
 
-	[SerializeField] private GameObject solidBlockPrefab;
-	[SerializeField] private GameObject wheelPrefab;
-	[SerializeField] private GameObject boosterPrefab;
-
     void Start()
     {
 		this.solidBlockButton.onClick.AddListener(() =>
 		{
-			Refs.controller.SetHand(this.solidBlockPrefab);
+			Refs.controller.SetHand(AttachmentPrefabs.SolidBlock);
 		});
 
 		this.wheelButton.onClick.AddListener(() =>
 		{
-			Refs.controller.SetHand(this.wheelPrefab);
+			Refs.controller.SetHand(AttachmentPrefabs.Wheel);
 		});
 
 		this.boosterButton.onClick.AddListener(() =>
 		{
-			Refs.controller.SetHand(this.boosterPrefab);
+			Refs.controller.SetHand(AttachmentPrefabs.Booster);
 		});
 	}
 
