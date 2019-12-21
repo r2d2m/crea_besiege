@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Wheel : MonoBehaviour, IAttachable
 {
 	[SerializeField] float breakForce = 1000f;
-	[SerializeField] float force = 2f;
+	[SerializeField] float rotationForce = 2f;
 	Rigidbody body;
 
 	private void Awake()
@@ -22,11 +23,11 @@ public class Wheel : MonoBehaviour, IAttachable
     {
 		if (Input.GetKey(KeyCode.UpArrow))
 		{
-			this.body.angularVelocity = this.RotationAxis * this.force;
+			this.body.angularVelocity = this.RotationAxis * this.rotationForce;
 		}
 		else if (Input.GetKey(KeyCode.DownArrow))
 		{
-			this.body.angularVelocity = -this.RotationAxis * this.force;
+			this.body.angularVelocity = -this.RotationAxis * this.rotationForce;
 		}
 	}
 
