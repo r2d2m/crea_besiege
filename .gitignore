@@ -14,3 +14,5 @@ obj/
 .vs/
 
 ProjectSettings/ProBuilderSettings.json
+
+Build/
