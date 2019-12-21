@@ -50,7 +50,7 @@ public class Controller : MonoBehaviour
 
 					if (block != null)
 					{
-						CreateAttached(this.hand, block, hit.normal);
+						Refs.vehicle.CreateAttachment(this.hand, block, hit.normal);
 					}
 				}
 			}
@@ -62,13 +62,6 @@ public class Controller : MonoBehaviour
 		}
 
 		this.prevMousePos = Input.mousePosition;
-	}
-
-	void CreateAttached(IAttachable attachablePrefab, Block block, Vector3 direction)
-	{
-		var newAttachable = Instantiate(attachablePrefab.GameObject).GetComponent<IAttachable>();
-
-		newAttachable.Attach(block, direction);
 	}
 
 	bool RaycastBlocks(out RaycastHit hit)
