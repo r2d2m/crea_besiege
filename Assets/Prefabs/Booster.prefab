@@ -62,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   box: {fileID: 2260101362531804254}
-  projectionForce: 200
+  projectionForce: 100
 --- !u!1 &7822128375217192846
 GameObject:
   m_ObjectHideFlags: 0
