@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class DebugInputs : MonoBehaviour
@@ -16,6 +17,13 @@ public class DebugInputs : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.O))
 		{
 			Helper.LoadSingleActiveScene("World1");
+		}
+
+		if (Input.GetKeyDown(KeyCode.P))
+		{
+			var writer = new StreamWriter("file.txt");
+			writer.Write(Refs.vehicle.ToJson());
+			writer.Close();
 		}
     }
 

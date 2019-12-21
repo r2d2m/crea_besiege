@@ -11,6 +11,10 @@ public static class Helper
 
 	public static readonly int BlockLayerMask = LayerMask.GetMask("Block");
 
+	public static readonly Vector3 MaxVector3 = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+
+	public static readonly Quaternion MaxQuaternion = new Quaternion(float.MaxValue, float.MaxValue, float.MaxValue, float.MaxValue);
+
 	public static Vector3 Multiplied(this Vector3 self, Vector3 vec)
 	{
 		return new Vector3(self.x * vec.x, self.y * vec.y, self.z * vec.z);

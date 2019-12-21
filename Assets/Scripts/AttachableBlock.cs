@@ -21,6 +21,17 @@ public class AttachableBlock : Block, IAttachable
 		
     }
 
+	protected new BlockSerializableData SerializableData
+	{
+		get
+		{
+			var data = base.SerializableData;
+			data.type = VehicleComponentType.AttachableBlock;
+
+			return data;
+		}
+	}
+
 	public void Setup(Block block, Vector3 direction)
 	{
 		base.Setup(block.Vehicle);
@@ -46,6 +57,13 @@ public class AttachableBlock : Block, IAttachable
 				}
 			}
 		}
+	}
+
+	public override string ToJson()
+	{
+
+
+		return this.SerializableData.ToJson();
 	}
 
 	public VehicleComponent VehicleComponent

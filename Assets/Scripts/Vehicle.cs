@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Vehicle : MonoBehaviour
+public class Vehicle : MonoBehaviour, IJsonSerializable
 {
 	[SerializeField] private bool createCoreBlock;
 
@@ -41,6 +41,21 @@ public class Vehicle : MonoBehaviour
 		core.Setup(this);
 
 		return core;
+	}
+
+	public string ToJson()
+	{
+		string json = "{\n\n";
+
+		foreach (VehicleComponent component in this.components)
+		{
+			json += component.ToJson() + ",\n\n";
+		}
+
+		int lastCommaIndex = json.LastIndexOf(',');
+		json = json.Remove(lastCommaIndex, 1) + "}";
+
+		return json;
 	}
 
 	public void CreateAttachment(IAttachable attachable, Block block, Vector3 direction)

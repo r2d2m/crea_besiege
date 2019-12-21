@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IJsonSerializable
 {
-	string Serialize();
+	string ToJson();
 }

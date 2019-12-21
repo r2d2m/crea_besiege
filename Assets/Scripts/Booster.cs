@@ -2,6 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class BoosterSerializableData : VehicleComponentSerializableData
+{
+	public uint linkedId = uint.MaxValue;
+
+	public BoosterSerializableData()
+	{
+
+	}
+
+	public BoosterSerializableData(VehicleComponentSerializableData parent) : base(parent)
+	{
+
+	}
+
+	public new void AssertValidData()
+	{
+		base.AssertValidData();
+
+		Debug.Assert(this.linkedId != uint.MaxValue);
+	}
+
+	public new string ToJson()
+	{
+		AssertValidData();
+		return JsonUtility.ToJson(this, true);
+	}
+}
+
 [RequireComponent(typeof(Rigidbody))]
 public class Booster : VehicleComponent, IAttachable
 {
@@ -10,24 +38,55 @@ public class Booster : VehicleComponent, IAttachable
 	public float projectionForce = 2f;
 
 	Rigidbody body;
+	Block linkedBlock;
 
 	private void Awake()
 	{
 		this.body = GetComponent<Rigidbody>();
 	}
 
-	void Start()
+	private void Start()
     {
         
     }
 
-    void Update()
+	private void Update()
     {
         if (Input.GetKey(KeyCode.Space))
 		{
 			Use();
 		}
     }
+
+	protected new BoosterSerializableData SerializableData
+	{
+		get
+		{
+			var data = new BoosterSerializableData(base.SerializableData);
+			data.type = VehicleComponentType.Booster;
+			data.linkedId = this.linkedBlock.ID;
+
+			return data;
+		}
+	}
+
+	private void Position(Block block, Vector3 direction)
+	{
+		this.transform.rotation = Quaternion.FromToRotation(-this.ProjectionDirection, direction);
+		Physics.SyncTransforms();
+
+		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
+
+		this.transform.position = block.Bounds.center + translation;
+	}
+
+	private void Connect(Block block)
+	{
+		var joint = this.gameObject.AddComponent<FixedJoint>();
+		joint.connectedBody = block.RigidBody;
+
+		this.linkedBlock = block;
+	}
 
 	public void Use()
 	{
@@ -38,15 +97,16 @@ public class Booster : VehicleComponent, IAttachable
 	{
 		base.Setup(block.Vehicle);
 
-		this.transform.rotation = Quaternion.FromToRotation(-this.ProjectionDirection, direction);
-		Physics.SyncTransforms();
+		Position(block, direction);
 
-		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
+		Connect(block);
+	}
 
-		this.transform.position = block.Bounds.center + translation;
+	public override string ToJson()
+	{
+		// Not calling base class method is intentional
 
-		var joint = this.gameObject.AddComponent<FixedJoint>();
-		joint.connectedBody = block.RigidBody;
+		return this.SerializableData.ToJson();
 	}
 
 	public VehicleComponent VehicleComponent
