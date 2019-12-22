@@ -34,35 +34,34 @@ public class VehicleComponentSeed
 		this.type = other.type;
 	}
 
-	public void AssertValidData()
+	public bool IsDataValid
 	{
-		Debug.Assert(this.type != VehicleComponentType.Null);
-		Debug.Assert(this.id != uint.MaxValue);
-		Debug.Assert(this.localPosition != Helper.MaxVector3);
-		Debug.Assert(!this.localRotation.Equals(Helper.MaxQuaternion));
+		get => this.type != VehicleComponentType.Null
+			&& this.id != uint.MaxValue
+			&& this.localPosition != Helper.MaxVector3
+			&& !this.localRotation.Equals(Helper.MaxQuaternion);
 	}
 
 	public string ToJson()
 	{
-		AssertValidData();
+		Debug.Assert(this.IsDataValid);
 		return JsonUtility.ToJson(this, true);
+	}
+
+	public static VehicleComponentSeed FromJson(string json)
+	{
+		return JsonUtility.FromJson<VehicleComponentSeed>(json);
 	}
 }
 
 public class VehicleComponent : MonoBehaviour, IJsonSerializable
 {
-	Vehicle vehicle;
-	uint id;
+	Vehicle vehicle = null;
+	uint id = uint.MaxValue;
 
-	public virtual void Setup(Vehicle vehicle)
+	private bool IsIdentitySet
 	{
-		this.id = vehicle.GenerateID();
-		this.vehicle = vehicle;
-	}
-
-	public virtual string ToJson()
-	{
-		return this.Seed.ToJson();
+		get => this.id != uint.MaxValue && this.vehicle != null;
 	}
 
 	protected VehicleComponentSeed Seed
@@ -77,6 +76,33 @@ public class VehicleComponent : MonoBehaviour, IJsonSerializable
 
 			return data;
 		}
+	}
+
+	public void SetIdentity(Vehicle vehicle, uint id)
+	{
+		this.id = id;
+		this.vehicle = vehicle;
+	}
+
+	public virtual void Setup(string json)
+	{
+		Debug.Assert(this.IsIdentitySet);
+
+		var seed = VehicleComponentSeed.FromJson(json);
+		if (!seed.IsDataValid)
+		{
+			throw new System.Exception("Invalid data found in json string : " + json);
+		}
+
+		Debug.Assert(this.id == seed.id, "ID mismatch");
+
+		this.transform.localPosition = seed.localPosition;
+		this.transform.localRotation = seed.localRotation;
+	}
+
+	public virtual string ToJson()
+	{
+		return this.Seed.ToJson();
 	}
 
 	public Vehicle Vehicle

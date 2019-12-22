@@ -21,17 +21,20 @@ public class VehicleLeafSeed : VehicleComponentSeed
 
 	}
 
-	public new void AssertValidData()
+	public new bool IsDataValid
 	{
-		base.AssertValidData();
-
-		Debug.Assert(this.linkedId != uint.MaxValue);
+		get => this.linkedId != uint.MaxValue && base.IsDataValid;
 	}
 
 	public new string ToJson()
 	{
-		AssertValidData();
+		Debug.Assert(this.IsDataValid);
 		return JsonUtility.ToJson(this, true);
+	}
+
+	public static new VehicleLeafSeed FromJson(string json)
+	{
+		return JsonUtility.FromJson<VehicleLeafSeed>(json);
 	}
 }
 
@@ -52,9 +55,12 @@ public class VehicleLeaf : VehicleComponent, IAttachable
 
 	public virtual void Setup(Block block, Vector3 direction)
 	{
-		base.Setup(block.Vehicle);
-
 		this.linkedBlock = block;
+	}
+
+	public override void Setup(string json)
+	{
+		base.Setup(json);
 	}
 
 	public override string ToJson()

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,14 +7,33 @@ public class BoosterSeed : VehicleLeafSeed
 {
 	private const VehicleComponentType Type = VehicleComponentType.Booster;
 
+	public Vector3 connectedAnchor = Helper.MaxVector3;
+
 	public BoosterSeed()
 	{
 		this.type = Type;
 	}
 
+	public BoosterSeed(BoosterSeed other)
+	{
+		this.type = Type;
+		this.connectedAnchor = other.connectedAnchor;
+	}
+
 	public BoosterSeed(VehicleLeafSeed parent) : base(parent)
 	{
 		this.type = Type;
+	}
+
+	public new bool IsDataValid
+	{
+		get => this.connectedAnchor != Helper.MaxVector3
+			&& base.IsDataValid;
+	}
+
+	public static new BoosterSeed FromJson(string json)
+	{
+		return JsonUtility.FromJson<BoosterSeed>(json);
 	}
 }
 
@@ -24,6 +44,7 @@ public class Booster : VehicleLeaf
 
 	public float projectionForce = 2f;
 	Rigidbody body;
+	FixedJoint joint;
 
 	private void Awake()
 	{
@@ -45,7 +66,15 @@ public class Booster : VehicleLeaf
 
 	protected new BoosterSeed Seed
 	{
-		get => new BoosterSeed(base.Seed);
+		get
+		{
+			Debug.Assert(this.joint != null);
+
+			var seed = new BoosterSeed(base.Seed);
+			seed.connectedAnchor = this.joint.connectedAnchor;
+
+			return seed;
+		}
 	}
 
 	private void Position(Block block, Vector3 direction)
@@ -58,10 +87,22 @@ public class Booster : VehicleLeaf
 		this.transform.position = block.Bounds.center + translation;
 	}
 
-	private void Connect(Block block)
+	private FixedJoint Connect(Block block)
 	{
 		var joint = this.gameObject.AddComponent<FixedJoint>();
 		joint.connectedBody = block.RigidBody;
+
+		this.joint = joint;
+
+		return joint;
+	}
+
+	private FixedJoint Connect(Block block, Vector3 connectedAnchor)
+	{
+		FixedJoint joint = Connect(block);
+		joint.connectedAnchor = connectedAnchor;
+
+		return joint;
 	}
 
 	public void Use()
@@ -76,6 +117,25 @@ public class Booster : VehicleLeaf
 		Position(block, direction);
 
 		Connect(block);
+	}
+
+	public override void Setup(string json)
+	{
+		base.Setup(json);
+
+		var seed = BoosterSeed.FromJson(json);
+		if (!seed.IsDataValid)
+		{
+			throw new Exception("Invalid data in json file. Json : " + json);
+		}
+
+		var block = this.Vehicle.GetChildFromID(seed.linkedId) as Block;
+		if (block == null)
+		{
+			throw new Exception("Corrupted json file. Trying to link a Wheel to a VehicleComponent that is not a Block. Json : " + json);
+		}
+
+		Connect(block, seed.connectedAnchor);
 	}
 
 	public override string ToJson()
@@ -98,10 +158,5 @@ public class Booster : VehicleLeaf
 	public Bounds Bounds
 	{
 		get => this.box.bounds;
-	}
-
-	public static BoosterSeed FromJson(string json)
-	{
-		return JsonUtility.FromJson<BoosterSeed>(json);
 	}
 }

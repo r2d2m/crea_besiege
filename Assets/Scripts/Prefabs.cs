@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public sealed class AttachmentPrefabs : PersistentBehavior<AttachmentPrefabs>
+public sealed class Prefabs : PersistentBehavior<Prefabs>
 {
 	[SerializeField] private CoreBlock coreBlockPrefab;
 	[SerializeField] private AttachableBlock attachableBlockPrefab;
 	[SerializeField] private Wheel wheelPrefab;
 	[SerializeField] private Booster boosterPrefab;
+	[SerializeField] private Vehicle emptyVehiclePrefab;
 
-    private AttachmentPrefabs() :
+    private Prefabs() :
         base(CtorArg)
     {}
 
@@ -36,5 +37,10 @@ public sealed class AttachmentPrefabs : PersistentBehavior<AttachmentPrefabs>
 	public static Booster Booster
 	{
 		get => Instance.boosterPrefab;
+	}
+
+	public static Vehicle EmptyVehicle
+	{
+		get => Instance.emptyVehiclePrefab;
 	}
 }

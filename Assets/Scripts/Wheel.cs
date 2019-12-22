@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,14 +7,27 @@ public class WheelSeed : VehicleLeafSeed
 {
 	private const VehicleComponentType Type = VehicleComponentType.Wheel;
 
+	public Vector3 rotationAxis = Helper.MaxVector3;
+
 	public WheelSeed()
 	{
 		this.type = Type;
 	}
 
+	public WheelSeed(WheelSeed other)
+	{
+		this.type = other.type;
+		this.rotationAxis = other.rotationAxis;
+	}
+
 	public WheelSeed(VehicleLeafSeed parent) : base(parent)
 	{
 		this.type = Type;
+	}
+
+	public static new WheelSeed FromJson(string json)
+	{
+		return JsonUtility.FromJson<WheelSeed>(json);
 	}
 }
 
@@ -23,6 +37,7 @@ public class Wheel : VehicleLeaf
 	[SerializeField] float breakForce = 1000f;
 	[SerializeField] float rotationForce = 2f;
 	Rigidbody body;
+	HingeJoint joint;
 
 	private void Awake()
 	{
@@ -72,17 +87,33 @@ public class Wheel : VehicleLeaf
 		this.transform.rotation = newRotation;
 	}
 
-	private void Connect(Block block)
+	private HingeJoint Connect(Block block, Vector3 rotationAxis)
 	{
 		var joint = this.gameObject.AddComponent<HingeJoint>();
 		joint.breakForce = this.breakForce;
 		joint.connectedBody = block.RigidBody;
-		joint.axis = this.LocalRotationAxis;
+		joint.axis = rotationAxis;
+
+		this.joint = joint;
+		return joint;
+	}
+
+	private HingeJoint Connect(Block block)
+	{
+		return Connect(block, this.LocalRotationAxis);
 	}
 
 	protected new WheelSeed Seed
 	{
-		get => new WheelSeed(base.Seed);
+		get
+		{
+			Debug.Assert(this.joint != null);
+
+			var seed = new WheelSeed(base.Seed);
+			seed.rotationAxis = this.joint.axis;
+
+			return seed;
+		}
 	}
 
 	public override void Setup(Block block, Vector3 direction)
@@ -92,6 +123,25 @@ public class Wheel : VehicleLeaf
 		Position(block, direction);
 
 		Connect(block);
+	}
+
+	public override void Setup(string json)
+	{
+		base.Setup(json);
+
+		var seed = WheelSeed.FromJson(json);
+		if (!seed.IsDataValid)
+		{
+			throw new Exception("Invalid data in json file. Json : " + json);
+		}
+
+		var block = this.Vehicle.GetChildFromID(seed.linkedId) as Block;
+		if (block == null)
+		{
+			throw new Exception("Corrupted json file. Trying to link a Wheel to a VehicleComponent that is not a Block. Json : " + json);
+		}
+
+		Connect(block, seed.rotationAxis);
 	}
 
 	public override string ToJson()
@@ -109,10 +159,5 @@ public class Wheel : VehicleLeaf
 	public Vector3 LocalRotationAxis
 	{
 		get => this.transform.worldToLocalMatrix * this.RotationAxis;
-	}
-
-	public static WheelSeed FromJson(string json)
-	{
-		return JsonUtility.FromJson<WheelSeed>(json);
 	}
 }

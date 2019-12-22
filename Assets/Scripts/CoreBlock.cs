@@ -15,6 +15,11 @@ public class CoreBlockSeed : BlockSeed
 	{
 		this.type = Type;
 	}
+
+	public static new CoreBlockSeed FromJson(string json)
+	{
+		return JsonUtility.FromJson<CoreBlockSeed>(json);
+	}
 }
 
 public class CoreBlock : Block
@@ -24,11 +29,6 @@ public class CoreBlock : Block
 		get => new CoreBlockSeed(base.Seed);
 	}
 
-	public override void Setup(Vehicle vehicle)
-	{
-		base.Setup(vehicle);
-	}
-
 	public override string ToJson()
 	{
 		// Not calling base class method is intentional
@@ -36,8 +36,8 @@ public class CoreBlock : Block
 		return this.Seed.ToJson();
 	}
 
-	public static CoreBlockSeed FromJson(string json)
+	public override void Setup(string json)
 	{
-		return JsonUtility.FromJson<CoreBlockSeed>(json);
+		base.Setup(json);
 	}
 }

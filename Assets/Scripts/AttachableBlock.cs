@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class AttachableBlockSeed : BlockSeed
@@ -14,6 +15,11 @@ public class AttachableBlockSeed : BlockSeed
 	public AttachableBlockSeed(BlockSeed parent) : base(parent)
 	{
 		this.type = Type;
+	}
+
+	public static new AttachableBlockSeed FromJson(string json)
+	{
+		return JsonUtility.FromJson<AttachableBlockSeed>(json);
 	}
 }
 
@@ -39,10 +45,8 @@ public class AttachableBlock : Block, IAttachable
 		get => new AttachableBlockSeed(base.Seed);
 	}
 
-	public void Setup(Block block, Vector3 direction)
+	public virtual void Setup(Block block, Vector3 direction)
 	{
-		base.Setup(block.Vehicle);
-
 		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
 
 		this.transform.position = block.Bounds.center + translation;
@@ -66,6 +70,11 @@ public class AttachableBlock : Block, IAttachable
 		}
 	}
 
+	public override void Setup(string json)
+	{
+		base.Setup(json);
+	}
+
 	public override string ToJson()
 	{
 		// Not calling base class method is intentional
@@ -82,10 +91,5 @@ public class AttachableBlock : Block, IAttachable
 	{
 		a.Connect(b);
 		b.Connect(a);
-	}
-
-	public static AttachableBlockSeed FromJson(string json)
-	{
-		return JsonUtility.FromJson<AttachableBlockSeed>(json);
 	}
 }

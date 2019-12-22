@@ -9,23 +9,26 @@ public class DebugInputs : MonoBehaviour
 
 	void Start()
     {
-		
+		Physics.autoSyncTransforms = true;
     }
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.O))
 		{
-			Helper.LoadSingleActiveScene("World1");
+			var reader = new StreamReader("file.json");
+			string json = reader.ReadToEnd();
+
+			Vehicle.CreateFromJson(json);
 		}
 
 		if (Input.GetKeyDown(KeyCode.P))
 		{
-			var writer = new StreamWriter("file.txt");
+			var writer = new StreamWriter("file.json");
 			writer.Write(Refs.vehicle.ToJson());
 			writer.Close();
 		}
-    }
+	}
 
 #endif
 }
