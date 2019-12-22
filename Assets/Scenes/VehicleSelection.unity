@@ -412,6 +412,10 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 930409972, guid: c3c995276fd31da459b0e687b5a701f3, type: 3}
+      propertyPath: m_Name
+      value: BackButton
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3c995276fd31da459b0e687b5a701f3, type: 3}
 --- !u!1001 &9145214749609985193

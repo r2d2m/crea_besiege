@@ -100,7 +100,7 @@ public class EditionController : MonoBehaviour
 	{
 		this.inputField.onEndEdit.AddListener((string name) =>
 		{
-			VehicleLoader.Save(Refs.vehicle, name);
+			VehicleIO.Save(Refs.vehicle, name);
 			HideInputField();
 		});
 
@@ -118,7 +118,7 @@ public class EditionController : MonoBehaviour
 
 			try
 			{
-				VehicleLoader.Load(name);
+				VehicleIO.Load(name);
 			}
 			catch (Exception exception)
 			{

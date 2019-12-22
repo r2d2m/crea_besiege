@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class VehicleLoader
+public static class VehicleIO
 {
 	public const string VehicleDirectory = "UserVehicles";
 
@@ -21,6 +21,11 @@ public static class VehicleLoader
 	private static string GetPath(string name)
 	{
 		return Path.ChangeExtension(Path.Combine(VehicleDirectory, name), FileExtension);
+	}
+
+	public static bool Exists(string name)
+	{
+		return File.Exists(GetPath(name));
 	}
 
 	public static string[] GetUserVehicleNames()
@@ -67,5 +72,15 @@ public static class VehicleLoader
 	public static void Save(Vehicle vehicle, string name)
 	{
 		Save(vehicle.ToJson(), name);
+	}
+
+	public static void Remove(string name)
+	{
+		string path = GetPath(name);
+
+		if (File.Exists(path))
+		{
+			File.Delete(path);
+		}
 	}
 }

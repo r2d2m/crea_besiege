@@ -7,39 +7,49 @@ using UnityEngine.UI;
 public class VehicleSelectionUI : MonoBehaviour
 {
 	[SerializeField] Button newButton;
-	[SerializeField] Button[] vehicleButtons;
+	[SerializeField] VehicleSelectionButton[] vehicleButtons;
 
     void Start()
     {
 		this.newButton.onClick.AddListener(() =>
 		{
-			VehicleEditionScene.Options.CreateDefaultVehicleOnNextStart = true;
+			VehicleEditionScene.ToLoadOnNextStart = null;
 			Helper.LoadSingleActiveScene(VehicleEditionScene.Name);
 		});
 
-		string[] userVehicleNames = VehicleLoader.GetUserVehicleNames();
-
-		for (int i = 0; i < userVehicleNames.Length; ++i)
+		foreach (var button in this.vehicleButtons)
 		{
-			Button button = this.vehicleButtons[i];
-			var textComponent = button.GetComponentInChildren<Text>();
-
-			if (textComponent != null)
+			button.onDelete += () =>
 			{
-				textComponent.text = userVehicleNames[i];
-			}
-
-			string name = userVehicleNames[i].Clone() as string;
-			this.vehicleButtons[i].onClick.AddListener(() =>
-			{
-				VehicleEditionScene.Options.VehicleToLoadOnNextStart = name;
-				Helper.LoadSingleActiveScene(VehicleEditionScene.Name);
-			});
+				LoadUserVehicleNames();
+			};
 		}
-    }
+
+		LoadUserVehicleNames();
+	}
 
     void Update()
     {
         
     }
+
+	private void UnlinkVehicleButtons()
+	{
+		foreach (var button in this.vehicleButtons)
+		{
+			button.Unlink();
+		}
+	}
+
+	private void LoadUserVehicleNames()
+	{
+		UnlinkVehicleButtons();
+
+		string[] userVehicleNames = VehicleIO.GetUserVehicleNames();
+
+		for (int i = 0; i < userVehicleNames.Length; ++i)
+		{
+			this.vehicleButtons[i].Link(userVehicleNames[i]);
+		}
+	}
 }
