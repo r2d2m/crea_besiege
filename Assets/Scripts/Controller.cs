@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -59,6 +61,16 @@ public class Controller : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.K))
 		{
 			Physics.gravity = new Vector3(0, -9.81f, 0);
+		}
+
+		if (Input.GetKeyDown(KeyCode.O))
+		{
+			VehicleLoader.Load("vehicle");
+		}
+
+		if (Input.GetKeyDown(KeyCode.S))
+		{
+			VehicleLoader.Save(Refs.vehicle, "vehicle");
 		}
 
 		this.prevMousePos = Input.mousePosition;
