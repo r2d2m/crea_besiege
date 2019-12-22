@@ -6,22 +6,20 @@ using UnityEngine.UI;
 public class MenuUI : MonoBehaviour
 {
 	[SerializeField] Button vehicleSelectionButton;
-	[SerializeField] string vehicleSelectionScene;
-
 	[SerializeField] Button levelScelectionButton;
-	[SerializeField] string levelSelectionScene;
+	[SerializeField] Text infoText;
 
     void Start()
     {
-		this.vehicleSelectionButton.onClick.AddListener(() =>
+		if (VehicleSpawner.Pick != null)
 		{
-			Helper.LoadSingleActiveScene(this.vehicleSelectionScene);
-		});
-
-		this.levelScelectionButton.onClick.AddListener(() =>
+			this.levelScelectionButton.interactable = true;
+			this.infoText.text = "Vehicle picked : " + VehicleSpawner.Pick;
+		}
+		else
 		{
-			Helper.LoadSingleActiveScene(this.levelSelectionScene);
-		});
+			this.infoText.text = "You must pick a vehicle to start a level";
+		}
 	}
 
     void Update()
