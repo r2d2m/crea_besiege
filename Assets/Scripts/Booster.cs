@@ -33,7 +33,14 @@ public class BoosterSeed : VehicleLeafSeed
 
 	public static new BoosterSeed FromJson(string json)
 	{
-		return JsonUtility.FromJson<BoosterSeed>(json);
+		var seed = JsonUtility.FromJson<BoosterSeed>(json);
+
+		if (!seed.IsDataValid)
+		{
+			throw new Exception("Invalid data in json file. Json : " + json);
+		}
+
+		return seed;
 	}
 }
 
@@ -87,22 +94,20 @@ public class Booster : VehicleLeaf
 		this.transform.position = block.Bounds.center + translation;
 	}
 
-	private FixedJoint Connect(Block block)
+	private FixedJoint Join(Block block)
 	{
-		var joint = this.gameObject.AddComponent<FixedJoint>();
-		joint.connectedBody = block.RigidBody;
+		this.joint = this.gameObject.AddComponent<FixedJoint>();
+		this.joint.connectedBody = block.RigidBody;
 
-		this.joint = joint;
-
-		return joint;
+		return this.joint;
 	}
 
-	private FixedJoint Connect(Block block, Vector3 connectedAnchor)
+	private FixedJoint Join(Block block, Vector3 connectedAnchor)
 	{
-		FixedJoint joint = Connect(block);
-		joint.connectedAnchor = connectedAnchor;
+		this.joint = Join(block);
+		this.joint.connectedAnchor = connectedAnchor;
 
-		return joint;
+		return this.joint;
 	}
 
 	public void Use()
@@ -116,7 +121,7 @@ public class Booster : VehicleLeaf
 
 		Position(block, direction);
 
-		Connect(block);
+		Join(block);
 	}
 
 	public override void Setup(string json)
@@ -124,18 +129,8 @@ public class Booster : VehicleLeaf
 		base.Setup(json);
 
 		var seed = BoosterSeed.FromJson(json);
-		if (!seed.IsDataValid)
-		{
-			throw new Exception("Invalid data in json file. Json : " + json);
-		}
-
-		var block = this.Vehicle.GetChildFromID(seed.linkedId) as Block;
-		if (block == null)
-		{
-			throw new Exception("Corrupted json file. Trying to link a Wheel to a VehicleComponent that is not a Block. Json : " + json);
-		}
-
-		Connect(block, seed.connectedAnchor);
+		
+		Join(this.LinkedBlock, seed.connectedAnchor);
 	}
 
 	public override string ToJson()

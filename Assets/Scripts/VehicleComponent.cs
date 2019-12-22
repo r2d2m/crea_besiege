@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -50,7 +51,14 @@ public class VehicleComponentSeed
 
 	public static VehicleComponentSeed FromJson(string json)
 	{
-		return JsonUtility.FromJson<VehicleComponentSeed>(json);
+		var seed = JsonUtility.FromJson<VehicleComponentSeed>(json);
+
+		if (!seed.IsDataValid)
+		{
+			throw new Exception("Invalid data in json file : " + json);
+		}
+
+		return seed;
 	}
 }
 
@@ -72,7 +80,6 @@ public class VehicleComponent : MonoBehaviour, IJsonSerializable
 			data.id = this.id;
 			data.localPosition = this.transform.localPosition;
 			data.localRotation = this.transform.localRotation;
-			data.type = VehicleComponentType.VehicleComponent;
 
 			return data;
 		}
@@ -89,10 +96,6 @@ public class VehicleComponent : MonoBehaviour, IJsonSerializable
 		Debug.Assert(this.IsIdentitySet);
 
 		var seed = VehicleComponentSeed.FromJson(json);
-		if (!seed.IsDataValid)
-		{
-			throw new System.Exception("Invalid data found in json string : " + json);
-		}
 
 		Debug.Assert(this.id == seed.id, "ID mismatch");
 

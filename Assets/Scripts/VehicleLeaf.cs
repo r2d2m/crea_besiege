@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,7 +35,14 @@ public class VehicleLeafSeed : VehicleComponentSeed
 
 	public static new VehicleLeafSeed FromJson(string json)
 	{
-		return JsonUtility.FromJson<VehicleLeafSeed>(json);
+		var seed = JsonUtility.FromJson<VehicleLeafSeed>(json);
+
+		if (!seed.IsDataValid)
+		{
+			throw new Exception("Invalid data in json file. Json : " + json);
+		}
+
+		return seed;
 	}
 }
 
@@ -61,6 +69,12 @@ public class VehicleLeaf : VehicleComponent, IAttachable
 	public override void Setup(string json)
 	{
 		base.Setup(json);
+
+		var seed = VehicleLeafSeed.FromJson(json);
+
+		var block = this.Vehicle.GetChildFromID<Block>(seed.linkedId);
+
+		this.linkedBlock = block;
 	}
 
 	public override string ToJson()

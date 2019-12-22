@@ -59,7 +59,14 @@ public class BlockSeed : VehicleComponentSeed
 
 	public static new BlockSeed FromJson(string json)
 	{
-		return JsonUtility.FromJson<BlockSeed>(json);
+		var seed = JsonUtility.FromJson<BlockSeed>(json);
+
+		if (!seed.IsDataValid)
+		{
+			throw new Exception("Invalid data in json file : " + json);
+		}
+
+		return seed;
 	}
 }
 
@@ -137,33 +144,17 @@ public class Block : VehicleComponent
 		base.Setup(json);
 
 		var seed = BlockSeed.FromJson(json);
-		if (!seed.IsDataValid)
-		{
-			throw new Exception("Invalid data in json file : " + json);
-		}
 
-		var componentsToLink = new List<VehicleComponent>(seed.links.Count);
+		var blocksToLink = new List<Block>(seed.links.Count);
 
 		foreach (BlockSeed.Link seedLink in seed.links)
 		{
-			componentsToLink.Add(this.Vehicle.GetChildFromID(seedLink.id));
+			blocksToLink.Add(this.Vehicle.GetChildFromID<Block>(seedLink.id));
 		}
 
-		bool areAllBlocks = componentsToLink.All((VehicleComponent component) =>
+		for (int i = 0; i < blocksToLink.Count; ++i)
 		{
-			return component is Block;
-		});
-
-		if (!areAllBlocks)
-		{
-			throw new Exception("Corrupted json file. Trying to link a Block with a VehicleComponent that is not a Block.");
-		}
-
-		var blocksToLink = componentsToLink.Cast<Block>();
-
-		for (int i = 0; i < blocksToLink.Count(); ++i)
-		{
-			Connect(blocksToLink.ElementAt(i), seed.links[i].connectedAnchor);
+			Connect(blocksToLink[i], seed.links[i].connectedAnchor);
 		}
 	}
 

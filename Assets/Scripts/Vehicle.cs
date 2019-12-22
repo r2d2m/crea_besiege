@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -135,6 +136,22 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 		}
 
 		return null;
+	}
+
+	public T GetChildFromIDNothrow<T>(uint id) where T : VehicleComponent
+	{
+		return GetChildFromID(id) as T;
+	}
+
+	public T GetChildFromID<T>(uint id) where T : VehicleComponent
+	{
+		var child = GetChildFromIDNothrow<T>(id);
+		if (!child)
+		{
+			throw new Exception("Failed to cast object of type " + child.GetType() + " to " + typeof(T));
+		}
+
+		return child;
 	}
 
 	public string ToJson()

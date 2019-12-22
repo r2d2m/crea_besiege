@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,7 +19,14 @@ public class CoreBlockSeed : BlockSeed
 
 	public static new CoreBlockSeed FromJson(string json)
 	{
-		return JsonUtility.FromJson<CoreBlockSeed>(json);
+		var seed = JsonUtility.FromJson<CoreBlockSeed>(json);
+
+		if (!seed.IsDataValid)
+		{
+			throw new Exception("Invalid data in json file : " + json);
+		}
+
+		return seed;
 	}
 }
 
