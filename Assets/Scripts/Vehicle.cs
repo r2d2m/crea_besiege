@@ -178,11 +178,21 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 
 	public static Vehicle CreateFromJson(string json)
 	{
-		var vehicle = Instantiate(Prefabs.EmptyVehicle);
+		var vehicle = CreateEmpty();
 
 		Dictionary<uint, string> jsonMap = vehicle.AddChilds(json);
 		vehicle.SetupChilds(jsonMap);
 
 		return vehicle;
+	}
+
+	public static Vehicle CreateEmpty()
+	{
+		return Instantiate(Prefabs.EmptyVehicle);
+	}
+
+	public static Vehicle CreateDefault()
+	{
+		return Instantiate(Prefabs.DefaultVehicle);
 	}
 }
