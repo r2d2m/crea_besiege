@@ -3,6 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+class VehicleHeader
+{
+	public uint snapshot = uint.MaxValue;
+
+	public bool IsDataValid
+	{
+		get => this.snapshot != uint.MaxValue;
+	}
+
+	public string ToJson()
+	{
+		return JsonUtility.ToJson(this, true);
+	}
+
+	public static VehicleHeader FromJson(string json)
+	{
+		var header = JsonUtility.FromJson<VehicleHeader>(json);
+		if (!header.IsDataValid)
+		{
+			throw new Exception("Invalid data in json file. Json : " + json);
+		}
+
+		return header;
+	}
+}
+
 public class Vehicle : MonoBehaviour, IJsonSerializable
 {
 	[SerializeField] private bool createCoreBlock;
@@ -78,11 +104,9 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 		return AddChild(seed.type, seed.id);
 	}
 
-	private Dictionary<uint, string> AddChilds(string json)
+	private Dictionary<uint, string> AddChilds(string[] jsonComponents)
 	{
 		var jsonMap = new Dictionary<uint, string>();
-
-		string[] jsonComponents = json.Split('/');
 
 		foreach (string jsonComponent in jsonComponents)
 		{
@@ -127,6 +151,17 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 		return AddChild(Prefabs.CoreBlock).GetComponent<CoreBlock>();
 	}
 
+	private VehicleHeader Header
+	{
+		get
+		{
+			var header = new VehicleHeader();
+			header.snapshot = this.idGenerator.Snapshot;
+
+			return header;
+		}
+	}
+
 	public VehicleComponent GetChildFromID(uint id)
 	{
 		VehicleComponent component;
@@ -156,11 +191,13 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 
 	public string ToJson()
 	{
-		string json = "";
+		const string Separator = "\n\n/\n\n";
+
+		string json = this.Header.ToJson() + Separator;
 
 		foreach (var pair in this.components)
 		{
-			json += pair.Value.ToJson() + "\n\n/\n\n";
+			json += pair.Value.ToJson() + Separator;
 		}
 
 		int lastSlashIndex = json.LastIndexOf('/');
@@ -178,10 +215,27 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 
 	public static Vehicle CreateFromJson(string json)
 	{
+		string[] splitJson = json.Split('/');
+		if (splitJson.Length == 0)
+		{
+			throw new Exception("Unable to read file. Json : " + json);
+		}
+
+		string headerJson = splitJson[0];
+		var header = VehicleHeader.FromJson(headerJson);
+
 		var vehicle = CreateEmpty();
 
-		Dictionary<uint, string> jsonMap = vehicle.AddChilds(json);
-		vehicle.SetupChilds(jsonMap);
+		vehicle.idGenerator = new IDGenerator(header.snapshot);
+
+		if (splitJson.Length > 1)
+		{
+			var jsonComponents = new string[splitJson.Length - 1];
+			Array.Copy(splitJson, 1, jsonComponents, 0, jsonComponents.Length);
+
+			Dictionary<uint, string> jsonMap = vehicle.AddChilds(jsonComponents);
+			vehicle.SetupChilds(jsonMap);
+		}
 
 		return vehicle;
 	}
