@@ -2,43 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoosterSeed : VehicleComponentSeed
+public class BoosterSeed : VehicleLeafSeed
 {
-	public uint linkedId = uint.MaxValue;
-
 	public BoosterSeed()
 	{
-
 	}
 
-	public BoosterSeed(VehicleComponentSeed parent) : base(parent)
+	public BoosterSeed(VehicleLeafSeed parent) : base(parent)
 	{
-
-	}
-
-	public new void AssertValidData()
-	{
-		base.AssertValidData();
-
-		Debug.Assert(this.linkedId != uint.MaxValue);
-	}
-
-	public new string ToJson()
-	{
-		AssertValidData();
-		return JsonUtility.ToJson(this, true);
 	}
 }
 
 [RequireComponent(typeof(Rigidbody))]
-public class Booster : VehicleComponent, IAttachable
+public class Booster : VehicleLeaf
 {
 	[SerializeField] BoxCollider box;
 
 	public float projectionForce = 2f;
-
 	Rigidbody body;
-	Block linkedBlock;
 
 	private void Awake()
 	{
@@ -64,7 +45,6 @@ public class Booster : VehicleComponent, IAttachable
 		{
 			var data = new BoosterSeed(base.Seed);
 			data.type = VehicleComponentType.Booster;
-			data.linkedId = this.linkedBlock.ID;
 
 			return data;
 		}
@@ -84,8 +64,6 @@ public class Booster : VehicleComponent, IAttachable
 	{
 		var joint = this.gameObject.AddComponent<FixedJoint>();
 		joint.connectedBody = block.RigidBody;
-
-		this.linkedBlock = block;
 	}
 
 	public void Use()
@@ -93,9 +71,9 @@ public class Booster : VehicleComponent, IAttachable
 		this.body.AddForce(this.Projection);
 	}
 
-	public void Setup(Block block, Vector3 direction)
+	public override void Setup(Block block, Vector3 direction)
 	{
-		base.Setup(block.Vehicle);
+		base.Setup(block, direction);
 
 		Position(block, direction);
 
@@ -107,11 +85,6 @@ public class Booster : VehicleComponent, IAttachable
 		// Not calling base class method is intentional
 
 		return this.Seed.ToJson();
-	}
-
-	public VehicleComponent VehicleComponent
-	{
-		get => this;
 	}
 
 	public Vector3 ProjectionDirection
@@ -127,5 +100,10 @@ public class Booster : VehicleComponent, IAttachable
 	public Bounds Bounds
 	{
 		get => this.box.bounds;
+	}
+
+	public static BoosterSeed FromJson(string json)
+	{
+		return JsonUtility.FromJson<BoosterSeed>(json);
 	}
 }

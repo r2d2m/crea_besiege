@@ -2,41 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WheelSeed : VehicleComponentSeed
+public class WheelSeed : VehicleLeafSeed
 {
-	public uint linkedId = uint.MaxValue;
-
 	public WheelSeed()
 	{
-
 	}
 
-	public WheelSeed(VehicleComponentSeed parent) : base(parent)
+	public WheelSeed(VehicleLeafSeed parent) : base(parent)
 	{
-		
-	}
-
-	public new void AssertValidData()
-	{
-		base.AssertValidData();
-
-		Debug.Assert(this.linkedId != uint.MaxValue);
-	}
-
-	public new string ToJson()
-	{
-		AssertValidData();
-		return JsonUtility.ToJson(this, true);
 	}
 }
 
 [RequireComponent(typeof(Rigidbody))]
-public class Wheel : VehicleComponent, IAttachable
+public class Wheel : VehicleLeaf
 {
 	[SerializeField] float breakForce = 1000f;
 	[SerializeField] float rotationForce = 2f;
 	Rigidbody body;
-	Block linkedBlock;
 
 	private void Awake()
 	{
@@ -92,8 +74,6 @@ public class Wheel : VehicleComponent, IAttachable
 		joint.breakForce = this.breakForce;
 		joint.connectedBody = block.RigidBody;
 		joint.axis = this.LocalRotationAxis;
-
-		this.linkedBlock = block;
 	}
 
 	protected new WheelSeed Seed
@@ -102,15 +82,14 @@ public class Wheel : VehicleComponent, IAttachable
 		{
 			var data = new WheelSeed(base.Seed);
 			data.type = VehicleComponentType.Wheel;
-			data.linkedId = this.linkedBlock.ID;
 
 			return data;
 		}
 	}
 
-	public void Setup(Block block, Vector3 direction)
+	public override void Setup(Block block, Vector3 direction)
 	{
-		base.Setup(block.Vehicle);
+		base.Setup(block, direction);
 
 		Position(block, direction);
 
@@ -124,11 +103,6 @@ public class Wheel : VehicleComponent, IAttachable
 		return this.Seed.ToJson();
 	}
 
-	public VehicleComponent VehicleComponent
-	{
-		get => this;
-	}
-
 	public Vector3 RotationAxis
 	{
 		get => this.transform.up;
@@ -137,5 +111,10 @@ public class Wheel : VehicleComponent, IAttachable
 	public Vector3 LocalRotationAxis
 	{
 		get => this.transform.worldToLocalMatrix * this.RotationAxis;
+	}
+
+	public static WheelSeed FromJson(string json)
+	{
+		return JsonUtility.FromJson<WheelSeed>(json);
 	}
 }

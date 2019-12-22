@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BlockSeed : VehicleComponentSeed
@@ -9,6 +10,11 @@ public class BlockSeed : VehicleComponentSeed
 	public BlockSeed()
 	{
 
+	}
+
+	public BlockSeed(BlockSeed other) : base(other)
+	{
+		this.linkedIds = new List<uint>(other.linkedIds);
 	}
 
 	public BlockSeed(VehicleComponentSeed parent) : base(parent)

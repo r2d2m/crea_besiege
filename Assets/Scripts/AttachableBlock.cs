@@ -2,6 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class AttachableBlockSeed : BlockSeed
+{
+	public AttachableBlockSeed()
+	{
+	}
+
+	public AttachableBlockSeed(BlockSeed parent) : base(parent)
+	{
+	}
+}
+
 public class AttachableBlock : Block, IAttachable
 {
 	protected override void Awake()
@@ -17,15 +28,13 @@ public class AttachableBlock : Block, IAttachable
 	protected override void Update()
     {
 		base.Update();
-
-		
     }
 
-	protected new BlockSeed Seed
+	protected new AttachableBlockSeed Seed
 	{
 		get
 		{
-			var data = base.Seed;
+			var data = new AttachableBlockSeed(base.Seed);
 			data.type = VehicleComponentType.AttachableBlock;
 
 			return data;
@@ -61,7 +70,7 @@ public class AttachableBlock : Block, IAttachable
 
 	public override string ToJson()
 	{
-
+		// Not calling base class method is intentional
 
 		return this.Seed.ToJson();
 	}
@@ -75,5 +84,10 @@ public class AttachableBlock : Block, IAttachable
 	{
 		a.Connect(b);
 		b.Connect(a);
+	}
+
+	public static AttachableBlockSeed FromJson(string json)
+	{
+		return JsonUtility.FromJson<AttachableBlockSeed>(json);
 	}
 }
