@@ -45,15 +45,15 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 
 	public string ToJson()
 	{
-		string json = "{\n\n";
+		string json = "";
 
 		foreach (VehicleComponent component in this.components)
 		{
-			json += component.ToJson() + ",\n\n";
+			json += component.ToJson() + "\n\n/\n\n";
 		}
 
-		int lastCommaIndex = json.LastIndexOf(',');
-		json = json.Remove(lastCommaIndex, 1) + "}";
+		int lastSlashIndex = json.LastIndexOf('/');
+		json = json.Remove(lastSlashIndex);
 
 		return json;
 	}

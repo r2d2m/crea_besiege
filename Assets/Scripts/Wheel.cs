@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WheelSerializableData : VehicleComponentSerializableData
+public class WheelSeed : VehicleComponentSeed
 {
 	public uint linkedId = uint.MaxValue;
 
-	public WheelSerializableData()
+	public WheelSeed()
 	{
 
 	}
 
-	public WheelSerializableData(VehicleComponentSerializableData parent) : base(parent)
+	public WheelSeed(VehicleComponentSeed parent) : base(parent)
 	{
 		
 	}
@@ -96,11 +96,11 @@ public class Wheel : VehicleComponent, IAttachable
 		this.linkedBlock = block;
 	}
 
-	protected new WheelSerializableData SerializableData
+	protected new WheelSeed Seed
 	{
 		get
 		{
-			var data = new WheelSerializableData(base.SerializableData);
+			var data = new WheelSeed(base.Seed);
 			data.type = VehicleComponentType.Wheel;
 			data.linkedId = this.linkedBlock.ID;
 
@@ -121,7 +121,7 @@ public class Wheel : VehicleComponent, IAttachable
 	{
 		// Not calling base class method is intentional
 
-		return this.SerializableData.ToJson();
+		return this.Seed.ToJson();
 	}
 
 	public VehicleComponent VehicleComponent

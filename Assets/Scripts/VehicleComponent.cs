@@ -12,19 +12,19 @@ public enum VehicleComponentType
 	Booster
 }
 
-public class VehicleComponentSerializableData
+public class VehicleComponentSeed
 {
 	public uint id = uint.MaxValue;
 	public Vector3 localPosition = Helper.MaxVector3;
 	public Quaternion localRotation = Helper.MaxQuaternion;
 	public VehicleComponentType type = VehicleComponentType.Null;
 
-	public VehicleComponentSerializableData()
+	public VehicleComponentSeed()
 	{
 
 	}
 
-	public VehicleComponentSerializableData(VehicleComponentSerializableData other)
+	public VehicleComponentSeed(VehicleComponentSeed other)
 	{
 		this.id = other.id;
 		this.localPosition = other.localPosition;
@@ -60,14 +60,14 @@ public class VehicleComponent : MonoBehaviour, IJsonSerializable
 
 	public virtual string ToJson()
 	{
-		return this.SerializableData.ToJson();
+		return this.Seed.ToJson();
 	}
 
-	protected VehicleComponentSerializableData SerializableData
+	protected VehicleComponentSeed Seed
 	{
 		get
 		{
-			var data = new VehicleComponentSerializableData();
+			var data = new VehicleComponentSeed();
 			data.id = this.id;
 			data.localPosition = this.transform.localPosition;
 			data.localRotation = this.transform.localRotation;

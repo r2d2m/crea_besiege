@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlockSerializableData : VehicleComponentSerializableData
+public class BlockSeed : VehicleComponentSeed
 {
 	public List<uint> linkedIds = null;
 
-	public BlockSerializableData()
+	public BlockSeed()
 	{
 
 	}
 
-	public BlockSerializableData(VehicleComponentSerializableData parent) : base(parent)
+	public BlockSeed(VehicleComponentSeed parent) : base(parent)
 	{
 
 	}
@@ -56,11 +56,11 @@ public class Block : VehicleComponent
         
     }
 
-	protected new BlockSerializableData SerializableData
+	protected new BlockSeed Seed
 	{
 		get
 		{
-			var data = new BlockSerializableData(base.SerializableData);
+			var data = new BlockSeed(base.Seed);
 			data.linkedIds = new List<uint>();
 
 			for (int i = 0; i < this.linkedBlocks.Count; ++i)
@@ -76,7 +76,7 @@ public class Block : VehicleComponent
 	{
 		// Not calling base class method is intentional
 
-		return this.SerializableData.ToJson();
+		return this.Seed.ToJson();
 	}
 
 	public void Connect(Block block)

@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoosterSerializableData : VehicleComponentSerializableData
+public class BoosterSeed : VehicleComponentSeed
 {
 	public uint linkedId = uint.MaxValue;
 
-	public BoosterSerializableData()
+	public BoosterSeed()
 	{
 
 	}
 
-	public BoosterSerializableData(VehicleComponentSerializableData parent) : base(parent)
+	public BoosterSeed(VehicleComponentSeed parent) : base(parent)
 	{
 
 	}
@@ -58,11 +58,11 @@ public class Booster : VehicleComponent, IAttachable
 		}
     }
 
-	protected new BoosterSerializableData SerializableData
+	protected new BoosterSeed Seed
 	{
 		get
 		{
-			var data = new BoosterSerializableData(base.SerializableData);
+			var data = new BoosterSeed(base.Seed);
 			data.type = VehicleComponentType.Booster;
 			data.linkedId = this.linkedBlock.ID;
 
@@ -106,7 +106,7 @@ public class Booster : VehicleComponent, IAttachable
 	{
 		// Not calling base class method is intentional
 
-		return this.SerializableData.ToJson();
+		return this.Seed.ToJson();
 	}
 
 	public VehicleComponent VehicleComponent

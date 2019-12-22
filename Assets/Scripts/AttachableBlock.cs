@@ -21,11 +21,11 @@ public class AttachableBlock : Block, IAttachable
 		
     }
 
-	protected new BlockSerializableData SerializableData
+	protected new BlockSeed Seed
 	{
 		get
 		{
-			var data = base.SerializableData;
+			var data = base.Seed;
 			data.type = VehicleComponentType.AttachableBlock;
 
 			return data;
@@ -63,7 +63,7 @@ public class AttachableBlock : Block, IAttachable
 	{
 
 
-		return this.SerializableData.ToJson();
+		return this.Seed.ToJson();
 	}
 
 	public VehicleComponent VehicleComponent

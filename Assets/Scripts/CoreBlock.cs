@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class CoreBlock : Block
 {
-	protected new BlockSerializableData SerializableData
+	protected new BlockSeed Seed
 	{
 		get
 		{
-			var data = base.SerializableData;
+			var data = base.Seed;
 			data.type = VehicleComponentType.CoreBlock;
 
 			return data;
@@ -24,6 +24,6 @@ public class CoreBlock : Block
 	{
 		// Not calling base class method is intentional
 
-		return this.SerializableData.ToJson();
+		return this.Seed.ToJson();
 	}
 }
