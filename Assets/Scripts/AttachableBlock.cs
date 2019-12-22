@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class AttachableBlockSeed : BlockSeed
 {
+	private const VehicleComponentType Type = VehicleComponentType.AttachableBlock;
+
 	public AttachableBlockSeed()
 	{
+		this.type = Type;
 	}
 
 	public AttachableBlockSeed(BlockSeed parent) : base(parent)
 	{
+		this.type = Type;
 	}
 }
 
@@ -32,13 +36,7 @@ public class AttachableBlock : Block, IAttachable
 
 	protected new AttachableBlockSeed Seed
 	{
-		get
-		{
-			var data = new AttachableBlockSeed(base.Seed);
-			data.type = VehicleComponentType.AttachableBlock;
-
-			return data;
-		}
+		get => new AttachableBlockSeed(base.Seed);
 	}
 
 	public void Setup(Block block, Vector3 direction)

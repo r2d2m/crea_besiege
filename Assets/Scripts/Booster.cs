@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class BoosterSeed : VehicleLeafSeed
 {
+	private const VehicleComponentType Type = VehicleComponentType.Booster;
+
 	public BoosterSeed()
 	{
+		this.type = Type;
 	}
 
 	public BoosterSeed(VehicleLeafSeed parent) : base(parent)
 	{
+		this.type = Type;
 	}
 }
 
@@ -41,13 +45,7 @@ public class Booster : VehicleLeaf
 
 	protected new BoosterSeed Seed
 	{
-		get
-		{
-			var data = new BoosterSeed(base.Seed);
-			data.type = VehicleComponentType.Booster;
-
-			return data;
-		}
+		get => new BoosterSeed(base.Seed);
 	}
 
 	private void Position(Block block, Vector3 direction)

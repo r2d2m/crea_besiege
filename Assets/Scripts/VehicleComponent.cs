@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum VehicleComponentType
 {
-	Null,
+	Null = -1,
 	VehicleComponent,
 	CoreBlock,
 	AttachableBlock,
@@ -14,6 +14,8 @@ public enum VehicleComponentType
 
 public class VehicleComponentSeed
 {
+	private const VehicleComponentType Type = VehicleComponentType.VehicleComponent;
+
 	public uint id = uint.MaxValue;
 	public Vector3 localPosition = Helper.MaxVector3;
 	public Quaternion localRotation = Helper.MaxQuaternion;
@@ -21,7 +23,7 @@ public class VehicleComponentSeed
 
 	public VehicleComponentSeed()
 	{
-
+		this.type = Type;
 	}
 
 	public VehicleComponentSeed(VehicleComponentSeed other)

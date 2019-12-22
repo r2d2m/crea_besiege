@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class WheelSeed : VehicleLeafSeed
 {
+	private const VehicleComponentType Type = VehicleComponentType.Wheel;
+
 	public WheelSeed()
 	{
+		this.type = Type;
 	}
 
 	public WheelSeed(VehicleLeafSeed parent) : base(parent)
 	{
+		this.type = Type;
 	}
 }
 
@@ -78,13 +82,7 @@ public class Wheel : VehicleLeaf
 
 	protected new WheelSeed Seed
 	{
-		get
-		{
-			var data = new WheelSeed(base.Seed);
-			data.type = VehicleComponentType.Wheel;
-
-			return data;
-		}
+		get => new WheelSeed(base.Seed);
 	}
 
 	public override void Setup(Block block, Vector3 direction)

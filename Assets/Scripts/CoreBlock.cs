@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class CoreBlockSeed : BlockSeed
 {
+	private const VehicleComponentType Type = VehicleComponentType.CoreBlock;
+
 	public CoreBlockSeed()
 	{
+		this.type = Type;
 	}
 
 	public CoreBlockSeed(BlockSeed parent) : base(parent)
 	{
+		this.type = Type;
 	}
 }
 
@@ -17,13 +21,7 @@ public class CoreBlock : Block
 {
 	protected new CoreBlockSeed Seed
 	{
-		get
-		{
-			var data = new CoreBlockSeed(base.Seed);
-			data.type = VehicleComponentType.CoreBlock;
-
-			return data;
-		}
+		get => new CoreBlockSeed(base.Seed);
 	}
 
 	public override void Setup(Vehicle vehicle)
