@@ -282,6 +282,8 @@ MonoBehaviour:
     type: 3}
   emptyVehiclePrefab: {fileID: 3297275716820516256, guid: de798288b8b55fb499e9e67e64444199,
     type: 3}
+  defaultVehiclePrefab: {fileID: 4295665382348197461, guid: b42db84d855e59d4498def4376592b2b,
+    type: 3}
 --- !u!1 &1853339997
 GameObject:
   m_ObjectHideFlags: 0
