@@ -10,7 +10,7 @@ public class VehicleSpawner : MonoBehaviour
     {
         if (Pick != null)
 		{
-			Vehicle.CreateFromJson(Pick);
+			VehicleIO.Load(Pick);
 		}
     }
 
