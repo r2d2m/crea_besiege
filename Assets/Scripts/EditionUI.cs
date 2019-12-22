@@ -13,17 +13,17 @@ public class EditionUI : MonoBehaviour
     {
 		this.solidBlockButton.onClick.AddListener(() =>
 		{
-			Refs.controller.SetHand(Prefabs.AttachableBlock);
+			Refs.editionController.SetHand(Prefabs.AttachableBlock);
 		});
 
 		this.wheelButton.onClick.AddListener(() =>
 		{
-			Refs.controller.SetHand(Prefabs.Wheel);
+			Refs.editionController.SetHand(Prefabs.Wheel);
 		});
 
 		this.boosterButton.onClick.AddListener(() =>
 		{
-			Refs.controller.SetHand(Prefabs.Booster);
+			Refs.editionController.SetHand(Prefabs.Booster);
 		});
 	}
 

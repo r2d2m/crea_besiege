@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Controller : MonoBehaviour
+public class EditionController : MonoBehaviour
 {
 	public string mouseXAxis = "Mouse X";
 	public string mouseYAxis = "Mouse Y";
@@ -19,7 +19,7 @@ public class Controller : MonoBehaviour
 
 	private void Awake()
 	{
-		Refs.controller = this;
+		Refs.editionController = this;
 	}
 
 	void Start()

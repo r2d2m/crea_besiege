@@ -5,5 +5,5 @@ using UnityEngine;
 public static class Refs
 {
 	public static Vehicle vehicle;
-	public static Controller controller;
+	public static EditionController editionController;
 }
