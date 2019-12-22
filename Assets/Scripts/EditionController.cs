@@ -56,7 +56,14 @@ public class EditionController : MonoBehaviour
 
 						if (block != null)
 						{
-							Refs.vehicle.CreateAttachment(this.hand, block, hit.normal);
+							var attachable = Instantiate(this.hand.VehicleComponent).GetComponent<IAttachable>();
+
+							if (attachable.IsSetupable(block, hit.normal))
+							{
+								Refs.vehicle.CreateAttachment(this.hand, block, hit.normal);
+							}
+
+							Destroy(attachable.VehicleComponent.gameObject);
 						}
 					}
 				}

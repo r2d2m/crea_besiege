@@ -45,7 +45,7 @@ public class BoosterSeed : VehicleLeafSeed
 }
 
 [RequireComponent(typeof(Rigidbody))]
-public class Booster : VehicleLeaf
+public class Booster : VehicleLeaf, IAttachable
 {
 	[SerializeField] BoxCollider box;
 
@@ -115,9 +115,14 @@ public class Booster : VehicleLeaf
 		this.body.AddForce(this.Projection);
 	}
 
-	public override void Setup(Block block, Vector3 direction)
+	public bool IsSetupable(Block block, Vector3 direction)
 	{
-		base.Setup(block, direction);
+		return true;
+	}
+
+	public void Setup(Block block, Vector3 direction)
+	{
+		this.LinkedBlock = block;
 
 		Position(block, direction);
 
@@ -138,6 +143,11 @@ public class Booster : VehicleLeaf
 		// Not calling base class method is intentional
 
 		return this.Seed.ToJson();
+	}
+
+	public VehicleComponent VehicleComponent
+	{
+		get => this;
 	}
 
 	public Vector3 ProjectionDirection

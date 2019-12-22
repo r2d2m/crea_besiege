@@ -40,16 +40,37 @@ public class AttachableBlock : Block, IAttachable
 		base.Update();
     }
 
+	private Vector3 ComputeSetupPosition(Block block, Vector3 direction)
+	{
+		const float gap = 0.001f;
+
+		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
+		return block.Bounds.center + translation + direction * gap;
+	}
+
+	private Collider[] OverlapBox(Vector3 position)
+	{
+		return Physics.OverlapBox(position, this.Bounds.extents, Quaternion.identity, Helper.BlockLayerMask);
+	}
+
 	protected new AttachableBlockSeed Seed
 	{
 		get => new AttachableBlockSeed(base.Seed);
 	}
 
+	public bool IsSetupable(Block block, Vector3 direction)
+	{
+		Vector3 position = ComputeSetupPosition(block, direction);
+		Collider[] colliders = OverlapBox(position);
+
+		return colliders.Length == 0;
+	}
+
 	public virtual void Setup(Block block, Vector3 direction)
 	{
-		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
+		Debug.Assert(IsSetupable(block, direction));
 
-		this.transform.position = block.Bounds.center + translation;
+		this.transform.position = ComputeSetupPosition(block, direction);
 		Physics.SyncTransforms();
 
 		foreach (BoxCollider box in this.LinkageBoxes)

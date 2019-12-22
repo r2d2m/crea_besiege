@@ -39,7 +39,7 @@ public class WheelSeed : VehicleLeafSeed
 }
 
 [RequireComponent(typeof(Rigidbody))]
-public class Wheel : VehicleLeaf
+public class Wheel : VehicleLeaf, IAttachable
 {
 	[SerializeField] float breakForce = 1000f;
 	[SerializeField] float rotationForce = 2f;
@@ -82,16 +82,16 @@ public class Wheel : VehicleLeaf
 		return orientation;
 	}
 
-	private void Position(Block block, Vector3 direction)
+	private Vector3 ComputeSetupPosition(Block block, Vector3 direction)
+	{
+		var translation = direction.Multiplied(block.Bounds.size);
+		return block.Bounds.center + translation;
+	}
+
+	private Quaternion ComputeSetupRotation(Block block, Vector3 direction)
 	{
 		var orientation = GetOrientation(block, direction);
-		var translation = direction.Multiplied(block.Bounds.size);
-
-		var newPosition = block.Bounds.center + translation;
-		var newRotation = Quaternion.FromToRotation(this.RotationAxis, orientation);
-
-		this.transform.position = newPosition;
-		this.transform.rotation = newRotation;
+		return Quaternion.FromToRotation(this.RotationAxis, orientation);
 	}
 
 	private HingeJoint Join(Block block, Vector3 rotationAxis)
@@ -122,11 +122,20 @@ public class Wheel : VehicleLeaf
 		}
 	}
 
-	public override void Setup(Block block, Vector3 direction)
+	public bool IsSetupable(Block block, Vector3 direction)
 	{
-		base.Setup(block, direction);
+		Vector3 position = ComputeSetupPosition(block, direction);
+		Quaternion rotation = ComputeSetupRotation(block, direction);
 
-		Position(block, direction);
+		return true;
+	}
+
+	public void Setup(Block block, Vector3 direction)
+	{
+		this.LinkedBlock = block;
+
+		this.transform.position = ComputeSetupPosition(block, direction);
+		this.transform.rotation = ComputeSetupRotation(block, direction);
 
 		Join(block);
 	}
@@ -145,6 +154,11 @@ public class Wheel : VehicleLeaf
 		// Not calling base class method is intentional
 
 		return this.Seed.ToJson();
+	}
+
+	public VehicleComponent VehicleComponent
+	{
+		get => this;
 	}
 
 	public Vector3 RotationAxis

@@ -46,7 +46,7 @@ public class VehicleLeafSeed : VehicleComponentSeed
 	}
 }
 
-public class VehicleLeaf : VehicleComponent, IAttachable
+public class VehicleLeaf : VehicleComponent
 {
 	Block linkedBlock;
 
@@ -59,11 +59,6 @@ public class VehicleLeaf : VehicleComponent, IAttachable
 
 			return data;
 		}
-	}
-
-	public virtual void Setup(Block block, Vector3 direction)
-	{
-		this.linkedBlock = block;
 	}
 
 	public override void Setup(string json)
@@ -84,13 +79,9 @@ public class VehicleLeaf : VehicleComponent, IAttachable
 		return this.Seed.ToJson();
 	}
 
-	public VehicleComponent VehicleComponent
-	{
-		get => this;
-	}
-
 	public Block LinkedBlock
 	{
 		get => this.linkedBlock;
+		protected set => this.linkedBlock = value;
 	}
 }
