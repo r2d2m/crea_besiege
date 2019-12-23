@@ -8,19 +8,19 @@ public static class VehicleIO
 {
 	public const string VehicleDirectory = "UserVehicles";
 
-	public const string FileExtension = ".json";
+	public const string FileExtension = ".save";
 
 	private static void EnsureVehicleDirectoryExistence()
 	{
-		if (!Directory.Exists(VehicleDirectory))
+		if (!Directory.Exists(FullVehiclePath))
 		{
-			Directory.CreateDirectory(VehicleDirectory);
+			Directory.CreateDirectory(FullVehiclePath);
 		}
 	}
 
 	private static string GetPath(string name)
 	{
-		return Path.ChangeExtension(Path.Combine(VehicleDirectory, name), FileExtension);
+		return Path.ChangeExtension(Path.Combine(FullVehiclePath, name), FileExtension);
 	}
 
 	public static bool Exists(string name)
@@ -30,17 +30,20 @@ public static class VehicleIO
 
 	public static string[] GetUserVehicleNames()
 	{
-		if (Directory.Exists(VehicleDirectory))
+		if (Directory.Exists(FullVehiclePath))
 		{
-			string[] fullNames = Directory.GetFiles(VehicleDirectory);
-			var names = new string[fullNames.Length];
+			string[] fullNames = Directory.GetFiles(FullVehiclePath);
+			List<string> names = new List<string>();
 
 			for (int i = 0; i < fullNames.Length; ++i)
 			{
-				names[i] = Path.GetFileNameWithoutExtension(fullNames[i]);
+				if (Path.GetExtension(fullNames[i]) == FileExtension)
+				{
+					names.Add(Path.GetFileNameWithoutExtension(fullNames[i]));
+				}
 			}
 
-			return names;
+			return names.ToArray();
 		}
 
 		return new string[0];
@@ -82,5 +85,10 @@ public static class VehicleIO
 		{
 			File.Delete(path);
 		}
+	}
+
+	public static string FullVehiclePath
+	{
+		get => Path.Combine(Application.streamingAssetsPath, VehicleDirectory);
 	}
 }
