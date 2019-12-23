@@ -61,7 +61,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd384e0aa4e95440bea1d952167b54e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocity: 2
+  breakForce: 1000
+  rotationForce: 2
+  meshCollider: {fileID: 2710756597369652220}
 --- !u!1 &2710756597369651970
 GameObject:
   m_ObjectHideFlags: 0

@@ -61,7 +61,11 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 
 	private VehicleComponent AddChild(VehicleComponent component, uint id)
 	{
-		var newComponent = Instantiate(component.gameObject, this.transform).GetComponent<VehicleComponent>();
+		var newGameObject = Instantiate(component.gameObject, this.transform);
+		Destroy(newGameObject.GetComponent<DeactivateOnStart>());
+
+		var newComponent = newGameObject.GetComponent<VehicleComponent>();
+
 
 		this.components.Add(id, newComponent);
 

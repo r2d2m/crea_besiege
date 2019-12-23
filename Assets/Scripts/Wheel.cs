@@ -43,6 +43,7 @@ public class Wheel : VehicleLeaf, IAttachable
 {
 	[SerializeField] float breakForce = 1000f;
 	[SerializeField] float rotationForce = 2f;
+	[SerializeField] MeshCollider meshCollider; 
 	Rigidbody body;
 	HingeJoint joint;
 
@@ -94,6 +95,11 @@ public class Wheel : VehicleLeaf, IAttachable
 		return Quaternion.FromToRotation(this.RotationAxis, orientation);
 	}
 
+	private Collider[] OverlapBox(Vector3 position, Quaternion rotation)
+	{
+		return Physics.OverlapBox(position, this.Bounds.extents, rotation, Helper.DefaultLayerMask);
+	}
+
 	private HingeJoint Join(Block block, Vector3 rotationAxis)
 	{
 		this.joint = this.gameObject.AddComponent<HingeJoint>();
@@ -127,7 +133,9 @@ public class Wheel : VehicleLeaf, IAttachable
 		Vector3 position = ComputeSetupPosition(block, direction);
 		Quaternion rotation = ComputeSetupRotation(block, direction);
 
-		return true;
+		Collider[] colliders = OverlapBox(position, rotation);
+
+		return colliders.Length == 0;
 	}
 
 	public void Setup(Block block, Vector3 direction)
@@ -169,5 +177,10 @@ public class Wheel : VehicleLeaf, IAttachable
 	public Vector3 LocalRotationAxis
 	{
 		get => this.transform.worldToLocalMatrix * this.RotationAxis;
+	}
+
+	public Bounds Bounds
+	{
+		get => this.meshCollider.bounds;
 	}
 }

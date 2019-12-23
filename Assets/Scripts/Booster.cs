@@ -84,14 +84,29 @@ public class Booster : VehicleLeaf, IAttachable
 		}
 	}
 
-	private void Position(Block block, Vector3 direction)
+	private Collider[] OverlapBox(Vector3 position, Quaternion rotation)
 	{
-		this.transform.rotation = Quaternion.FromToRotation(-this.ProjectionDirection, direction);
+		return Physics.OverlapBox(position, this.Bounds.extents, rotation, Helper.DefaultLayerMask);
+	}
+
+	private Quaternion ComputeSetupRotation(Block block, Vector3 direction)
+	{
+		return Quaternion.FromToRotation(-this.ProjectionDirection, direction);
+	}
+
+	private Vector3 ComputeSetupPosition(Block block, Vector3 direction)
+	{
+		const float gap = 0.001f;
+
+		this.box.transform.rotation = ComputeSetupRotation(block, direction);
 		Physics.SyncTransforms();
 
 		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
 
-		this.transform.position = block.Bounds.center + translation;
+		this.box.transform.rotation = Quaternion.identity;
+		Physics.SyncTransforms();
+
+		return block.Bounds.center + translation + direction * gap;
 	}
 
 	private FixedJoint Join(Block block)
@@ -117,14 +132,20 @@ public class Booster : VehicleLeaf, IAttachable
 
 	public bool IsSetupable(Block block, Vector3 direction)
 	{
-		return true;
+		Vector3 position = ComputeSetupPosition(block, direction);
+		Quaternion rotation = ComputeSetupRotation(block, direction);
+
+		Collider[] colliders = OverlapBox(position, rotation);
+
+		return colliders.Length == 0;
 	}
 
 	public void Setup(Block block, Vector3 direction)
 	{
 		this.LinkedBlock = block;
 
-		Position(block, direction);
+		this.transform.position = ComputeSetupPosition(block, direction);
+		this.transform.rotation = ComputeSetupRotation(block, direction);
 
 		Join(block);
 	}

@@ -56,14 +56,10 @@ public class EditionController : MonoBehaviour
 
 						if (block != null)
 						{
-							var attachable = Instantiate(this.hand.VehicleComponent).GetComponent<IAttachable>();
-
-							if (attachable.IsSetupable(block, hit.normal))
+							if (this.hand.IsSetupable(block, hit.normal))
 							{
 								Refs.vehicle.CreateAttachment(this.hand, block, hit.normal);
 							}
-
-							Destroy(attachable.VehicleComponent.gameObject);
 						}
 					}
 				}
@@ -146,6 +142,13 @@ public class EditionController : MonoBehaviour
 
 	public void SetHand(IAttachable attachable)
 	{
-		this.hand = attachable;
+		if (this.hand != null)
+		{
+			Destroy(this.hand.VehicleComponent.gameObject);
+		}
+
+		VehicleComponent vehicleComponent = Instantiate(attachable.VehicleComponent, Helper.OutOfMapVector3, Quaternion.identity, this.transform);
+
+		this.hand = vehicleComponent as IAttachable;
 	}
 }

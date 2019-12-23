@@ -11,7 +11,9 @@ public static class Helper
 
 	public static readonly int BlockLayerMask = LayerMask.GetMask("Block");
 
-	public static readonly Vector3 MaxVector3 = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
+	public static readonly Vector3 MaxVector3 = Vector3.one * float.MaxValue;
+
+	public static readonly Vector3 OutOfMapVector3 = Vector3.one * 1000000f;
 
 	public static readonly Quaternion MaxQuaternion = new Quaternion(float.MaxValue, float.MaxValue, float.MaxValue, float.MaxValue);
 
