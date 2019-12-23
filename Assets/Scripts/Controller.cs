@@ -6,8 +6,8 @@ public class Controller : MonoBehaviour
 {
 	KeyCode[] keyCodes = new KeyCode[]
 	{
-		KeyCode.DownArrow,
-		KeyCode.UpArrow,
+		KeyCode.Z,
+		KeyCode.S,
 		KeyCode.Space
 	};
 

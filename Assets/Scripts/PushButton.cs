@@ -23,6 +23,11 @@ public class PushButton : MonoBehaviour
 		};
 	}
 
+	private void Start()
+	{
+		AddListener(this.onClick);
+	}
+
 	public void AddListener(Callback callback)
 	{
 		this.button.onClick.AddListener(() =>

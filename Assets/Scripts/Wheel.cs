@@ -41,8 +41,8 @@ public class WheelSeed : VehicleLeafSeed
 [RequireComponent(typeof(Rigidbody))]
 public class Wheel : VehicleLeaf, IAttachable
 {
-	private const KeyCode ForwardKey = KeyCode.UpArrow;
-	private const KeyCode BackwardKey = KeyCode.DownArrow;
+	private const KeyCode ForwardKey = KeyCode.Z;
+	private const KeyCode BackwardKey = KeyCode.S;
 
 	[SerializeField] float breakForce = 1000f;
 	[SerializeField] float rotationForce = 2f;

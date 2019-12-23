@@ -18,7 +18,7 @@ public class VehicleSelectionButton : MonoBehaviour
 
 	private void Start()
     {
-		ResetListeners();
+		this.deleteButton.AddListener(this.onDelete);
 	}
 
     private void Update()
@@ -41,13 +41,17 @@ public class VehicleSelectionButton : MonoBehaviour
 		{
 			ResetListeners();
 
+			Debug.LogError("LINKING");
+
 			this.pickButton.AddListener(() =>
 			{
+				Debug.LogError("PICK");
 				VehicleSpawner.Pick = vehicleName;
 			});
 
 			this.editButton.AddListener(() =>
 			{
+				Debug.LogError("EDIT");
 				VehicleEditionScene.ToLoadOnNextStart = vehicleName;
 				Helper.LoadSingleActiveScene(VehicleEditionScene.Name);
 			});
@@ -56,6 +60,7 @@ public class VehicleSelectionButton : MonoBehaviour
 			{
 				try
 				{
+					Debug.LogError("REMOVE");
 					VehicleIO.Remove(vehicleName);
 					VehicleSpawner.Pick = null;
 					this.onDelete();
