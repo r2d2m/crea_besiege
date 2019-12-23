@@ -46,8 +46,9 @@ public class VehicleSelectionUI : MonoBehaviour
 		UnlinkVehicleButtons();
 
 		string[] userVehicleNames = VehicleIO.GetUserVehicleNames();
+		int minCount = Mathf.Min(userVehicleNames.Length, this.vehicleButtons.Length);
 
-		for (int i = 0; i < userVehicleNames.Length; ++i)
+		for (int i = 0; i < minCount; ++i)
 		{
 			this.vehicleButtons[i].Link(userVehicleNames[i]);
 		}
