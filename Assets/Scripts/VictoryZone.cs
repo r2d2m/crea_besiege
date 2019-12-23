@@ -6,15 +6,6 @@ public class VictoryZone : MonoBehaviour
 {
 	public string nextLevel = null;
 
-    void Start()
-    {
-	}
-
-    void Update()
-    {
-        
-    }
-
 	private void OnTriggerEnter(Collider other)
 	{
 		Debug.Assert(!string.IsNullOrEmpty(this.nextLevel), "NextLevel were not assigned in VictoryZone");
@@ -24,6 +15,7 @@ public class VictoryZone : MonoBehaviour
 		if (block != null)
 		{
 			Helper.LoadSingleActiveScene(this.nextLevel);
+			this.gameObject.SetActive(false);
 		}
 	}
 }
