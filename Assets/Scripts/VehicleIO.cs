@@ -18,7 +18,7 @@ public static class VehicleIO
 		}
 	}
 
-	private static string GetPath(string name)
+	public static string GetPath(string name)
 	{
 		return Path.ChangeExtension(Path.Combine(FullVehiclePath, name), FileExtension);
 	}

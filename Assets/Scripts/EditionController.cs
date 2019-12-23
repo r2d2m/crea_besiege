@@ -97,11 +97,20 @@ public class EditionController : MonoBehaviour
 		{
 			try
 			{
-				VehicleIO.Load(name);
-				if (Vehicle.Current)
+				if (VehicleIO.Exists(name))
 				{
-					Destroy(Vehicle.Current.gameObject);
+					if (Vehicle.Current)
+					{
+						Destroy(Vehicle.Current.gameObject);
+					}
+
+					VehicleIO.Load(name);
 				}
+				else
+				{
+					this.text.Show("Could not find file at " + VehicleIO.GetPath(name), 5f);
+				}
+				
 			}
 			catch (Exception exception)
 			{
