@@ -284,7 +284,7 @@ MonoBehaviour:
     type: 3}
   defaultVehiclePrefab: {fileID: 4295665382348197461, guid: b42db84d855e59d4498def4376592b2b,
     type: 3}
-  controllerPrefab: {fileID: 8344657166765641658, guid: 6ef9e945663e28a4bae5ebeec3aca762,
+  vehicleGameModePrefab: {fileID: -5920216289760091488, guid: 98d795419f3876e43811fb8011b47632,
     type: 3}
 --- !u!1 &1465254019
 GameObject:

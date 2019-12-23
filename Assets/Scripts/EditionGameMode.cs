@@ -6,20 +6,20 @@ public class EditionGameMode : MonoBehaviour
 {
     void Start()
     {
-		GameEvents.OnGameStart += OnGameStart;
+		GameEvents.OnVehicleControl += OnVehicleControl;
     }
 
 	private void OnDestroy()
 	{
 		if (GameEvents.InstanceExists)
 		{
-			GameEvents.OnGameStart -= OnGameStart;
+			GameEvents.OnVehicleControl -= OnVehicleControl;
 		}
 	}
 
-	private void OnGameStart()
+	private void OnVehicleControl()
 	{
-		Controller.Create();
+		VehicleGameMode.Create();
 		Destroy(this.gameObject);
 	}
 }

@@ -71,8 +71,17 @@ public class Wheel : VehicleLeaf, IAttachable
 
 	private Vector3 ComputeSetupPosition(Block block, Vector3 direction)
 	{
-		var translation = direction.Multiplied(block.Bounds.size);
-		return block.Bounds.center + translation;
+		const float gap = 0.2f;
+
+		this.meshCollider.transform.rotation = ComputeSetupRotation(block, direction);
+		Physics.SyncTransforms();
+
+		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
+
+		this.meshCollider.transform.rotation = Quaternion.identity;
+		Physics.SyncTransforms();
+
+		return block.Bounds.center + translation + direction * gap;
 	}
 
 	private Quaternion ComputeSetupRotation(Block block, Vector3 direction)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public sealed class GameEvents : PersistentBehavior<GameEvents>
 {
-	private Callback onGameStart = () => { };
+	private Callback onVehicleControl = () => { };
 
 	private GameEvents() :
 		base(CtorArg)
@@ -15,9 +15,9 @@ public sealed class GameEvents : PersistentBehavior<GameEvents>
 		base.Awake();
 	}
 
-	public static Callback OnGameStart
+	public static Callback OnVehicleControl
 	{
-		get => Instance.onGameStart;
-		set => Instance.onGameStart = value;
+		get => Instance.onVehicleControl;
+		set => Instance.onVehicleControl = value;
 	}
 }

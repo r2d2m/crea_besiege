@@ -4,16 +4,6 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
-    void Start()
-    {
-		Physics.gravity = new Vector3(0, -9.81f, 0);
-	}
-
-    void Update()
-    {
-        
-    }
-
 	private void OnGUI()
 	{
 		if (Refs.vehicle != null)
@@ -24,10 +14,5 @@ public class Controller : MonoBehaviour
 				Refs.vehicle.PropagateInput(e.keyCode);
 			}
 		}
-	}
-
-	public static void Create()
-	{
-		Instantiate(Prefabs.ControllerPrefab);
 	}
 }

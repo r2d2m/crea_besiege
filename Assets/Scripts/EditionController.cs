@@ -67,7 +67,7 @@ public class EditionController : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.K))
 			{
-				GameEvents.OnGameStart();
+				GameEvents.OnVehicleControl();
 			}
 
 			if (Input.GetKeyDown(KeyCode.O))

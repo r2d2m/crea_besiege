@@ -10,7 +10,7 @@ public sealed class Prefabs : PersistentBehavior<Prefabs>
 	[SerializeField] private Booster boosterPrefab;
 	[SerializeField] private Vehicle emptyVehiclePrefab;
 	[SerializeField] private Vehicle defaultVehiclePrefab;
-	[SerializeField] private Controller controllerPrefab;
+	[SerializeField] private VehicleGameMode vehicleGameModePrefab;
 
     private Prefabs() :
         base(CtorArg)
@@ -51,8 +51,8 @@ public sealed class Prefabs : PersistentBehavior<Prefabs>
 		get => Instance.defaultVehiclePrefab;
 	}
 
-	public static Controller ControllerPrefab
+	public static VehicleGameMode VehicleGameMode
 	{
-		get => Instance.controllerPrefab;
+		get => Instance.vehicleGameModePrefab;
 	}
 }
