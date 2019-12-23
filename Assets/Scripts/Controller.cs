@@ -4,14 +4,23 @@ using UnityEngine;
 
 public class Controller : MonoBehaviour
 {
-	private void OnGUI()
+	KeyCode[] keyCodes = new KeyCode[]
+	{
+		KeyCode.DownArrow,
+		KeyCode.UpArrow,
+		KeyCode.Space
+	};
+
+	private void Update()
 	{
 		if (Vehicle.Current != null)
 		{
-			Event e = Event.current;
-			if (e.isKey && e.keyCode != KeyCode.None)
+			foreach (var key in this.keyCodes)
 			{
-				Vehicle.Current.PropagateInput(e.keyCode);
+				if (Input.GetKey(key))
+				{
+					Vehicle.Current.PropagateInput(key);
+				}
 			}
 		}
 	}
