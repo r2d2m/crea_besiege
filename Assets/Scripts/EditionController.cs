@@ -76,7 +76,15 @@ public class EditionController : MonoBehaviour
 	{
 		this.inputField.onEndEdit.AddListener((string name) =>
 		{
-			VehicleIO.Save(Vehicle.Current, name);
+			try
+			{
+				VehicleIO.Save(Vehicle.Current, name);
+			}
+			catch (Exception exception)
+			{
+				this.text.Show(exception.Message, 5f);
+			}
+			
 			HideInputField();
 		});
 
