@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class EditionGameMode : MonoBehaviour
 {
-    void Start()
-    {
-		GameEvents.OnVehicleControl += OnVehicleControl;
-    }
+	private void Start()
+	{
+		GameEvents.OnEditionQuit += OnEditionQuit;
+	}
 
 	private void OnDestroy()
 	{
 		if (GameEvents.InstanceExists)
 		{
-			GameEvents.OnVehicleControl -= OnVehicleControl;
+			GameEvents.OnEditionQuit -= OnEditionQuit;
 		}
 	}
 
-	private void OnVehicleControl()
+	private void OnEditionQuit()
 	{
 		VehicleGameMode.Create();
 		Destroy(this.gameObject);

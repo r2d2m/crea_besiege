@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void EditionQuitEvent();
+
 public sealed class GameEvents : PersistentBehavior<GameEvents>
 {
-	private Callback onVehicleControl = () => { };
+	private EditionQuitEvent onEditionQuit = () => { };
 
 	private GameEvents() :
 		base(CtorArg)
@@ -15,9 +17,9 @@ public sealed class GameEvents : PersistentBehavior<GameEvents>
 		base.Awake();
 	}
 
-	public static Callback OnVehicleControl
+	public static EditionQuitEvent OnEditionQuit
 	{
-		get => Instance.onVehicleControl;
-		set => Instance.onVehicleControl = value;
+		get => Instance.onEditionQuit;
+		set => Instance.onEditionQuit = value;
 	}
 }

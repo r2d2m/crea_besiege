@@ -347,7 +347,7 @@ PrefabInstance:
     - target: {fileID: 4166268789186008494, guid: 434564983c5f6d3498e47dce33c0e320,
         type: 3}
       propertyPath: sceneName
-      value: World1
+      value: World2
       objectReference: {fileID: 0}
     - target: {fileID: 4166268788051557111, guid: 434564983c5f6d3498e47dce33c0e320,
         type: 3}

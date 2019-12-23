@@ -6,14 +6,9 @@ public class EditionHand : MonoBehaviour
 {
 	private IAttachable hand;
 
-    void Start()
+	void Update()
     {
-        
-    }
 
-    void Update()
-    {
-        
     }
 
 	public void Pick(IAttachable attachable)
@@ -35,7 +30,7 @@ public class EditionHand : MonoBehaviour
 
 	public void Setup(Block block, Vector3 direction)
 	{
-		Refs.vehicle.CreateAttachment(this.hand, block, direction);
+		Vehicle.Current.CreateAttachment(this.hand, block, direction);
 	}
 
 	public IAttachable Attachable

@@ -8,37 +8,15 @@ using UnityEngine.UI;
 
 public class EditionController : MonoBehaviour
 {
-	public string mouseXAxis = "Mouse X";
-	public string mouseYAxis = "Mouse Y";
-
 	[SerializeField] EditionHand hand;
 	[SerializeField] InputField inputField;
 	[SerializeField] TimedText text;
 	Camera mainCam;
-	OrbitalTransform orbitalTransform;
-
-	private void Awake()
-	{
-		Refs.editionController = this;
-	}
 
 	void Start()
 	{
 		HideInputField();
 		this.mainCam = Camera.main;
-		this.orbitalTransform = this.mainCam.GetComponent<OrbitalTransform>();
-		Physics.gravity = Vector3.zero;
-	}
-
-	private void FixedUpdate()
-	{
-		if (this.orbitalTransform != null && Input.GetMouseButton(1))
-		{
-			float horizontal = Input.GetAxis(this.mouseXAxis);
-			float vertical = -Input.GetAxis(this.mouseYAxis);
-
-			this.orbitalTransform.Rotate(horizontal, vertical);
-		}
 	}
 
 	private void Update()
@@ -63,11 +41,6 @@ public class EditionController : MonoBehaviour
 						}
 					}
 				}
-			}
-
-			if (Input.GetKeyDown(KeyCode.K))
-			{
-				GameEvents.OnVehicleControl();
 			}
 
 			if (Input.GetKeyDown(KeyCode.O))
@@ -103,7 +76,7 @@ public class EditionController : MonoBehaviour
 	{
 		this.inputField.onEndEdit.AddListener((string name) =>
 		{
-			VehicleIO.Save(Refs.vehicle, name);
+			VehicleIO.Save(Vehicle.Current, name);
 			HideInputField();
 		});
 
@@ -114,14 +87,13 @@ public class EditionController : MonoBehaviour
 	{
 		this.inputField.onEndEdit.AddListener((string name) =>
 		{
-			if (Refs.vehicle)
-			{
-				Destroy(Refs.vehicle.gameObject);
-			}
-
 			try
 			{
 				VehicleIO.Load(name);
+				if (Vehicle.Current)
+				{
+					Destroy(Vehicle.Current.gameObject);
+				}
 			}
 			catch (Exception exception)
 			{

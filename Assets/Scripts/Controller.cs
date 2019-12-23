@@ -6,12 +6,12 @@ public class Controller : MonoBehaviour
 {
 	private void OnGUI()
 	{
-		if (Refs.vehicle != null)
+		if (Vehicle.Current != null)
 		{
 			Event e = Event.current;
 			if (e.isKey && e.keyCode != KeyCode.None)
 			{
-				Refs.vehicle.PropagateInput(e.keyCode);
+				Vehicle.Current.PropagateInput(e.keyCode);
 			}
 		}
 	}

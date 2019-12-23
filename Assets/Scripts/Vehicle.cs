@@ -33,16 +33,19 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 {
 	public delegate void OnInputReceived(KeyCode key);
 
+	public static Vehicle Current = null;
+
 	[SerializeField] private bool createCoreBlock;
 
 	private IDGenerator idGenerator;
 	private Dictionary<uint, VehicleComponent> components = new Dictionary<uint, VehicleComponent>();
+	private CoreBlock coreBlock;
 
 	public OnInputReceived onInputReceived = (KeyCode key) => { };
 
 	private void Awake()
 	{
-		Refs.vehicle = this;
+		Current = this;
 	}
 
 	private void Start()
@@ -51,12 +54,7 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 		{
 			CreateCoreBlock();
 		}
-    }
-
-	private void Update()
-    {
-
-    }
+	}
 
 	private uint GenerateID()
 	{
@@ -66,10 +64,13 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 	private VehicleComponent AddChild(VehicleComponent component, uint id)
 	{
 		var newGameObject = Instantiate(component.gameObject, this.transform);
-		Destroy(newGameObject.GetComponent<DeactivateOnStart>());
 
 		var newComponent = newGameObject.GetComponent<VehicleComponent>();
 
+		if (newComponent is CoreBlock)
+		{
+			this.coreBlock = newComponent as CoreBlock;
+		}
 
 		this.components.Add(id, newComponent);
 
@@ -224,6 +225,11 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 		var newAttachable = AddChild(attachable.VehicleComponent).GetComponent<IAttachable>();
 
 		newAttachable.Setup(block, direction);
+	}
+
+	public CoreBlock CoreBlock
+	{
+		get => this.coreBlock;
 	}
 
 	public static Vehicle CreateFromJson(string json)
