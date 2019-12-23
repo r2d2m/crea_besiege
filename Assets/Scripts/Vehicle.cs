@@ -35,11 +35,11 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 
 	public static Vehicle Current = null;
 
-	[SerializeField] private bool createCoreBlock;
+	[SerializeField] private CoreBlock coreBlockPrefab;
 
+	private CoreBlock coreBlock;
 	private IDGenerator idGenerator;
 	private Dictionary<uint, VehicleComponent> components = new Dictionary<uint, VehicleComponent>();
-	private CoreBlock coreBlock;
 
 	public OnInputReceived onInputReceived = (KeyCode key) => { };
 
@@ -50,9 +50,9 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 
 	private void Start()
     {
-        if (this.createCoreBlock)
+        if (this.coreBlockPrefab != null)
 		{
-			CreateCoreBlock();
+			this.coreBlock = AddChild(this.coreBlockPrefab).GetComponent<CoreBlock>();
 		}
 	}
 
@@ -95,6 +95,17 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 			case VehicleComponentType.Wheel: return AddChild(Prefabs.Wheel, id);
 
 			case VehicleComponentType.Booster: return AddChild(Prefabs.Booster, id);
+
+			case VehicleComponentType.BlockDLC:
+			{
+				var dlc = DLCManager.PatchDayOne;
+				if (!dlc.IsLoaded)
+				{
+					throw new Exception("Missing DLC");
+				}
+
+				return AddChild(dlc.Block, id);
+			}
 
 			default: Debug.LogError("Invalid type"); break;
 		}
@@ -153,11 +164,6 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 				Debug.LogError("No VehicleComponent found with id " + pair.Key);
 			}
 		}
-	}
-
-	private CoreBlock CreateCoreBlock()
-	{
-		return AddChild(Prefabs.CoreBlock).GetComponent<CoreBlock>();
 	}
 
 	private VehicleHeader Header
@@ -245,15 +251,23 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 
 		var vehicle = CreateEmpty();
 
-		vehicle.idGenerator = new IDGenerator(header.snapshot);
-
-		if (splitJson.Length > 1)
+		try
 		{
-			var jsonComponents = new string[splitJson.Length - 1];
-			Array.Copy(splitJson, 1, jsonComponents, 0, jsonComponents.Length);
+			vehicle.idGenerator = new IDGenerator(header.snapshot);
 
-			Dictionary<uint, string> jsonMap = vehicle.AddChilds(jsonComponents);
-			vehicle.SetupChilds(jsonMap);
+			if (splitJson.Length > 1)
+			{
+				var jsonComponents = new string[splitJson.Length - 1];
+				Array.Copy(splitJson, 1, jsonComponents, 0, jsonComponents.Length);
+
+				Dictionary<uint, string> jsonMap = vehicle.AddChilds(jsonComponents);
+				vehicle.SetupChilds(jsonMap);
+			}
+		}
+		catch (Exception)
+		{
+			Destroy(vehicle.gameObject);
+			CreateMissingDLC();
 		}
 
 		return vehicle;
@@ -267,5 +281,10 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 	public static Vehicle CreateDefault()
 	{
 		return Instantiate(Prefabs.DefaultVehicle);
+	}
+
+	public static Vehicle CreateMissingDLC()
+	{
+		return Instantiate(Prefabs.MissingDLCVehicle);
 	}
 }

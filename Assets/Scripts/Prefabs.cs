@@ -5,11 +5,13 @@ using UnityEngine;
 public sealed class Prefabs : PersistentBehavior<Prefabs>
 {
 	[SerializeField] private CoreBlock coreBlockPrefab;
+	[SerializeField] private CoreBlock missingDLCBlockPrefab;
 	[SerializeField] private AttachableBlock attachableBlockPrefab;
 	[SerializeField] private Wheel wheelPrefab;
 	[SerializeField] private Booster boosterPrefab;
 	[SerializeField] private Vehicle emptyVehiclePrefab;
 	[SerializeField] private Vehicle defaultVehiclePrefab;
+	[SerializeField] private Vehicle missingDLCVehiclePrefab;
 	[SerializeField] private VehicleGameMode vehicleGameModePrefab;
 
     private Prefabs() :
@@ -24,6 +26,11 @@ public sealed class Prefabs : PersistentBehavior<Prefabs>
 	public static CoreBlock CoreBlock
 	{
 		get => Instance.coreBlockPrefab;
+	}
+
+	public static CoreBlock MissingDLCBlock
+	{
+		get => Instance.missingDLCBlockPrefab;
 	}
 
 	public static AttachableBlock AttachableBlock
@@ -49,6 +56,11 @@ public sealed class Prefabs : PersistentBehavior<Prefabs>
 	public static Vehicle DefaultVehicle
 	{
 		get => Instance.defaultVehiclePrefab;
+	}
+
+	public static Vehicle MissingDLCVehicle
+	{
+		get => Instance.missingDLCVehiclePrefab;
 	}
 
 	public static VehicleGameMode VehicleGameMode

@@ -208,6 +208,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coreBlockPrefab: {fileID: 2643108905187252094, guid: f19b0c4ecd2617e45b0bf1242b0a88a8,
     type: 3}
+  missingDLCBlockPrefab: {fileID: 7923127737267502894, guid: 68fa70faa7d592f44b5dda1b8639bed2,
+    type: 3}
   attachableBlockPrefab: {fileID: 3191087656063116185, guid: ec8011a2459baf94a865e4f144dbec3b,
     type: 3}
   wheelPrefab: {fileID: 2710756596880426893, guid: c0f19f088ea7c4343b9dd183ad49dd4c,
@@ -217,6 +219,8 @@ MonoBehaviour:
   emptyVehiclePrefab: {fileID: 3297275716820516256, guid: de798288b8b55fb499e9e67e64444199,
     type: 3}
   defaultVehiclePrefab: {fileID: 4295665382348197461, guid: b42db84d855e59d4498def4376592b2b,
+    type: 3}
+  missingDLCVehiclePrefab: {fileID: 4067765943478995337, guid: 5af66179e02064c4e8587f224fd068a7,
     type: 3}
   vehicleGameModePrefab: {fileID: -5920216289760091488, guid: 98d795419f3876e43811fb8011b47632,
     type: 3}

@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 3895141666937045991}
   - component: {fileID: 3099732804159885994}
   m_Layer: 8
-  m_Name: SolidBlockDLC
+  m_Name: BlockDLC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -288,8 +288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84c9f006150d3b14c8b735bee09eef1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  breakForce: 500
   linkageBoxes:
   - {fileID: 702015038}
   - {fileID: 1663489100}
   - {fileID: 1624090140}
-  breakForce: 500
+  isDlc: 1

@@ -12,6 +12,27 @@ PrefabInstance:
       propertyPath: m_Name
       value: DefaultVehicle
       objectReference: {fileID: 0}
+    - target: {fileID: 3297275716820516256, guid: de798288b8b55fb499e9e67e64444199,
+        type: 3}
+      propertyPath: generateCoreBlockOnStart
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3297275716820516256, guid: de798288b8b55fb499e9e67e64444199,
+        type: 3}
+      propertyPath: generateCoreBlock
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3297275716820516256, guid: de798288b8b55fb499e9e67e64444199,
+        type: 3}
+      propertyPath: createCoreBlock
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3297275716820516256, guid: de798288b8b55fb499e9e67e64444199,
+        type: 3}
+      propertyPath: coreBlockPrefab
+      value: 
+      objectReference: {fileID: 2643108905187252094, guid: f19b0c4ecd2617e45b0bf1242b0a88a8,
+        type: 3}
     - target: {fileID: 3297275716820516259, guid: de798288b8b55fb499e9e67e64444199,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -66,21 +87,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3297275716820516256, guid: de798288b8b55fb499e9e67e64444199,
-        type: 3}
-      propertyPath: generateCoreBlockOnStart
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3297275716820516256, guid: de798288b8b55fb499e9e67e64444199,
-        type: 3}
-      propertyPath: generateCoreBlock
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3297275716820516256, guid: de798288b8b55fb499e9e67e64444199,
-        type: 3}
-      propertyPath: createCoreBlock
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de798288b8b55fb499e9e67e64444199, type: 3}

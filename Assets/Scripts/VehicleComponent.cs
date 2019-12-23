@@ -10,7 +10,8 @@ public enum VehicleComponentType
 	CoreBlock,
 	AttachableBlock,
 	Wheel,
-	Booster
+	Booster,
+	BlockDLC
 }
 
 public class VehicleComponentSeed

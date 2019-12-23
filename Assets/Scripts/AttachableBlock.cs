@@ -25,6 +25,8 @@ public class AttachableBlockSeed : BlockSeed
 
 public class AttachableBlock : Block, IAttachable
 {
+	[SerializeField] bool isDlc = false;
+
 	protected override void Awake()
 	{
 		base.Awake();
@@ -55,7 +57,16 @@ public class AttachableBlock : Block, IAttachable
 
 	protected new AttachableBlockSeed Seed
 	{
-		get => new AttachableBlockSeed(base.Seed);
+		get
+		{
+			var seed = new AttachableBlockSeed(base.Seed);
+			if (this.isDlc)
+			{
+				seed.type = VehicleComponentType.BlockDLC;
+			}
+
+			return seed;
+		}
 	}
 
 	public bool IsSetupable(Block block, Vector3 direction)
