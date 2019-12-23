@@ -88,12 +88,10 @@ public class Booster : VehicleLeaf, IAttachable
 		const float gap = 0.001f;
 
 		this.box.transform.rotation = ComputeSetupRotation(block, direction);
-		Physics.SyncTransforms();
 
 		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
 
 		this.box.transform.rotation = Quaternion.identity;
-		Physics.SyncTransforms();
 
 		return block.Bounds.center + translation + direction * gap;
 	}

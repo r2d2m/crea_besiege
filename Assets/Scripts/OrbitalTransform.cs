@@ -30,8 +30,6 @@ public class OrbitalTransform : MonoBehaviour
 		this.transform.RotateAround(this.target.position, Vector3.up, horizontal);
 		this.transform.RotateAround(this.target.position, this.transform.right, vertical);
 
-		Physics.SyncTransforms();
-
 		this.translation = this.transform.position - this.target.position;
 	}
 

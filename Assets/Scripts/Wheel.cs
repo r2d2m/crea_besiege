@@ -74,12 +74,10 @@ public class Wheel : VehicleLeaf, IAttachable
 		const float gap = 0.2f;
 
 		this.meshCollider.transform.rotation = ComputeSetupRotation(block, direction);
-		Physics.SyncTransforms();
 
 		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
 
 		this.meshCollider.transform.rotation = Quaternion.identity;
-		Physics.SyncTransforms();
 
 		return block.Bounds.center + translation + direction * gap;
 	}
