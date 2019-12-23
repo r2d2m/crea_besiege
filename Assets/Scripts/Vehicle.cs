@@ -31,10 +31,14 @@ class VehicleHeader
 
 public class Vehicle : MonoBehaviour, IJsonSerializable
 {
+	public delegate void OnInputReceived(KeyCode key);
+
 	[SerializeField] private bool createCoreBlock;
 
 	private IDGenerator idGenerator;
 	private Dictionary<uint, VehicleComponent> components = new Dictionary<uint, VehicleComponent>();
+
+	public OnInputReceived onInputReceived = (KeyCode key) => { };
 
 	private void Awake()
 	{
@@ -164,6 +168,11 @@ public class Vehicle : MonoBehaviour, IJsonSerializable
 
 			return header;
 		}
+	}
+
+	public void PropagateInput(KeyCode key)
+	{
+		this.onInputReceived(key);
 	}
 
 	public VehicleComponent GetChildFromID(uint id)

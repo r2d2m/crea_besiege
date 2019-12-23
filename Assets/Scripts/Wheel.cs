@@ -41,6 +41,9 @@ public class WheelSeed : VehicleLeafSeed
 [RequireComponent(typeof(Rigidbody))]
 public class Wheel : VehicleLeaf, IAttachable
 {
+	private const KeyCode ForwardKey = KeyCode.UpArrow;
+	private const KeyCode BackwardKey = KeyCode.DownArrow;
+
 	[SerializeField] float breakForce = 1000f;
 	[SerializeField] float rotationForce = 2f;
 	[SerializeField] MeshCollider meshCollider; 
@@ -50,23 +53,6 @@ public class Wheel : VehicleLeaf, IAttachable
 	private void Awake()
 	{
 		this.body = GetComponent<Rigidbody>();
-	}
-
-	private void Start()
-    {
-        
-    }
-
-	private void Update()
-    {
-		if (Input.GetKey(KeyCode.UpArrow))
-		{
-			this.body.angularVelocity = this.RotationAxis * this.rotationForce;
-		}
-		else if (Input.GetKey(KeyCode.DownArrow))
-		{
-			this.body.angularVelocity = -this.RotationAxis * this.rotationForce;
-		}
 	}
 
 	private Vector3 GetOrientation(Block block, Vector3 direction)
@@ -115,6 +101,23 @@ public class Wheel : VehicleLeaf, IAttachable
 		return Join(block, this.LocalRotationAxis);
 	}
 
+	private void OnInputReceived(KeyCode key)
+	{
+		if (key == ForwardKey)
+		{
+			this.body.angularVelocity = this.RotationAxis * this.rotationForce;
+		}
+		else if (key == BackwardKey)
+		{
+			this.body.angularVelocity = -this.RotationAxis * this.rotationForce;
+		}
+	}
+
+	public void SubscribeToInputEvents()
+	{
+		this.Vehicle.onInputReceived += OnInputReceived;
+	}
+
 	protected new WheelSeed Seed
 	{
 		get
@@ -146,6 +149,7 @@ public class Wheel : VehicleLeaf, IAttachable
 		this.transform.rotation = ComputeSetupRotation(block, direction);
 
 		Join(block);
+		SubscribeToInputEvents();
 	}
 
 	public override void Setup(string json)
@@ -155,6 +159,7 @@ public class Wheel : VehicleLeaf, IAttachable
 		var seed = WheelSeed.FromJson(json);
 
 		Join(this.LinkedBlock, seed.rotationAxis);
+		SubscribeToInputEvents();
 	}
 
 	public override string ToJson()

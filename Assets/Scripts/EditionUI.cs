@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class EditionUI : MonoBehaviour
 {
+	[SerializeField] private EditionHand hand;
 	[SerializeField] private Button solidBlockButton;
 	[SerializeField] private Button wheelButton;
 	[SerializeField] private Button boosterButton;
@@ -13,17 +14,17 @@ public class EditionUI : MonoBehaviour
     {
 		this.solidBlockButton.onClick.AddListener(() =>
 		{
-			Refs.editionController.SetHand(Prefabs.AttachableBlock);
+			this.hand.Pick(Prefabs.AttachableBlock);
 		});
 
 		this.wheelButton.onClick.AddListener(() =>
 		{
-			Refs.editionController.SetHand(Prefabs.Wheel);
+			this.hand.Pick(Prefabs.Wheel);
 		});
 
 		this.boosterButton.onClick.AddListener(() =>
 		{
-			Refs.editionController.SetHand(Prefabs.Booster);
+			this.hand.Pick(Prefabs.Booster);
 		});
 	}
 

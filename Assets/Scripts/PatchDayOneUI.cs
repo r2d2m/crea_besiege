@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PatchDayOneUI : MonoBehaviour
 {
+	[SerializeField] private EditionHand hand;
 	[SerializeField] private Button button;
 
 	private void Awake()
@@ -19,7 +20,7 @@ public class PatchDayOneUI : MonoBehaviour
 		{
 			this.button.onClick.AddListener(() =>
 			{
-				Refs.editionController.SetHand(dlc.Block);
+				this.hand.Pick(dlc.Block);
 			});
 		}
 		else

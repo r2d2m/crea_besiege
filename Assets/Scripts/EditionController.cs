@@ -11,11 +11,11 @@ public class EditionController : MonoBehaviour
 	public string mouseXAxis = "Mouse X";
 	public string mouseYAxis = "Mouse Y";
 
+	[SerializeField] EditionHand hand;
 	[SerializeField] InputField inputField;
 	[SerializeField] TimedText text;
 	Camera mainCam;
 	OrbitalTransform orbitalTransform;
-	IAttachable hand;
 
 	private void Awake()
 	{
@@ -58,7 +58,7 @@ public class EditionController : MonoBehaviour
 						{
 							if (this.hand.IsSetupable(block, hit.normal))
 							{
-								Refs.vehicle.CreateAttachment(this.hand, block, hit.normal);
+								this.hand.Setup(block, hit.normal);
 							}
 						}
 					}
@@ -67,7 +67,7 @@ public class EditionController : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.K))
 			{
-				Physics.gravity = new Vector3(0, -9.81f, 0);
+				GameEvents.OnGameStart();
 			}
 
 			if (Input.GetKeyDown(KeyCode.O))
@@ -138,17 +138,5 @@ public class EditionController : MonoBehaviour
 	{
 		var ray = this.mainCam.ScreenPointToRay(Input.mousePosition);
 		return Physics.Raycast(ray, out hit, 1000, Helper.DefaultLayerMask);
-	}
-
-	public void SetHand(IAttachable attachable)
-	{
-		if (this.hand != null)
-		{
-			Destroy(this.hand.VehicleComponent.gameObject);
-		}
-
-		VehicleComponent vehicleComponent = Instantiate(attachable.VehicleComponent, Helper.OutOfMapVector3, Quaternion.identity, this.transform);
-
-		this.hand = vehicleComponent as IAttachable;
 	}
 }

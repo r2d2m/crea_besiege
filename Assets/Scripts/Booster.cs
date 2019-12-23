@@ -47,6 +47,8 @@ public class BoosterSeed : VehicleLeafSeed
 [RequireComponent(typeof(Rigidbody))]
 public class Booster : VehicleLeaf, IAttachable
 {
+	private const KeyCode BoundKey = KeyCode.Space;
+
 	[SerializeField] BoxCollider box;
 
 	public float projectionForce = 2f;
@@ -57,19 +59,6 @@ public class Booster : VehicleLeaf, IAttachable
 	{
 		this.body = GetComponent<Rigidbody>();
 	}
-
-	private void Start()
-    {
-        
-    }
-
-	private void Update()
-    {
-        if (Input.GetKey(KeyCode.Space))
-		{
-			Use();
-		}
-    }
 
 	protected new BoosterSeed Seed
 	{
@@ -125,9 +114,17 @@ public class Booster : VehicleLeaf, IAttachable
 		return this.joint;
 	}
 
-	public void Use()
+	private void OnInputReceived(KeyCode key)
 	{
-		this.body.AddForce(this.Projection);
+		if (key == BoundKey)
+		{
+			this.body.AddForce(this.Projection);
+		}
+	}
+
+	public void SubscribeToInputEvents()
+	{
+		this.Vehicle.onInputReceived += OnInputReceived;
 	}
 
 	public bool IsSetupable(Block block, Vector3 direction)
@@ -148,6 +145,7 @@ public class Booster : VehicleLeaf, IAttachable
 		this.transform.rotation = ComputeSetupRotation(block, direction);
 
 		Join(block);
+		SubscribeToInputEvents();
 	}
 
 	public override void Setup(string json)
@@ -157,6 +155,7 @@ public class Booster : VehicleLeaf, IAttachable
 		var seed = BoosterSeed.FromJson(json);
 		
 		Join(this.LinkedBlock, seed.connectedAnchor);
+		SubscribeToInputEvents();
 	}
 
 	public override string ToJson()

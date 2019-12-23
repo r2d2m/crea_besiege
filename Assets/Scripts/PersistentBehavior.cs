@@ -60,7 +60,7 @@ public class PersistentBehavior<T> : MonoBehaviour
 			string typeName = "PersistentBehavior<" + typeof(T).ToString() + ">";
 
 			Debug.Assert(InstancePtr != null, 
-				typeName + " is not initialized");
+				typeName + " is not initialized, you probably forgot to add it to the scene " + Helper.PersistentSceneName);
 
 			if (InstancePtr != null)
 			{
@@ -79,4 +79,9 @@ public class PersistentBehavior<T> : MonoBehaviour
             return Instance.gameObject;
         }
     }
+
+	public static bool InstanceExists
+	{
+		get => InstancePtr != null;
+	}
 }
