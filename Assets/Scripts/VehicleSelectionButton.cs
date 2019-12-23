@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -53,9 +54,16 @@ public class VehicleSelectionButton : MonoBehaviour
 
 			this.deleteButton.AddListener(() =>
 			{
-				VehicleIO.Remove(vehicleName);
-
-				this.onDelete();
+				try
+				{
+					VehicleIO.Remove(vehicleName);
+					VehicleSpawner.Pick = null;
+					this.onDelete();
+				}
+				catch (Exception exception)
+				{
+					Debug.LogError(exception.Message);
+				}
 			});
 
 			this.textComponent.text = vehicleName;
