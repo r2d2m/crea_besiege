@@ -50,7 +50,7 @@ public class AttachableBlock : Block, IAttachable
 
 	private Collider[] OverlapBox(Vector3 position)
 	{
-		return Physics.OverlapBox(position, this.Bounds.extents, Quaternion.identity, Helper.BlockLayerMask);
+		return Physics.OverlapBox(position, this.Bounds.extents, Quaternion.identity, Helper.DefaultLayerMask);
 	}
 
 	protected new AttachableBlockSeed Seed
@@ -71,7 +71,6 @@ public class AttachableBlock : Block, IAttachable
 		Debug.Assert(IsSetupable(block, direction));
 
 		this.transform.position = ComputeSetupPosition(block, direction);
-		Physics.SyncTransforms();
 
 		foreach (BoxCollider box in this.LinkageBoxes)
 		{
