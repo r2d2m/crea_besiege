@@ -16,3 +16,4 @@ obj/
 ProjectSettings/ProBuilderSettings.json
 
 Build/
+*.sln
