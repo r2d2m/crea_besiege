@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class VehicleEditionScene : MonoBehaviour
 {
-	public const string Name = "VehicleEdition";
+    public const string Name = "VehicleEdition";
 
-	public static string ToLoadOnNextStart = null;
+    public static string ToLoadOnNextStart = null;
 
-	void Start()
+    void Start()
     {
-		if (ToLoadOnNextStart != null)
-		{
-			VehicleIO.Load(ToLoadOnNextStart);
-			ToLoadOnNextStart = null;
-		}
-		else
-		{
-			Vehicle.CreateDefault();
-		}
+        if (ToLoadOnNextStart != null)
+        {
+            VehicleIO.Load(ToLoadOnNextStart);
+            ToLoadOnNextStart = null;
+        }
+        else
+        {
+            Vehicle.CreateDefault();
+        }
     }
 
     void Update()

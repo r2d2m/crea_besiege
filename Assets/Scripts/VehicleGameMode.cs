@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class VehicleGameMode : MonoBehaviour
 {
-	public static VehicleGameMode Create()
-	{
-		return Instantiate(Prefabs.VehicleGameMode);
-	}
+    public static VehicleGameMode Create()
+    {
+        return Instantiate(Prefabs.VehicleGameMode);
+    }
 }

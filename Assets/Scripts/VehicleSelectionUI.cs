@@ -6,51 +6,51 @@ using UnityEngine.UI;
 
 public class VehicleSelectionUI : MonoBehaviour
 {
-	[SerializeField] Button newButton;
-	[SerializeField] VehicleSelectionButton[] vehicleButtons;
+    [SerializeField] Button newButton;
+    [SerializeField] VehicleSelectionButton[] vehicleButtons;
 
     void Start()
     {
-		this.newButton.onClick.AddListener(() =>
-		{
-			VehicleEditionScene.ToLoadOnNextStart = null;
-			Helper.LoadSingleActiveScene(VehicleEditionScene.Name);
-		});
+        this.newButton.onClick.AddListener(() =>
+        {
+            VehicleEditionScene.ToLoadOnNextStart = null;
+            Helper.LoadSingleActiveScene(VehicleEditionScene.Name);
+        });
 
-		foreach (var button in this.vehicleButtons)
-		{
-			button.onDelete += () =>
-			{
-				LoadUserVehicleNames();
-			};
-		}
+        foreach (var button in this.vehicleButtons)
+        {
+            button.onDelete += () =>
+            {
+                LoadUserVehicleNames();
+            };
+        }
 
-		LoadUserVehicleNames();
-	}
+        LoadUserVehicleNames();
+    }
 
     void Update()
     {
         
     }
 
-	private void UnlinkVehicleButtons()
-	{
-		foreach (var button in this.vehicleButtons)
-		{
-			button.Unlink();
-		}
-	}
+    private void UnlinkVehicleButtons()
+    {
+        foreach (var button in this.vehicleButtons)
+        {
+            button.Unlink();
+        }
+    }
 
-	private void LoadUserVehicleNames()
-	{
-		UnlinkVehicleButtons();
+    private void LoadUserVehicleNames()
+    {
+        UnlinkVehicleButtons();
 
-		string[] userVehicleNames = VehicleIO.GetUserVehicleNames();
-		int minCount = Mathf.Min(userVehicleNames.Length, this.vehicleButtons.Length);
+        string[] userVehicleNames = VehicleIO.GetUserVehicleNames();
+        int minCount = Mathf.Min(userVehicleNames.Length, this.vehicleButtons.Length);
 
-		for (int i = 0; i < minCount; ++i)
-		{
-			this.vehicleButtons[i].Link(userVehicleNames[i]);
-		}
-	}
+        for (int i = 0; i < minCount; ++i)
+        {
+            this.vehicleButtons[i].Link(userVehicleNames[i]);
+        }
+    }
 }

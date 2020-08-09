@@ -6,20 +6,20 @@ using UnityEngine.UI;
 [RequireComponent(typeof(PushButton))]
 public class SceneLoaderButton : MonoBehaviour
 {
-	[SerializeField] private string sceneName;
+    [SerializeField] private string sceneName;
 
-	private PushButton button;
+    private PushButton button;
 
-	private void Awake()
-	{
-		this.button = GetComponent<PushButton>();
-	}
-
-	private void Start()
+    private void Awake()
     {
-		this.button.AddListener(() =>
-		{
-			Helper.LoadSingleActiveScene(this.sceneName);
-		});
+        this.button = GetComponent<PushButton>();
+    }
+
+    private void Start()
+    {
+        this.button.AddListener(() =>
+        {
+            Helper.LoadSingleActiveScene(this.sceneName);
+        });
     }
 }

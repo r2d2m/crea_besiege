@@ -7,15 +7,15 @@ public class DebugInputs : MonoBehaviour
 {
 #if UNITY_EDITOR
 
-	void Start()
+    void Start()
     {
-		
+        
     }
 
     void Update()
     {
         
-	}
+    }
 
 #endif
 }

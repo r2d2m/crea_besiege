@@ -5,47 +5,47 @@ using UnityEngine;
 
 public class CoreBlockSeed : BlockSeed
 {
-	private const VehicleComponentType Type = VehicleComponentType.CoreBlock;
+    private const VehicleComponentType Type = VehicleComponentType.CoreBlock;
 
-	public CoreBlockSeed()
-	{
-		this.type = Type;
-	}
+    public CoreBlockSeed()
+    {
+        this.type = Type;
+    }
 
-	public CoreBlockSeed(BlockSeed parent) : base(parent)
-	{
-		this.type = Type;
-	}
+    public CoreBlockSeed(BlockSeed parent) : base(parent)
+    {
+        this.type = Type;
+    }
 
-	public static new CoreBlockSeed FromJson(string json)
-	{
-		var seed = JsonUtility.FromJson<CoreBlockSeed>(json);
+    public static new CoreBlockSeed FromJson(string json)
+    {
+        var seed = JsonUtility.FromJson<CoreBlockSeed>(json);
 
-		if (!seed.IsDataValid)
-		{
-			throw new Exception("Invalid data in json file : " + json);
-		}
+        if (!seed.IsDataValid)
+        {
+            throw new Exception("Invalid data in json file : " + json);
+        }
 
-		return seed;
-	}
+        return seed;
+    }
 }
 
 public class CoreBlock : Block
 {
-	protected new CoreBlockSeed Seed
-	{
-		get => new CoreBlockSeed(base.Seed);
-	}
+    protected new CoreBlockSeed Seed
+    {
+        get => new CoreBlockSeed(base.Seed);
+    }
 
-	public override string ToJson()
-	{
-		// Not calling base class method is intentional
+    public override string ToJson()
+    {
+        // Not calling base class method is intentional
 
-		return this.Seed.ToJson();
-	}
+        return this.Seed.ToJson();
+    }
 
-	public override void Setup(string json)
-	{
-		base.Setup(json);
-	}
+    public override void Setup(string json)
+    {
+        base.Setup(json);
+    }
 }

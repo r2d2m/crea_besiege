@@ -9,7 +9,7 @@ using UnityEngine;
 // MySingleton singleton = new MySingleton();
 // which is certainly not what you want.
 // - PersistentBehavior<T> must use the Awake() function to reference itself, 
-//	so don't forget to call the Awake() function of PersistentBehavior<T> with base.Awake() when overriding it.
+//    so don't forget to call the Awake() function of PersistentBehavior<T> with base.Awake() when overriding it.
 //
 // See code example here :
 
@@ -21,52 +21,52 @@ using UnityEngine;
 //
 //      protected override void Awake()
 //      {
-//			base.Awake();
+//            base.Awake();
 //      }
 //  }
 
 public class PersistentBehavior<T> : MonoBehaviour
     where T : PersistentBehavior<T>
 {
-	protected struct CtorArgType { }
+    protected struct CtorArgType { }
 
-	
+    
 
-	private static T InstancePtr;
+    private static T InstancePtr;
 
-	protected static readonly CtorArgType CtorArg;
+    protected static readonly CtorArgType CtorArg;
 
-	protected PersistentBehavior(CtorArgType arg)
-	{
+    protected PersistentBehavior(CtorArgType arg)
+    {
 
-	}
+    }
 
-	protected virtual void Awake()
-	{
-		if (InstancePtr == null)
-		{
-			InstancePtr = (T)this;
-		}
-		else
-		{
-			Destroy(this.gameObject);
-		}
-	}
+    protected virtual void Awake()
+    {
+        if (InstancePtr == null)
+        {
+            InstancePtr = (T)this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
     protected static T Instance
     {
         get
         {
-			string typeName = "PersistentBehavior<" + typeof(T).ToString() + ">";
+            string typeName = "PersistentBehavior<" + typeof(T).ToString() + ">";
 
-			Debug.Assert(InstancePtr != null, 
-				typeName + " is not initialized, you probably forgot to add it to the scene " + Helper.PersistentSceneName);
+            Debug.Assert(InstancePtr != null, 
+                typeName + " is not initialized, you probably forgot to add it to the scene " + Helper.PersistentSceneName);
 
-			if (InstancePtr != null)
-			{
-				Debug.Assert(InstancePtr.gameObject.scene.name == Helper.PersistentSceneName, 
-					typeName + " has not been initialized on the scene " + Helper.PersistentSceneName);
-			}
+            if (InstancePtr != null)
+            {
+                Debug.Assert(InstancePtr.gameObject.scene.name == Helper.PersistentSceneName, 
+                    typeName + " has not been initialized on the scene " + Helper.PersistentSceneName);
+            }
 
             return InstancePtr;
         }
@@ -80,8 +80,8 @@ public class PersistentBehavior<T> : MonoBehaviour
         }
     }
 
-	public static bool InstanceExists
-	{
-		get => InstancePtr != null;
-	}
+    public static bool InstanceExists
+    {
+        get => InstancePtr != null;
+    }
 }

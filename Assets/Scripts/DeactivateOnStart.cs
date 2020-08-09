@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class DeactivateOnStart : MonoBehaviour
 {
-	public bool no = false;
+    public bool no = false;
 
     void Start()
     {
-		if (!this.no)
-		{
-			this.gameObject.SetActive(false);
-		}
+        if (!this.no)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 }

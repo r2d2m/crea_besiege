@@ -5,181 +5,181 @@ using UnityEngine;
 
 public class BoosterSeed : VehicleLeafSeed
 {
-	private const VehicleComponentType Type = VehicleComponentType.Booster;
+    private const VehicleComponentType Type = VehicleComponentType.Booster;
 
-	public Vector3 connectedAnchor = Helper.MaxVector3;
+    public Vector3 connectedAnchor = Helper.MaxVector3;
 
-	public BoosterSeed()
-	{
-		this.type = Type;
-	}
+    public BoosterSeed()
+    {
+        this.type = Type;
+    }
 
-	public BoosterSeed(BoosterSeed other)
-	{
-		this.type = Type;
-		this.connectedAnchor = other.connectedAnchor;
-	}
+    public BoosterSeed(BoosterSeed other)
+    {
+        this.type = Type;
+        this.connectedAnchor = other.connectedAnchor;
+    }
 
-	public BoosterSeed(VehicleLeafSeed parent) : base(parent)
-	{
-		this.type = Type;
-	}
+    public BoosterSeed(VehicleLeafSeed parent) : base(parent)
+    {
+        this.type = Type;
+    }
 
-	public new bool IsDataValid
-	{
-		get => this.connectedAnchor != Helper.MaxVector3
-			&& base.IsDataValid;
-	}
+    public new bool IsDataValid
+    {
+        get => this.connectedAnchor != Helper.MaxVector3
+            && base.IsDataValid;
+    }
 
-	public static new BoosterSeed FromJson(string json)
-	{
-		var seed = JsonUtility.FromJson<BoosterSeed>(json);
+    public static new BoosterSeed FromJson(string json)
+    {
+        var seed = JsonUtility.FromJson<BoosterSeed>(json);
 
-		if (!seed.IsDataValid)
-		{
-			throw new Exception("Invalid data in json file. Json : " + json);
-		}
+        if (!seed.IsDataValid)
+        {
+            throw new Exception("Invalid data in json file. Json : " + json);
+        }
 
-		return seed;
-	}
+        return seed;
+    }
 }
 
 [RequireComponent(typeof(Rigidbody))]
 public class Booster : VehicleLeaf, IAttachable
 {
-	private const KeyCode BoundKey = KeyCode.Space;
+    private const KeyCode BoundKey = KeyCode.Space;
 
-	[SerializeField] BoxCollider box;
+    [SerializeField] BoxCollider box;
 
-	public float projectionForce = 2f;
-	Rigidbody body;
-	FixedJoint joint;
+    public float projectionForce = 2f;
+    Rigidbody body;
+    FixedJoint joint;
 
-	private void Awake()
-	{
-		this.body = GetComponent<Rigidbody>();
-	}
+    private void Awake()
+    {
+        this.body = GetComponent<Rigidbody>();
+    }
 
-	protected new BoosterSeed Seed
-	{
-		get
-		{
-			Debug.Assert(this.joint != null);
+    protected new BoosterSeed Seed
+    {
+        get
+        {
+            Debug.Assert(this.joint != null);
 
-			var seed = new BoosterSeed(base.Seed);
-			seed.connectedAnchor = this.joint.connectedAnchor;
+            var seed = new BoosterSeed(base.Seed);
+            seed.connectedAnchor = this.joint.connectedAnchor;
 
-			return seed;
-		}
-	}
+            return seed;
+        }
+    }
 
-	private Collider[] OverlapBox(Vector3 position, Quaternion rotation)
-	{
-		return Physics.OverlapBox(position, this.Bounds.extents, rotation, Helper.DefaultLayerMask);
-	}
+    private Collider[] OverlapBox(Vector3 position, Quaternion rotation)
+    {
+        return Physics.OverlapBox(position, this.Bounds.extents, rotation, Helper.DefaultLayerMask);
+    }
 
-	private Quaternion ComputeSetupRotation(Block block, Vector3 direction)
-	{
-		return Quaternion.FromToRotation(-this.ProjectionDirection, direction);
-	}
+    private Quaternion ComputeSetupRotation(Block block, Vector3 direction)
+    {
+        return Quaternion.FromToRotation(-this.ProjectionDirection, direction);
+    }
 
-	private Vector3 ComputeSetupPosition(Block block, Vector3 direction)
-	{
-		const float gap = 0.001f;
+    private Vector3 ComputeSetupPosition(Block block, Vector3 direction)
+    {
+        const float gap = 0.001f;
 
-		this.box.transform.rotation = ComputeSetupRotation(block, direction);
+        this.box.transform.rotation = ComputeSetupRotation(block, direction);
 
-		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
+        Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
 
-		this.box.transform.rotation = Quaternion.identity;
+        this.box.transform.rotation = Quaternion.identity;
 
-		return block.Bounds.center + translation + direction * gap;
-	}
+        return block.Bounds.center + translation + direction * gap;
+    }
 
-	private FixedJoint Join(Block block)
-	{
-		this.joint = this.gameObject.AddComponent<FixedJoint>();
-		this.joint.connectedBody = block.RigidBody;
+    private FixedJoint Join(Block block)
+    {
+        this.joint = this.gameObject.AddComponent<FixedJoint>();
+        this.joint.connectedBody = block.RigidBody;
 
-		return this.joint;
-	}
+        return this.joint;
+    }
 
-	private FixedJoint Join(Block block, Vector3 connectedAnchor)
-	{
-		this.joint = Join(block);
-		this.joint.connectedAnchor = connectedAnchor;
+    private FixedJoint Join(Block block, Vector3 connectedAnchor)
+    {
+        this.joint = Join(block);
+        this.joint.connectedAnchor = connectedAnchor;
 
-		return this.joint;
-	}
+        return this.joint;
+    }
 
-	private void OnInputReceived(KeyCode key)
-	{
-		if (key == BoundKey)
-		{
-			this.body.AddForce(this.Projection);
-		}
-	}
+    private void OnInputReceived(KeyCode key)
+    {
+        if (key == BoundKey)
+        {
+            this.body.AddForce(this.Projection);
+        }
+    }
 
-	public void SubscribeToInputEvents()
-	{
-		this.Vehicle.onInputReceived += OnInputReceived;
-	}
+    public void SubscribeToInputEvents()
+    {
+        this.Vehicle.onInputReceived += OnInputReceived;
+    }
 
-	public bool IsSetupable(Block block, Vector3 direction)
-	{
-		Vector3 position = ComputeSetupPosition(block, direction);
-		Quaternion rotation = ComputeSetupRotation(block, direction);
+    public bool IsSetupable(Block block, Vector3 direction)
+    {
+        Vector3 position = ComputeSetupPosition(block, direction);
+        Quaternion rotation = ComputeSetupRotation(block, direction);
 
-		Collider[] colliders = OverlapBox(position, rotation);
+        Collider[] colliders = OverlapBox(position, rotation);
 
-		return colliders.Length == 0;
-	}
+        return colliders.Length == 0;
+    }
 
-	public void Setup(Block block, Vector3 direction)
-	{
-		this.LinkedBlock = block;
+    public void Setup(Block block, Vector3 direction)
+    {
+        this.LinkedBlock = block;
 
-		this.transform.position = ComputeSetupPosition(block, direction);
-		this.transform.rotation = ComputeSetupRotation(block, direction);
+        this.transform.position = ComputeSetupPosition(block, direction);
+        this.transform.rotation = ComputeSetupRotation(block, direction);
 
-		Join(block);
-		SubscribeToInputEvents();
-	}
+        Join(block);
+        SubscribeToInputEvents();
+    }
 
-	public override void Setup(string json)
-	{
-		base.Setup(json);
+    public override void Setup(string json)
+    {
+        base.Setup(json);
 
-		var seed = BoosterSeed.FromJson(json);
-		
-		Join(this.LinkedBlock, seed.connectedAnchor);
-		SubscribeToInputEvents();
-	}
+        var seed = BoosterSeed.FromJson(json);
+        
+        Join(this.LinkedBlock, seed.connectedAnchor);
+        SubscribeToInputEvents();
+    }
 
-	public override string ToJson()
-	{
-		// Not calling base class method is intentional
+    public override string ToJson()
+    {
+        // Not calling base class method is intentional
 
-		return this.Seed.ToJson();
-	}
+        return this.Seed.ToJson();
+    }
 
-	public VehicleComponent VehicleComponent
-	{
-		get => this;
-	}
+    public VehicleComponent VehicleComponent
+    {
+        get => this;
+    }
 
-	public Vector3 ProjectionDirection
-	{
-		get => -this.transform.up;
-	}
+    public Vector3 ProjectionDirection
+    {
+        get => -this.transform.up;
+    }
 
-	public Vector3 Projection
-	{
-		get => this.ProjectionDirection * this.projectionForce;
-	}
+    public Vector3 Projection
+    {
+        get => this.ProjectionDirection * this.projectionForce;
+    }
 
-	public Bounds Bounds
-	{
-		get => this.box.bounds;
-	}
+    public Bounds Bounds
+    {
+        get => this.box.bounds;
+    }
 }

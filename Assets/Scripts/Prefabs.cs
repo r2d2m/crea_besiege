@@ -4,15 +4,15 @@ using UnityEngine;
 
 public sealed class Prefabs : PersistentBehavior<Prefabs>
 {
-	[SerializeField] private CoreBlock coreBlockPrefab;
-	[SerializeField] private CoreBlock missingDLCBlockPrefab;
-	[SerializeField] private AttachableBlock attachableBlockPrefab;
-	[SerializeField] private Wheel wheelPrefab;
-	[SerializeField] private Booster boosterPrefab;
-	[SerializeField] private Vehicle emptyVehiclePrefab;
-	[SerializeField] private Vehicle defaultVehiclePrefab;
-	[SerializeField] private Vehicle missingDLCVehiclePrefab;
-	[SerializeField] private VehicleGameMode vehicleGameModePrefab;
+    [SerializeField] private CoreBlock coreBlockPrefab;
+    [SerializeField] private CoreBlock missingDLCBlockPrefab;
+    [SerializeField] private AttachableBlock attachableBlockPrefab;
+    [SerializeField] private Wheel wheelPrefab;
+    [SerializeField] private Booster boosterPrefab;
+    [SerializeField] private Vehicle emptyVehiclePrefab;
+    [SerializeField] private Vehicle defaultVehiclePrefab;
+    [SerializeField] private Vehicle missingDLCVehiclePrefab;
+    [SerializeField] private VehicleGameMode vehicleGameModePrefab;
 
     private Prefabs() :
         base(CtorArg)
@@ -20,51 +20,51 @@ public sealed class Prefabs : PersistentBehavior<Prefabs>
 
     protected override void Awake()
     {
-		base.Awake();
+        base.Awake();
     }
 
-	public static CoreBlock CoreBlock
-	{
-		get => Instance.coreBlockPrefab;
-	}
+    public static CoreBlock CoreBlock
+    {
+        get => Instance.coreBlockPrefab;
+    }
 
-	public static CoreBlock MissingDLCBlock
-	{
-		get => Instance.missingDLCBlockPrefab;
-	}
+    public static CoreBlock MissingDLCBlock
+    {
+        get => Instance.missingDLCBlockPrefab;
+    }
 
-	public static AttachableBlock AttachableBlock
-	{
-		get => Instance.attachableBlockPrefab;
-	}
+    public static AttachableBlock AttachableBlock
+    {
+        get => Instance.attachableBlockPrefab;
+    }
 
-	public static Wheel Wheel
-	{
-		get => Instance.wheelPrefab;
-	}
+    public static Wheel Wheel
+    {
+        get => Instance.wheelPrefab;
+    }
 
-	public static Booster Booster
-	{
-		get => Instance.boosterPrefab;
-	}
+    public static Booster Booster
+    {
+        get => Instance.boosterPrefab;
+    }
 
-	public static Vehicle EmptyVehicle
-	{
-		get => Instance.emptyVehiclePrefab;
-	}
+    public static Vehicle EmptyVehicle
+    {
+        get => Instance.emptyVehiclePrefab;
+    }
 
-	public static Vehicle DefaultVehicle
-	{
-		get => Instance.defaultVehiclePrefab;
-	}
+    public static Vehicle DefaultVehicle
+    {
+        get => Instance.defaultVehiclePrefab;
+    }
 
-	public static Vehicle MissingDLCVehicle
-	{
-		get => Instance.missingDLCVehiclePrefab;
-	}
+    public static Vehicle MissingDLCVehicle
+    {
+        get => Instance.missingDLCVehiclePrefab;
+    }
 
-	public static VehicleGameMode VehicleGameMode
-	{
-		get => Instance.vehicleGameModePrefab;
-	}
+    public static VehicleGameMode VehicleGameMode
+    {
+        get => Instance.vehicleGameModePrefab;
+    }
 }

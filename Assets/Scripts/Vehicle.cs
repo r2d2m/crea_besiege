@@ -5,286 +5,286 @@ using UnityEngine;
 
 class VehicleHeader
 {
-	public uint snapshot = uint.MaxValue;
+    public uint snapshot = uint.MaxValue;
 
-	public bool IsDataValid
-	{
-		get => this.snapshot != uint.MaxValue;
-	}
+    public bool IsDataValid
+    {
+        get => this.snapshot != uint.MaxValue;
+    }
 
-	public string ToJson()
-	{
-		return JsonUtility.ToJson(this, true);
-	}
+    public string ToJson()
+    {
+        return JsonUtility.ToJson(this, true);
+    }
 
-	public static VehicleHeader FromJson(string json)
-	{
-		var header = JsonUtility.FromJson<VehicleHeader>(json);
-		if (!header.IsDataValid)
-		{
-			throw new Exception("Invalid data in json file. Json : " + json);
-		}
+    public static VehicleHeader FromJson(string json)
+    {
+        var header = JsonUtility.FromJson<VehicleHeader>(json);
+        if (!header.IsDataValid)
+        {
+            throw new Exception("Invalid data in json file. Json : " + json);
+        }
 
-		return header;
-	}
+        return header;
+    }
 }
 
 public class Vehicle : MonoBehaviour, IJsonSerializable
 {
-	public delegate void OnInputReceived(KeyCode key);
+    public delegate void OnInputReceived(KeyCode key);
 
-	public static Vehicle Current = null;
+    public static Vehicle Current = null;
 
-	[SerializeField] private CoreBlock coreBlockPrefab;
+    [SerializeField] private CoreBlock coreBlockPrefab;
 
-	private CoreBlock coreBlock;
-	private IDGenerator idGenerator;
-	private Dictionary<uint, VehicleComponent> components = new Dictionary<uint, VehicleComponent>();
+    private CoreBlock coreBlock;
+    private IDGenerator idGenerator;
+    private Dictionary<uint, VehicleComponent> components = new Dictionary<uint, VehicleComponent>();
 
-	public OnInputReceived onInputReceived = (KeyCode key) => { };
+    public OnInputReceived onInputReceived = (KeyCode key) => { };
 
-	private void Awake()
-	{
-		Current = this;
-	}
+    private void Awake()
+    {
+        Current = this;
+    }
 
-	private void Start()
+    private void Start()
     {
         if (this.coreBlockPrefab != null)
-		{
-			this.coreBlock = AddChild(this.coreBlockPrefab).GetComponent<CoreBlock>();
-		}
-	}
+        {
+            this.coreBlock = AddChild(this.coreBlockPrefab).GetComponent<CoreBlock>();
+        }
+    }
 
-	private uint GenerateID()
-	{
-		return this.idGenerator.Generate();
-	}
+    private uint GenerateID()
+    {
+        return this.idGenerator.Generate();
+    }
 
-	private VehicleComponent AddChild(VehicleComponent component, uint id)
-	{
-		var newGameObject = Instantiate(component.gameObject, this.transform);
+    private VehicleComponent AddChild(VehicleComponent component, uint id)
+    {
+        var newGameObject = Instantiate(component.gameObject, this.transform);
 
-		var newComponent = newGameObject.GetComponent<VehicleComponent>();
+        var newComponent = newGameObject.GetComponent<VehicleComponent>();
 
-		if (newComponent is CoreBlock)
-		{
-			this.coreBlock = newComponent as CoreBlock;
-		}
+        if (newComponent is CoreBlock)
+        {
+            this.coreBlock = newComponent as CoreBlock;
+        }
 
-		this.components.Add(id, newComponent);
+        this.components.Add(id, newComponent);
 
-		newComponent.SetIdentity(this, id);
+        newComponent.SetIdentity(this, id);
 
-		return newComponent;
-	}
+        return newComponent;
+    }
 
-	private VehicleComponent AddChild(VehicleComponent component)
-	{
-		return AddChild(component, GenerateID());
-	}
+    private VehicleComponent AddChild(VehicleComponent component)
+    {
+        return AddChild(component, GenerateID());
+    }
 
-	private VehicleComponent AddChild(VehicleComponentType type, uint id)
-	{
-		switch (type)
-		{
-			case VehicleComponentType.CoreBlock: return AddChild(Prefabs.CoreBlock, id);
-			
-			case VehicleComponentType.AttachableBlock: return AddChild(Prefabs.AttachableBlock, id);
+    private VehicleComponent AddChild(VehicleComponentType type, uint id)
+    {
+        switch (type)
+        {
+            case VehicleComponentType.CoreBlock: return AddChild(Prefabs.CoreBlock, id);
+            
+            case VehicleComponentType.AttachableBlock: return AddChild(Prefabs.AttachableBlock, id);
 
-			case VehicleComponentType.Wheel: return AddChild(Prefabs.Wheel, id);
+            case VehicleComponentType.Wheel: return AddChild(Prefabs.Wheel, id);
 
-			case VehicleComponentType.Booster: return AddChild(Prefabs.Booster, id);
+            case VehicleComponentType.Booster: return AddChild(Prefabs.Booster, id);
 
-			case VehicleComponentType.BlockDLC:
-			{
-				var dlc = DLCManager.PatchDayOne;
-				if (!dlc.IsLoaded)
-				{
-					throw new Exception("Missing DLC");
-				}
+            case VehicleComponentType.BlockDLC:
+            {
+                var dlc = DLCManager.PatchDayOne;
+                if (!dlc.IsLoaded)
+                {
+                    throw new Exception("Missing DLC");
+                }
 
-				return AddChild(dlc.Block, id);
-			}
+                return AddChild(dlc.Block, id);
+            }
 
-			default: Debug.LogError("Invalid type"); break;
-		}
+            default: Debug.LogError("Invalid type"); break;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	private VehicleComponent AddChild(VehicleComponentType type)
-	{
-		return AddChild(type, GenerateID());
-	}
+    private VehicleComponent AddChild(VehicleComponentType type)
+    {
+        return AddChild(type, GenerateID());
+    }
 
-	private VehicleComponent AddChild(string jsonComponent)
-	{
-		var seed = VehicleComponentSeed.FromJson(jsonComponent);
-		return AddChild(seed.type, seed.id);
-	}
+    private VehicleComponent AddChild(string jsonComponent)
+    {
+        var seed = VehicleComponentSeed.FromJson(jsonComponent);
+        return AddChild(seed.type, seed.id);
+    }
 
-	private Dictionary<uint, string> AddChilds(string[] jsonComponents)
-	{
-		var jsonMap = new Dictionary<uint, string>();
+    private Dictionary<uint, string> AddChilds(string[] jsonComponents)
+    {
+        var jsonMap = new Dictionary<uint, string>();
 
-		foreach (string jsonComponent in jsonComponents)
-		{
-			uint id = AddChild(jsonComponent).ID;
-			jsonMap.Add(id, jsonComponent);
-		}
+        foreach (string jsonComponent in jsonComponents)
+        {
+            uint id = AddChild(jsonComponent).ID;
+            jsonMap.Add(id, jsonComponent);
+        }
 
-		return jsonMap;
-	}
+        return jsonMap;
+    }
 
-	private void SetupChild(uint id, string json)
-	{
-		VehicleComponent component = null;
-		if (this.components.TryGetValue(id, out component))
-		{
-			component.Setup(json);
-		}
-		else
-		{
-			Debug.LogError("No VehicleComponent found with id " + id);
-		}
-	}
+    private void SetupChild(uint id, string json)
+    {
+        VehicleComponent component = null;
+        if (this.components.TryGetValue(id, out component))
+        {
+            component.Setup(json);
+        }
+        else
+        {
+            Debug.LogError("No VehicleComponent found with id " + id);
+        }
+    }
 
-	private void SetupChilds(Dictionary<uint, string> jsonMap)
-	{
-		foreach (var pair in jsonMap)
-		{
-			VehicleComponent component = null;
-			if (this.components.TryGetValue(pair.Key, out component))
-			{
-				component.Setup(pair.Value);
-			}
-			else
-			{
-				Debug.LogError("No VehicleComponent found with id " + pair.Key);
-			}
-		}
-	}
+    private void SetupChilds(Dictionary<uint, string> jsonMap)
+    {
+        foreach (var pair in jsonMap)
+        {
+            VehicleComponent component = null;
+            if (this.components.TryGetValue(pair.Key, out component))
+            {
+                component.Setup(pair.Value);
+            }
+            else
+            {
+                Debug.LogError("No VehicleComponent found with id " + pair.Key);
+            }
+        }
+    }
 
-	private VehicleHeader Header
-	{
-		get
-		{
-			var header = new VehicleHeader();
-			header.snapshot = this.idGenerator.Snapshot;
+    private VehicleHeader Header
+    {
+        get
+        {
+            var header = new VehicleHeader();
+            header.snapshot = this.idGenerator.Snapshot;
 
-			return header;
-		}
-	}
+            return header;
+        }
+    }
 
-	public void PropagateInput(KeyCode key)
-	{
-		this.onInputReceived(key);
-	}
+    public void PropagateInput(KeyCode key)
+    {
+        this.onInputReceived(key);
+    }
 
-	public VehicleComponent GetChildFromID(uint id)
-	{
-		VehicleComponent component;
-		if (this.components.TryGetValue(id, out component))
-		{
-			return component;
-		}
+    public VehicleComponent GetChildFromID(uint id)
+    {
+        VehicleComponent component;
+        if (this.components.TryGetValue(id, out component))
+        {
+            return component;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	public T GetChildFromIDNothrow<T>(uint id) where T : VehicleComponent
-	{
-		return GetChildFromID(id) as T;
-	}
+    public T GetChildFromIDNothrow<T>(uint id) where T : VehicleComponent
+    {
+        return GetChildFromID(id) as T;
+    }
 
-	public T GetChildFromID<T>(uint id) where T : VehicleComponent
-	{
-		var child = GetChildFromIDNothrow<T>(id);
-		if (!child)
-		{
-			throw new Exception("Failed to cast object of type " + child.GetType() + " to " + typeof(T));
-		}
+    public T GetChildFromID<T>(uint id) where T : VehicleComponent
+    {
+        var child = GetChildFromIDNothrow<T>(id);
+        if (!child)
+        {
+            throw new Exception("Failed to cast object of type " + child.GetType() + " to " + typeof(T));
+        }
 
-		return child;
-	}
+        return child;
+    }
 
-	public string ToJson()
-	{
-		const string Separator = "\n\n/\n\n";
+    public string ToJson()
+    {
+        const string Separator = "\n\n/\n\n";
 
-		string json = this.Header.ToJson() + Separator;
+        string json = this.Header.ToJson() + Separator;
 
-		foreach (var pair in this.components)
-		{
-			json += pair.Value.ToJson() + Separator;
-		}
+        foreach (var pair in this.components)
+        {
+            json += pair.Value.ToJson() + Separator;
+        }
 
-		int lastSlashIndex = json.LastIndexOf('/');
-		json = json.Remove(lastSlashIndex);
+        int lastSlashIndex = json.LastIndexOf('/');
+        json = json.Remove(lastSlashIndex);
 
-		return json;
-	}
+        return json;
+    }
 
-	public void CreateAttachment(IAttachable attachable, Block block, Vector3 direction)
-	{
-		var newAttachable = AddChild(attachable.VehicleComponent).GetComponent<IAttachable>();
+    public void CreateAttachment(IAttachable attachable, Block block, Vector3 direction)
+    {
+        var newAttachable = AddChild(attachable.VehicleComponent).GetComponent<IAttachable>();
 
-		newAttachable.Setup(block, direction);
-	}
+        newAttachable.Setup(block, direction);
+    }
 
-	public CoreBlock CoreBlock
-	{
-		get => this.coreBlock;
-	}
+    public CoreBlock CoreBlock
+    {
+        get => this.coreBlock;
+    }
 
-	public static Vehicle CreateFromJson(string json)
-	{
-		string[] splitJson = json.Split('/');
-		if (splitJson.Length == 0)
-		{
-			throw new Exception("Unable to read file. Json : " + json);
-		}
+    public static Vehicle CreateFromJson(string json)
+    {
+        string[] splitJson = json.Split('/');
+        if (splitJson.Length == 0)
+        {
+            throw new Exception("Unable to read file. Json : " + json);
+        }
 
-		string headerJson = splitJson[0];
-		var header = VehicleHeader.FromJson(headerJson);
+        string headerJson = splitJson[0];
+        var header = VehicleHeader.FromJson(headerJson);
 
-		var vehicle = CreateEmpty();
+        var vehicle = CreateEmpty();
 
-		try
-		{
-			vehicle.idGenerator = new IDGenerator(header.snapshot);
+        try
+        {
+            vehicle.idGenerator = new IDGenerator(header.snapshot);
 
-			if (splitJson.Length > 1)
-			{
-				var jsonComponents = new string[splitJson.Length - 1];
-				Array.Copy(splitJson, 1, jsonComponents, 0, jsonComponents.Length);
+            if (splitJson.Length > 1)
+            {
+                var jsonComponents = new string[splitJson.Length - 1];
+                Array.Copy(splitJson, 1, jsonComponents, 0, jsonComponents.Length);
 
-				Dictionary<uint, string> jsonMap = vehicle.AddChilds(jsonComponents);
-				vehicle.SetupChilds(jsonMap);
-			}
-		}
-		catch (Exception)
-		{
-			Destroy(vehicle.gameObject);
-			CreateMissingDLC();
-		}
+                Dictionary<uint, string> jsonMap = vehicle.AddChilds(jsonComponents);
+                vehicle.SetupChilds(jsonMap);
+            }
+        }
+        catch (Exception)
+        {
+            Destroy(vehicle.gameObject);
+            CreateMissingDLC();
+        }
 
-		return vehicle;
-	}
+        return vehicle;
+    }
 
-	public static Vehicle CreateEmpty()
-	{
-		return Instantiate(Prefabs.EmptyVehicle);
-	}
+    public static Vehicle CreateEmpty()
+    {
+        return Instantiate(Prefabs.EmptyVehicle);
+    }
 
-	public static Vehicle CreateDefault()
-	{
-		return Instantiate(Prefabs.DefaultVehicle);
-	}
+    public static Vehicle CreateDefault()
+    {
+        return Instantiate(Prefabs.DefaultVehicle);
+    }
 
-	public static Vehicle CreateMissingDLC()
-	{
-		return Instantiate(Prefabs.MissingDLCVehicle);
-	}
+    public static Vehicle CreateMissingDLC()
+    {
+        return Instantiate(Prefabs.MissingDLCVehicle);
+    }
 }

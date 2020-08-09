@@ -5,15 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class Common : MonoBehaviour
 {
-	private void Awake()
-	{
-		if (!SceneManager.GetSceneByName(Helper.PersistentSceneName).IsValid())
-		{
-			SceneManager.LoadScene(Helper.PersistentSceneName, LoadSceneMode.Additive);
-		}
-	}
+    private void Awake()
+    {
+        if (!SceneManager.GetSceneByName(Helper.PersistentSceneName).IsValid())
+        {
+            SceneManager.LoadScene(Helper.PersistentSceneName, LoadSceneMode.Additive);
+        }
+    }
 
-	void Start()
+    void Start()
     {
         
     }

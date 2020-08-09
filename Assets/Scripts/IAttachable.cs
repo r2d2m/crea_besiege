@@ -4,9 +4,9 @@ using UnityEngine;
 
 public interface IAttachable
 {
-	void Setup(Block block, Vector3 direction);
+    void Setup(Block block, Vector3 direction);
 
-	bool IsSetupable(Block block, Vector3 direction);
+    bool IsSetupable(Block block, Vector3 direction);
 
-	VehicleComponent VehicleComponent { get; }
+    VehicleComponent VehicleComponent { get; }
 }

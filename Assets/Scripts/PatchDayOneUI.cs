@@ -5,27 +5,27 @@ using UnityEngine.UI;
 
 public class PatchDayOneUI : MonoBehaviour
 {
-	[SerializeField] private EditionHand hand;
-	[SerializeField] private Button button;
+    [SerializeField] private EditionHand hand;
+    [SerializeField] private Button button;
 
-	private void Awake()
-	{
-
-	}
-
-	private void Start()
+    private void Awake()
     {
-		PatchDayOneDLC dlc = DLCManager.PatchDayOne;
-		if (dlc.IsLoaded)
-		{
-			this.button.onClick.AddListener(() =>
-			{
-				this.hand.Pick(dlc.Block);
-			});
-		}
-		else
-		{
-			this.gameObject.SetActive(false);
-		}
+
+    }
+
+    private void Start()
+    {
+        PatchDayOneDLC dlc = DLCManager.PatchDayOne;
+        if (dlc.IsLoaded)
+        {
+            this.button.onClick.AddListener(() =>
+            {
+                this.hand.Pick(dlc.Block);
+            });
+        }
+        else
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 }

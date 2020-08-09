@@ -4,37 +4,37 @@ using UnityEngine;
 
 public class EditionHand : MonoBehaviour
 {
-	private IAttachable hand;
+    private IAttachable hand;
 
-	void Update()
+    void Update()
     {
 
     }
 
-	public void Pick(IAttachable attachable)
-	{
-		if (this.hand != null)
-		{
-			Destroy(this.hand.VehicleComponent.gameObject);
-		}
+    public void Pick(IAttachable attachable)
+    {
+        if (this.hand != null)
+        {
+            Destroy(this.hand.VehicleComponent.gameObject);
+        }
 
-		VehicleComponent vehicleComponent = Instantiate(attachable.VehicleComponent, Helper.OutOfMapVector3, Quaternion.identity, this.transform);
+        VehicleComponent vehicleComponent = Instantiate(attachable.VehicleComponent, Helper.OutOfMapVector3, Quaternion.identity, this.transform);
 
-		this.hand = vehicleComponent as IAttachable;
-	}
+        this.hand = vehicleComponent as IAttachable;
+    }
 
-	public bool IsSetupable(Block block, Vector3 direction)
-	{
-		return this.hand != null && this.hand.IsSetupable(block, direction);
-	}
+    public bool IsSetupable(Block block, Vector3 direction)
+    {
+        return this.hand != null && this.hand.IsSetupable(block, direction);
+    }
 
-	public void Setup(Block block, Vector3 direction)
-	{
-		Vehicle.Current.CreateAttachment(this.hand, block, direction);
-	}
+    public void Setup(Block block, Vector3 direction)
+    {
+        Vehicle.Current.CreateAttachment(this.hand, block, direction);
+    }
 
-	public IAttachable Attachable
-	{
-		get => this.hand;
-	}
+    public IAttachable Attachable
+    {
+        get => this.hand;
+    }
 }

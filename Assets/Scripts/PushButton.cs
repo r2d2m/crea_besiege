@@ -7,48 +7,48 @@ using UnityEngine.EventSystems;
 [RequireComponent(typeof(Button))]
 public class PushButton : MonoBehaviour
 {
-	private Button button;
-	private Callback onClick = () => { };
+    private Button button;
+    private Callback onClick = () => { };
 
-	private void Awake()
-	{
-		this.button = GetComponent<Button>();
-		
-		this.onClick = () =>
-		{
-			if (EventSystem.current != null)
-			{
-				EventSystem.current.SetSelectedGameObject(null);
-			}
-		};
-	}
+    private void Awake()
+    {
+        this.button = GetComponent<Button>();
+        
+        this.onClick = () =>
+        {
+            if (EventSystem.current != null)
+            {
+                EventSystem.current.SetSelectedGameObject(null);
+            }
+        };
+    }
 
-	private void Start()
-	{
-		AddListener(this.onClick);
-	}
+    private void Start()
+    {
+        AddListener(this.onClick);
+    }
 
-	public void AddListener(Callback callback)
-	{
-		this.button.onClick.AddListener(() =>
-		{
-			callback();
-		});
-	}
+    public void AddListener(Callback callback)
+    {
+        this.button.onClick.AddListener(() =>
+        {
+            callback();
+        });
+    }
 
-	public void RemoveListeners()
-	{
-		this.button.onClick.RemoveAllListeners();
-		AddListener(this.onClick);
-	}
+    public void RemoveListeners()
+    {
+        this.button.onClick.RemoveAllListeners();
+        AddListener(this.onClick);
+    }
 
-	public Button RawButton
-	{
-		get => this.button;
-	}
+    public Button RawButton
+    {
+        get => this.button;
+    }
 
-	public Button.ButtonClickedEvent OnClickRaw
-	{
-		get => this.button.onClick;
-	}
+    public Button.ButtonClickedEvent OnClickRaw
+    {
+        get => this.button.onClick;
+    }
 }

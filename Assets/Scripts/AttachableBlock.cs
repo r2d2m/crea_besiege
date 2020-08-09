@@ -5,122 +5,122 @@ using UnityEngine;
 
 public class AttachableBlockSeed : BlockSeed
 {
-	private const VehicleComponentType Type = VehicleComponentType.AttachableBlock;
+    private const VehicleComponentType Type = VehicleComponentType.AttachableBlock;
 
-	public AttachableBlockSeed()
-	{
-		this.type = Type;
-	}
+    public AttachableBlockSeed()
+    {
+        this.type = Type;
+    }
 
-	public AttachableBlockSeed(BlockSeed parent) : base(parent)
-	{
-		this.type = Type;
-	}
+    public AttachableBlockSeed(BlockSeed parent) : base(parent)
+    {
+        this.type = Type;
+    }
 
-	public static new AttachableBlockSeed FromJson(string json)
-	{
-		return JsonUtility.FromJson<AttachableBlockSeed>(json);
-	}
+    public static new AttachableBlockSeed FromJson(string json)
+    {
+        return JsonUtility.FromJson<AttachableBlockSeed>(json);
+    }
 }
 
 public class AttachableBlock : Block, IAttachable
 {
-	[SerializeField] bool isDlc = false;
+    [SerializeField] bool isDlc = false;
 
-	protected override void Awake()
-	{
-		base.Awake();
-	}
-
-	protected override void Start()
+    protected override void Awake()
     {
-		base.Start();
+        base.Awake();
     }
 
-	protected override void Update()
+    protected override void Start()
     {
-		base.Update();
+        base.Start();
     }
 
-	private Vector3 ComputeSetupPosition(Block block, Vector3 direction)
-	{
-		const float gap = 0.001f;
+    protected override void Update()
+    {
+        base.Update();
+    }
 
-		Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
-		return block.Bounds.center + translation + direction * gap;
-	}
+    private Vector3 ComputeSetupPosition(Block block, Vector3 direction)
+    {
+        const float gap = 0.001f;
 
-	private Collider[] OverlapBox(Vector3 position)
-	{
-		return Physics.OverlapBox(position, this.Bounds.extents, Quaternion.identity, Helper.DefaultLayerMask);
-	}
+        Vector3 translation = direction.Multiplied(block.Bounds.extents + this.Bounds.extents);
+        return block.Bounds.center + translation + direction * gap;
+    }
 
-	protected new AttachableBlockSeed Seed
-	{
-		get
-		{
-			var seed = new AttachableBlockSeed(base.Seed);
-			if (this.isDlc)
-			{
-				seed.type = VehicleComponentType.BlockDLC;
-			}
+    private Collider[] OverlapBox(Vector3 position)
+    {
+        return Physics.OverlapBox(position, this.Bounds.extents, Quaternion.identity, Helper.DefaultLayerMask);
+    }
 
-			return seed;
-		}
-	}
+    protected new AttachableBlockSeed Seed
+    {
+        get
+        {
+            var seed = new AttachableBlockSeed(base.Seed);
+            if (this.isDlc)
+            {
+                seed.type = VehicleComponentType.BlockDLC;
+            }
 
-	public bool IsSetupable(Block block, Vector3 direction)
-	{
-		Vector3 position = ComputeSetupPosition(block, direction);
-		Collider[] colliders = OverlapBox(position);
+            return seed;
+        }
+    }
 
-		return colliders.Length == 0;
-	}
+    public bool IsSetupable(Block block, Vector3 direction)
+    {
+        Vector3 position = ComputeSetupPosition(block, direction);
+        Collider[] colliders = OverlapBox(position);
 
-	public virtual void Setup(Block block, Vector3 direction)
-	{
-		Debug.Assert(IsSetupable(block, direction));
+        return colliders.Length == 0;
+    }
 
-		this.transform.position = ComputeSetupPosition(block, direction);
+    public virtual void Setup(Block block, Vector3 direction)
+    {
+        Debug.Assert(IsSetupable(block, direction));
 
-		foreach (BoxCollider box in this.LinkageBoxes)
-		{
-			Collider[] colliders = Physics.OverlapBox(box.bounds.center, box.bounds.extents, Quaternion.identity, Helper.BlockLayerMask);
+        this.transform.position = ComputeSetupPosition(block, direction);
 
-			foreach (Collider collider in colliders)
-			{
-				if (collider.gameObject != this.gameObject)
-				{
-					var hitBlock = collider.gameObject.GetComponent<Block>();
-					if (hitBlock != null)
-					{
-						InterConnect(hitBlock, this);
-					}
-				}
-			}
-		}
-	}
+        foreach (BoxCollider box in this.LinkageBoxes)
+        {
+            Collider[] colliders = Physics.OverlapBox(box.bounds.center, box.bounds.extents, Quaternion.identity, Helper.BlockLayerMask);
 
-	public override void Setup(string json)
-	{
-		base.Setup(json);
-	}
+            foreach (Collider collider in colliders)
+            {
+                if (collider.gameObject != this.gameObject)
+                {
+                    var hitBlock = collider.gameObject.GetComponent<Block>();
+                    if (hitBlock != null)
+                    {
+                        InterConnect(hitBlock, this);
+                    }
+                }
+            }
+        }
+    }
 
-	public override string ToJson()
-	{
-		// Not calling base class method is intentional
+    public override void Setup(string json)
+    {
+        base.Setup(json);
+    }
 
-		return this.Seed.ToJson();
-	}
+    public override string ToJson()
+    {
+        // Not calling base class method is intentional
 
-	public VehicleComponent VehicleComponent
-	{
-		get => this;
-	}
-	
-	public static void InterConnect(Block a, Block b)
-	{
-		a.Connect(b);
-		b.Connect(a);
-	}
+        return this.Seed.ToJson();
+    }
+
+    public VehicleComponent VehicleComponent
+    {
+        get => this;
+    }
+    
+    public static void InterConnect(Block a, Block b)
+    {
+        a.Connect(b);
+        b.Connect(a);
+    }
 }

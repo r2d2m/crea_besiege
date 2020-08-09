@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class VehicleSpawner : MonoBehaviour
 {
-	public static string Pick = null;
+    public static string Pick = null;
 
     void Start()
     {
         if (Pick != null)
-		{
-			VehicleIO.Load(Pick);
-		}
+        {
+            VehicleIO.Load(Pick);
+        }
     }
 
     void Update()

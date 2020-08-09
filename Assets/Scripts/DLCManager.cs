@@ -4,34 +4,34 @@ using UnityEngine;
 
 public sealed class DLCManager : PersistentBehavior<DLCManager>
 {
-	private PatchDayOneDLC patchDayOne = new PatchDayOneDLC();
+    private PatchDayOneDLC patchDayOne = new PatchDayOneDLC();
 
-	private DLCManager() :
-		base(CtorArg)
-	{ }
+    private DLCManager() :
+        base(CtorArg)
+    { }
 
-	protected override void Awake()
-	{
-		base.Awake();
+    protected override void Awake()
+    {
+        base.Awake();
 
-		LoadDLCs();
-	}
+        LoadDLCs();
+    }
 
-	private void Start()
-	{
-		
-	}
+    private void Start()
+    {
+        
+    }
 
-	public static void LoadDLCs()
-	{
-		Instance.patchDayOne.Load();
-	}
+    public static void LoadDLCs()
+    {
+        Instance.patchDayOne.Load();
+    }
 
-	public static PatchDayOneDLC PatchDayOne
-	{
-		get
-		{
-			return Instance.patchDayOne;
-		}
-	}
+    public static PatchDayOneDLC PatchDayOne
+    {
+        get
+        {
+            return Instance.patchDayOne;
+        }
+    }
 }

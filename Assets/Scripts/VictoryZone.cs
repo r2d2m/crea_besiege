@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class VictoryZone : MonoBehaviour
 {
-	public string nextLevel = null;
+    public string nextLevel = null;
 
-	private void OnTriggerEnter(Collider other)
-	{
-		Debug.Assert(!string.IsNullOrEmpty(this.nextLevel), "NextLevel were not assigned in VictoryZone");
-		
-		var block = other.gameObject.GetComponent<Block>();
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Assert(!string.IsNullOrEmpty(this.nextLevel), "NextLevel were not assigned in VictoryZone");
+        
+        var block = other.gameObject.GetComponent<Block>();
 
-		if (block != null)
-		{
-			Helper.LoadSingleActiveScene(this.nextLevel);
-			this.gameObject.SetActive(false);
-		}
-	}
+        if (block != null)
+        {
+            Helper.LoadSingleActiveScene(this.nextLevel);
+            this.gameObject.SetActive(false);
+        }
+    }
 }
